@@ -19,3 +19,4 @@ OPERATION_NAME_TOMOPY_RECON = "tomopy_recon"
 
 OPERATION_NAME_AXES_SWAP = "axes_swap"
 SINOGRAMS = "sinograms"
+RESCALED = "rescaled"
