@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.core.utility.sensible_roi module &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mantidimaging.core.utility.shape_splitter module" href="mantidimaging.core.utility.shape_splitter.html" />
+    <link rel="prev" title="mantidimaging.core.utility.registrator module" href="mantidimaging.core.utility.registrator.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.core.utility.shape_splitter.html" title="mantidimaging.core.utility.shape_splitter module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.core.utility.registrator.html" title="mantidimaging.core.utility.registrator module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="mantidimaging.core.html" >mantidimaging.core package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="mantidimaging.core.utility.html" accesskey="U">mantidimaging.core.utility package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.utility.sensible_roi module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-mantidimaging.core.utility.sensible_roi">
+<span id="mantidimaging-core-utility-sensible-roi-module"></span><h1>mantidimaging.core.utility.sensible_roi module<a class="headerlink" href="#module-mantidimaging.core.utility.sensible_roi" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="mantidimaging.core.utility.sensible_roi.SensibleROI">
+<em class="property">class </em><code class="sig-prename descclassname">mantidimaging.core.utility.sensible_roi.</code><code class="sig-name descname">SensibleROI</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">left</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span></em>, <em class="sig-param"><span class="n">top</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span></em>, <em class="sig-param"><span class="n">right</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span></em>, <em class="sig-param"><span class="n">bottom</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/core/utility/sensible_roi.html#SensibleROI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.core.utility.sensible_roi.SensibleROI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.Iterable</span></code></a></p>
+<dl class="py attribute">
+<dt id="mantidimaging.core.utility.sensible_roi.SensibleROI.bottom">
+<code class="sig-name descname">bottom</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></em><a class="headerlink" href="#mantidimaging.core.utility.sensible_roi.SensibleROI.bottom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.core.utility.sensible_roi.SensibleROI.from_list">
+<em class="property">static </em><code class="sig-name descname">from_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">roi</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><span class="p">]</span><span class="p">, </span>List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a><span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/core/utility/sensible_roi.html#SensibleROI.from_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.core.utility.sensible_roi.SensibleROI.from_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.core.utility.sensible_roi.SensibleROI.from_points">
+<em class="property">static </em><code class="sig-name descname">from_points</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">position</span><span class="p">:</span> <span class="n"><a class="reference internal" href="mantidimaging.core.utility.close_enough_point.html#mantidimaging.core.utility.close_enough_point.CloseEnoughPoint" title="mantidimaging.core.utility.close_enough_point.CloseEnoughPoint">mantidimaging.core.utility.close_enough_point.CloseEnoughPoint</a></span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n"><a class="reference internal" href="mantidimaging.core.utility.close_enough_point.html#mantidimaging.core.utility.close_enough_point.CloseEnoughPoint" title="mantidimaging.core.utility.close_enough_point.CloseEnoughPoint">mantidimaging.core.utility.close_enough_point.CloseEnoughPoint</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#mantidimaging.core.utility.sensible_roi.SensibleROI" title="mantidimaging.core.utility.sensible_roi.SensibleROI">mantidimaging.core.utility.sensible_roi.SensibleROI</a><a class="reference internal" href="../_modules/mantidimaging/core/utility/sensible_roi.html#SensibleROI.from_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.core.utility.sensible_roi.SensibleROI.from_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.core.utility.sensible_roi.SensibleROI.height">
+<em class="property">property </em><code class="sig-name descname">height</code><a class="headerlink" href="#mantidimaging.core.utility.sensible_roi.SensibleROI.height" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.core.utility.sensible_roi.SensibleROI.left">
+<code class="sig-name descname">left</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></em><a class="headerlink" href="#mantidimaging.core.utility.sensible_roi.SensibleROI.left" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.core.utility.sensible_roi.SensibleROI.right">
+<code class="sig-name descname">right</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></em><a class="headerlink" href="#mantidimaging.core.utility.sensible_roi.SensibleROI.right" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.core.utility.sensible_roi.SensibleROI.top">
+<code class="sig-name descname">top</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></em><a class="headerlink" href="#mantidimaging.core.utility.sensible_roi.SensibleROI.top" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.core.utility.sensible_roi.SensibleROI.width">
+<em class="property">property </em><code class="sig-name descname">width</code><a class="headerlink" href="#mantidimaging.core.utility.sensible_roi.SensibleROI.width" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mantidimaging.core.utility.registrator.html"
+                        title="previous chapter">mantidimaging.core.utility.registrator module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mantidimaging.core.utility.shape_splitter.html"
+                        title="next chapter">mantidimaging.core.utility.shape_splitter module</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.core.utility.shape_splitter.html" title="mantidimaging.core.utility.shape_splitter module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.core.utility.registrator.html" title="mantidimaging.core.utility.registrator module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="mantidimaging.core.html" >mantidimaging.core package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="mantidimaging.core.utility.html" >mantidimaging.core.utility package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.utility.sensible_roi module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

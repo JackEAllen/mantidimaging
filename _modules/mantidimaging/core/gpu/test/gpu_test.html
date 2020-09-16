@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.core.gpu.test.gpu_test &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.gpu.test.gpu_test</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.core.gpu.test.gpu_test</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="kn">from</span> <span class="nn">unittest</span> <span class="kn">import</span> <span class="n">mock</span>
+<span class="kn">import</span> <span class="nn">numpy.testing</span> <span class="k">as</span> <span class="nn">npt</span>
+
+<span class="kn">import</span> <span class="nn">mantidimaging.test_helpers.unit_test_helper</span> <span class="k">as</span> <span class="nn">th</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.operations.median_filter</span> <span class="kn">import</span> <span class="n">MedianFilter</span><span class="p">,</span> <span class="n">modes</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.gpu</span> <span class="kn">import</span> <span class="n">utility</span> <span class="k">as</span> <span class="n">gpu</span>
+
+<span class="n">GPU_NOT_AVAIL</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">gpu</span><span class="o">.</span><span class="n">gpu_available</span><span class="p">()</span>
+<span class="n">GPU_SKIP_REASON</span> <span class="o">=</span> <span class="s2">&quot;Skip GPU tests if cupy isn&#39;t installed.&quot;</span>
+<span class="n">GPU_UTILITY_LOC</span> <span class="o">=</span> <span class="s2">&quot;mantidimaging.core.gpu.utility.gpu_available&quot;</span>
+
+
+<div class="viewcode-block" id="GPUTest"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.gpu.test.gpu_test.html#mantidimaging.core.gpu.test.gpu_test.GPUTest">[docs]</a><span class="k">class</span> <span class="nc">GPUTest</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test median filter.</span>
+
+<span class="sd">    Tests return value and in-place modified data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GPUTest</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GPUTest.run_serial"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.gpu.test.gpu_test.html#mantidimaging.core.gpu.test.gpu_test.GPUTest.run_serial">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">run_serial</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run the median filter in serial.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">th</span><span class="o">.</span><span class="n">switch_mp_off</span><span class="p">()</span>
+        <span class="n">cpu_result</span> <span class="o">=</span> <span class="n">MedianFilter</span><span class="o">.</span><span class="n">filter_func</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+        <span class="n">th</span><span class="o">.</span><span class="n">switch_mp_on</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">cpu_result</span></div>
+
+<div class="viewcode-block" id="GPUTest.test_numpy_pad_modes_match_scipy_median_modes"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.gpu.test.gpu_test.html#mantidimaging.core.gpu.test.gpu_test.GPUTest.test_numpy_pad_modes_match_scipy_median_modes">[docs]</a>    <span class="nd">@unittest</span><span class="o">.</span><span class="n">skipIf</span><span class="p">(</span><span class="n">GPU_NOT_AVAIL</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="n">GPU_SKIP_REASON</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_numpy_pad_modes_match_scipy_median_modes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run the median filter on the GPU and CPU with the different scipy modes. Check that the results match.</span>
+<span class="sd">        Should demonstrate that the arguments passed to numpy pad are the correct equivalents to the scipy modes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">modes</span><span class="p">():</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">subTest</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">):</span>
+
+                <span class="n">images</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">generate_shared_array</span><span class="p">()</span>
+
+                <span class="n">gpu_result</span> <span class="o">=</span> <span class="n">MedianFilter</span><span class="o">.</span><span class="n">filter_func</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">force_cpu</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">cpu_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_serial</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+
+                <span class="n">npt</span><span class="o">.</span><span class="n">assert_almost_equal</span><span class="p">(</span><span class="n">gpu_result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cpu_result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="GPUTest.test_gpu_result_matches_cpu_result_for_different_filter_sizes"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.gpu.test.gpu_test.html#mantidimaging.core.gpu.test.gpu_test.GPUTest.test_gpu_result_matches_cpu_result_for_different_filter_sizes">[docs]</a>    <span class="nd">@unittest</span><span class="o">.</span><span class="n">skipIf</span><span class="p">(</span><span class="n">GPU_NOT_AVAIL</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="n">GPU_SKIP_REASON</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_gpu_result_matches_cpu_result_for_different_filter_sizes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run the median filter on the CPU and GPU with different filter sizes. Check that the results match.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;reflect&quot;</span>
+        <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">]:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">subTest</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">):</span>
+
+                <span class="n">images</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">generate_shared_array</span><span class="p">()</span>
+
+                <span class="n">gpu_result</span> <span class="o">=</span> <span class="n">MedianFilter</span><span class="o">.</span><span class="n">filter_func</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">force_cpu</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">cpu_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_serial</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+
+                <span class="n">npt</span><span class="o">.</span><span class="n">assert_almost_equal</span><span class="p">(</span><span class="n">gpu_result</span><span class="p">,</span> <span class="n">cpu_result</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GPUTest.test_gpu_result_matches_cpu_result_for_larger_images"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.gpu.test.gpu_test.html#mantidimaging.core.gpu.test.gpu_test.GPUTest.test_gpu_result_matches_cpu_result_for_larger_images">[docs]</a>    <span class="nd">@unittest</span><span class="o">.</span><span class="n">skipIf</span><span class="p">(</span><span class="n">GPU_NOT_AVAIL</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="n">GPU_SKIP_REASON</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_gpu_result_matches_cpu_result_for_larger_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run the median filter on the CPU and GPU with a larger image size. Check that the results match. This test may</span>
+<span class="sd">        reveal issues such as the grid and dimension size arguments going wrong.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="mi">1200</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;reflect&quot;</span>
+
+        <span class="n">images</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">generate_shared_array</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+
+        <span class="n">gpu_result</span> <span class="o">=</span> <span class="n">MedianFilter</span><span class="o">.</span><span class="n">filter_func</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">force_cpu</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">cpu_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_serial</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+
+        <span class="n">npt</span><span class="o">.</span><span class="n">assert_almost_equal</span><span class="p">(</span><span class="n">gpu_result</span><span class="p">,</span> <span class="n">cpu_result</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GPUTest.test_double_is_used_in_cuda_for_float_64_arrays"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.gpu.test.gpu_test.html#mantidimaging.core.gpu.test.gpu_test.GPUTest.test_double_is_used_in_cuda_for_float_64_arrays">[docs]</a>    <span class="nd">@unittest</span><span class="o">.</span><span class="n">skipIf</span><span class="p">(</span><span class="n">GPU_NOT_AVAIL</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="n">GPU_SKIP_REASON</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_double_is_used_in_cuda_for_float_64_arrays</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run the median filter on the CPU and GPU with a float64 array. This demonstrates that replacing instances of</span>
+<span class="sd">        &#39;float&#39; with &#39;double&#39; in the CUDA file is doing the right thing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;reflect&quot;</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">generate_shared_array</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span>
+
+        <span class="n">gpu_result</span> <span class="o">=</span> <span class="n">MedianFilter</span><span class="o">.</span><span class="n">filter_func</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">force_cpu</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">cpu_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_serial</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+
+        <span class="n">npt</span><span class="o">.</span><span class="n">assert_almost_equal</span><span class="p">(</span><span class="n">gpu_result</span><span class="p">,</span> <span class="n">cpu_result</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GPUTest.test_image_slicing_works"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.gpu.test.gpu_test.html#mantidimaging.core.gpu.test.gpu_test.GPUTest.test_image_slicing_works">[docs]</a>    <span class="nd">@unittest</span><span class="o">.</span><span class="n">skipIf</span><span class="p">(</span><span class="n">GPU_NOT_AVAIL</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="n">GPU_SKIP_REASON</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_image_slicing_works</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run the median filter on the CPU and GPU with an image stack that is larger than the limit permitted on the GPU.</span>
+<span class="sd">        This demonstrates that the algorithm for slicing the stack and overwriting GPU arrays is working correctly.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="mi">30</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;reflect&quot;</span>
+
+        <span class="c1"># Make the number of images in the stack exceed the maximum number of GPU-stored images</span>
+        <span class="n">n_images</span> <span class="o">=</span> <span class="n">gpu</span><span class="o">.</span><span class="n">MAX_GPU_SLICES</span> <span class="o">*</span> <span class="mi">3</span>
+
+        <span class="n">images</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">generate_shared_array</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">n_images</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+
+        <span class="n">gpu_result</span> <span class="o">=</span> <span class="n">MedianFilter</span><span class="o">.</span><span class="n">filter_func</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">force_cpu</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">cpu_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_serial</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+
+        <span class="n">npt</span><span class="o">.</span><span class="n">assert_almost_equal</span><span class="p">(</span><span class="n">gpu_result</span><span class="p">,</span> <span class="n">cpu_result</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GPUTest.test_array_input_unchanged_when_gpu_runs_out_of_memory"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.gpu.test.gpu_test.html#mantidimaging.core.gpu.test.gpu_test.GPUTest.test_array_input_unchanged_when_gpu_runs_out_of_memory">[docs]</a>    <span class="nd">@unittest</span><span class="o">.</span><span class="n">skipIf</span><span class="p">(</span><span class="n">GPU_NOT_AVAIL</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="n">GPU_SKIP_REASON</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_array_input_unchanged_when_gpu_runs_out_of_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Mock the GPU running out of memory. Check that this leaves the input array to be unchanged.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+
+        <span class="n">N</span> <span class="o">=</span> <span class="mi">200</span>
+        <span class="n">n_images</span> <span class="o">=</span> <span class="mi">2000</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;reflect&quot;</span>
+
+        <span class="n">images</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">generate_shared_array</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">n_images</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="n">mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s2">&quot;mantidimaging.core.gpu.utility._send_single_array_to_gpu&quot;</span><span class="p">,</span>
+                        <span class="n">side_effect</span><span class="o">=</span><span class="n">cp</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">OutOfMemoryError</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+            <span class="n">gpu_result</span> <span class="o">=</span> <span class="n">MedianFilter</span><span class="o">.</span><span class="n">filter_func</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">force_cpu</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">npt</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">gpu_result</span><span class="p">,</span> <span class="n">images</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GPUTest.test_gpu_running_out_of_memory_causes_free_memory_to_be_called"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.gpu.test.gpu_test.html#mantidimaging.core.gpu.test.gpu_test.GPUTest.test_gpu_running_out_of_memory_causes_free_memory_to_be_called">[docs]</a>    <span class="nd">@unittest</span><span class="o">.</span><span class="n">skipIf</span><span class="p">(</span><span class="n">GPU_NOT_AVAIL</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="n">GPU_SKIP_REASON</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_gpu_running_out_of_memory_causes_free_memory_to_be_called</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Mock the GPU running out of memory. Check that this causes the free memory block function to be called.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">cupy</span> <span class="k">as</span> <span class="nn">cp</span>
+
+        <span class="n">N</span> <span class="o">=</span> <span class="mi">20</span>
+        <span class="n">n_images</span> <span class="o">=</span> <span class="mi">2</span>
+
+        <span class="n">images</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">generate_shared_array</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">n_images</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="n">mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s2">&quot;mantidimaging.core.gpu.utility._send_single_array_to_gpu&quot;</span><span class="p">,</span>
+                        <span class="n">side_effect</span><span class="o">=</span><span class="n">cp</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">OutOfMemoryError</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+            <span class="k">with</span> <span class="n">mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s2">&quot;mantidimaging.core.gpu.utility._free_memory_pool&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mock_free_gpu</span><span class="p">:</span>
+                <span class="n">gpu</span><span class="o">.</span><span class="n">_send_arrays_to_gpu_with_pinned_memory</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="p">[</span><span class="n">cp</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">Stream</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_images</span><span class="p">)])</span>
+
+        <span class="n">mock_free_gpu</span><span class="o">.</span><span class="n">assert_called</span><span class="p">()</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.gpu.test.gpu_test</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

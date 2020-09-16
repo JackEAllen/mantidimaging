@@ -1,0 +1,7 @@
+mantidimaging.core.net.socket\_io module
+========================================
+
+.. automodule:: mantidimaging.core.net.socket_io
+   :members:
+   :undoc-members:
+   :show-inheritance:

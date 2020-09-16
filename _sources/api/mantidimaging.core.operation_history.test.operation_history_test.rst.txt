@@ -1,0 +1,7 @@
+mantidimaging.core.operation\_history.test.operation\_history\_test module
+==========================================================================
+
+.. automodule:: mantidimaging.core.operation_history.test.operation_history_test
+   :members:
+   :undoc-members:
+   :show-inheritance:

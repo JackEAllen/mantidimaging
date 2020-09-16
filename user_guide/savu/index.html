@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Using Savu from Mantid Imaging &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Developer Guide" href="../../developer_guide/index.html" />
+    <link rel="prev" title="IO package" href="../python/io.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../developer_guide/index.html" title="Developer Guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../python/io.html" title="IO package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">User Guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Using Savu from Mantid Imaging</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="using-savu-from-mantid-imaging">
+<h1>Using Savu from Mantid Imaging<a class="headerlink" href="#using-savu-from-mantid-imaging" title="Permalink to this headline">¶</a></h1>
+<p>The Savu integration is currently done via the Savu Operations GUI. This can be accessed via “Workflow &gt; Savu Image Operations” or by pressing <code class="code docutils literal notranslate"><span class="pre">Ctrl+Shift+F</span></code>.</p>
+<p>Once that is open, it connects to the already running (on IDaaS) backend.</p>
+<p>The GUI offers the following features:</p>
+<ul class="simple">
+<li><p>Displays all plugins available on Savu. Loaders and Savers are not shown. All other plugins are shown together - both pre-processing and reconstruction.</p></li>
+<li><dl class="simple">
+<dt>Each plugin’s properties are displayed on selection.</dt><dd><ul>
+<li><p>The “Description” area shows documentation available in Savu for that plugin.</p></li>
+<li><p>Hovering over each property shows the documentation available in Savu for that property.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Button functionality:</dt><dd><ul>
+<li><p>Add To Process List: Adds to the process list on the side.</p></li>
+<li><p>Apply Filter to Stack: This will apply the current plugin to the FULL stack. This does NOT apply the process list steps on the side.</p></li>
+<li><p>Apply List to Stack: This will apply ALL the plugins in the process list on the side to the stack.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Important to note is that Savu will <strong>always</strong> read images from disk. This has the following implications:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Any changes you have applied from Mantid Imaging itself will not be sent to Savu.</dt><dd><ul>
+<li><p>To make sure Savu gets the correct ones you must save the images and load them again.</p></li>
+<li><p>This is because the path to the original images will be sent to Savu, and any applied filters only change the data in memory.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../python/io.html"
+                        title="previous chapter">IO package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../../developer_guide/index.html"
+                        title="next chapter">Developer Guide</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../developer_guide/index.html" title="Developer Guide"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../python/io.html" title="IO package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >User Guide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Using Savu from Mantid Imaging</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

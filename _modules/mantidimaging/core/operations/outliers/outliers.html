@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.core.operations.outliers.outliers &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.operations.outliers.outliers</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.core.operations.outliers.outliers</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">mantidimaging.core.operations.base_filter</span> <span class="kn">import</span> <span class="n">BaseFilter</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.parallel</span> <span class="kn">import</span> <span class="n">utility</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.tools</span> <span class="kn">import</span> <span class="n">importer</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.utility.progress_reporting</span> <span class="kn">import</span> <span class="n">Progress</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.utility</span> <span class="kn">import</span> <span class="n">add_property_to_form</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.utility.qt_helpers</span> <span class="kn">import</span> <span class="n">Type</span>
+
+<span class="n">OUTLIERS_DARK</span> <span class="o">=</span> <span class="s1">&#39;dark&#39;</span>
+<span class="n">OUTLIERS_BRIGHT</span> <span class="o">=</span> <span class="s1">&#39;bright&#39;</span>
+<span class="n">_default_radius</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">_default_mode</span> <span class="o">=</span> <span class="n">OUTLIERS_BRIGHT</span>
+<span class="n">DIM_2D</span> <span class="o">=</span> <span class="s2">&quot;2D&quot;</span>
+<span class="n">DIM_1D</span> <span class="o">=</span> <span class="s2">&quot;1D&quot;</span>
+<span class="n">_default_dim</span> <span class="o">=</span> <span class="n">DIM_2D</span>
+
+
+<div class="viewcode-block" id="OutliersFilter"><a class="viewcode-back" href="../../../../../user_guide/operations/outliers.html#mantidimaging.core.operations.outliers.outliers.OutliersFilter">[docs]</a><span class="k">class</span> <span class="nc">OutliersFilter</span><span class="p">(</span><span class="n">BaseFilter</span><span class="p">):</span>
+    <span class="n">filter_name</span> <span class="o">=</span> <span class="s2">&quot;Remove Outliers TomoPy&quot;</span>
+
+<div class="viewcode-block" id="OutliersFilter.filter_func"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.operations.outliers.outliers.html#mantidimaging.core.operations.outliers.outliers.OutliersFilter.filter_func">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">filter_func</span><span class="p">(</span><span class="n">data</span><span class="p">,</span>
+                    <span class="n">diff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">radius</span><span class="o">=</span><span class="n">_default_radius</span><span class="p">,</span>
+                    <span class="n">mode</span><span class="o">=</span><span class="n">_default_mode</span><span class="p">,</span>
+                    <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="nb">type</span><span class="o">=</span><span class="n">_default_dim</span><span class="p">,</span>
+                    <span class="n">cores</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Requires tomopy to be available.</span>
+
+<span class="sd">        :param data: Input data as a 3D numpy.ndarray</span>
+<span class="sd">        :param diff: Pixel value difference above which to crop bright pixels</span>
+<span class="sd">        :param radius: Size of the median filter to apply</span>
+<span class="sd">        :param mode: Spot brightness to remove.</span>
+<span class="sd">                     Either &#39;bright&#39; or &#39;dark&#39;.</span>
+<span class="sd">        :param cores: The number of cores that will be used to process the data.</span>
+
+<span class="sd">        :return: The processed 3D numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">progress</span> <span class="o">=</span> <span class="n">Progress</span><span class="o">.</span><span class="n">ensure_instance</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="n">task_name</span><span class="o">=</span><span class="s1">&#39;Outliers&#39;</span><span class="p">,</span> <span class="n">num_steps</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">utility</span><span class="o">.</span><span class="n">multiprocessing_necessary</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">cores</span><span class="p">):</span>
+            <span class="n">cores</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">diff</span> <span class="ow">and</span> <span class="n">radius</span> <span class="ow">and</span> <span class="n">diff</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">radius</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">progress</span><span class="p">:</span>
+                <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">msg</span><span class="o">=</span><span class="s2">&quot;Applying outliers with threshold: </span><span class="si">{0}</span><span class="s2"> and &quot;</span> <span class="s2">&quot;radius </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="n">radius</span><span class="p">))</span>
+
+                <span class="n">sample</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span>
+                <span class="c1"># By default tomopy only clears bright outliers.</span>
+                <span class="c1"># As a workaround inverting the image makes the dark outliers the brightest</span>
+                <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">OUTLIERS_DARK</span><span class="p">:</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">negative</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">sample</span><span class="p">)</span>
+
+                <span class="n">tomopy</span> <span class="o">=</span> <span class="n">importer</span><span class="o">.</span><span class="n">do_importing</span><span class="p">(</span><span class="s1">&#39;tomopy&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;2D&quot;</span><span class="p">:</span>
+                    <span class="n">tomopy</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">corr</span><span class="o">.</span><span class="n">remove_outlier</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">ncore</span><span class="o">=</span><span class="n">cores</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">sample</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">tomopy</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">corr</span><span class="o">.</span><span class="n">remove_outlier1d</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">ncore</span><span class="o">=</span><span class="n">cores</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">sample</span><span class="p">)</span>
+                <span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+                <span class="c1"># reverse the inversion</span>
+                <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">OUTLIERS_DARK</span><span class="p">:</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">negative</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">sample</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="OutliersFilter.register_gui"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.operations.outliers.outliers.html#mantidimaging.core.operations.outliers.outliers.OutliersFilter.register_gui">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">register_gui</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">on_change</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">diff_field</span> <span class="o">=</span> <span class="n">add_property_to_form</span><span class="p">(</span><span class="s1">&#39;Difference&#39;</span><span class="p">,</span>
+                                             <span class="s1">&#39;float&#39;</span><span class="p">,</span>
+                                             <span class="mi">1</span><span class="p">,</span>
+                                             <span class="n">valid_values</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1000000</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">),</span>
+                                             <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span>
+                                             <span class="n">on_change</span><span class="o">=</span><span class="n">on_change</span><span class="p">)</span>
+        <span class="n">diff_field</span><span class="o">.</span><span class="n">setDecimals</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">size_field</span> <span class="o">=</span> <span class="n">add_property_to_form</span><span class="p">(</span><span class="s1">&#39;Size&#39;</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">INT</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span> <span class="n">on_change</span><span class="o">=</span><span class="n">on_change</span><span class="p">)</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">mode_field</span> <span class="o">=</span> <span class="n">add_property_to_form</span><span class="p">(</span><span class="s1">&#39;Mode&#39;</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">CHOICE</span><span class="p">,</span> <span class="n">valid_values</span><span class="o">=</span><span class="n">modes</span><span class="p">(),</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span> <span class="n">on_change</span><span class="o">=</span><span class="n">on_change</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">apply_to_field</span> <span class="o">=</span> <span class="n">add_property_to_form</span><span class="p">(</span><span class="s1">&#39;Apply to&#39;</span><span class="p">,</span>
+                                                 <span class="n">Type</span><span class="o">.</span><span class="n">CHOICE</span><span class="p">,</span>
+                                                 <span class="n">valid_values</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Projections&quot;</span><span class="p">,</span> <span class="s2">&quot;Sinograms&quot;</span><span class="p">),</span>
+                                                 <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span>
+                                                 <span class="n">on_change</span><span class="o">=</span><span class="n">on_change</span><span class="p">)</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">median_filter_field</span> <span class="o">=</span> <span class="n">add_property_to_form</span><span class="p">(</span><span class="s1">&#39;Median filter dimensions&#39;</span><span class="p">,</span>
+                                                      <span class="n">Type</span><span class="o">.</span><span class="n">CHOICE</span><span class="p">,</span>
+                                                      <span class="n">valid_values</span><span class="o">=</span><span class="n">dims</span><span class="p">(),</span>
+                                                      <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span>
+                                                      <span class="n">on_change</span><span class="o">=</span><span class="n">on_change</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;diff_field&#39;</span><span class="p">:</span> <span class="n">diff_field</span><span class="p">,</span>
+            <span class="s1">&#39;size_field&#39;</span><span class="p">:</span> <span class="n">size_field</span><span class="p">,</span>
+            <span class="s1">&#39;mode_field&#39;</span><span class="p">:</span> <span class="n">mode_field</span><span class="p">,</span>
+            <span class="s1">&#39;apply_to_field&#39;</span><span class="p">:</span> <span class="n">apply_to_field</span><span class="p">,</span>
+            <span class="s1">&#39;median_filter_field&#39;</span><span class="p">:</span> <span class="n">median_filter_field</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="OutliersFilter.execute_wrapper"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.operations.outliers.outliers.html#mantidimaging.core.operations.outliers.outliers.OutliersFilter.execute_wrapper">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">execute_wrapper</span><span class="p">(</span><span class="n">diff_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">size_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">mode_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">apply_to_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">median_filter_field</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">apply_to_field</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Projections&quot;</span><span class="p">:</span>
+            <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">apply_to_field</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Sinograms&quot;</span><span class="p">:</span>
+            <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;apply_to_field not given a valid input.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">partial</span><span class="p">(</span><span class="n">OutliersFilter</span><span class="o">.</span><span class="n">filter_func</span><span class="p">,</span>
+                       <span class="n">diff</span><span class="o">=</span><span class="n">diff_field</span><span class="o">.</span><span class="n">value</span><span class="p">(),</span>
+                       <span class="n">radius</span><span class="o">=</span><span class="n">size_field</span><span class="o">.</span><span class="n">value</span><span class="p">(),</span>
+                       <span class="n">mode</span><span class="o">=</span><span class="n">mode_field</span><span class="o">.</span><span class="n">currentText</span><span class="p">(),</span>
+                       <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span>
+                       <span class="nb">type</span><span class="o">=</span><span class="n">median_filter_field</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span></div></div>
+
+
+<div class="viewcode-block" id="modes"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.operations.outliers.outliers.html#mantidimaging.core.operations.outliers.outliers.modes">[docs]</a><span class="k">def</span> <span class="nf">modes</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">OUTLIERS_BRIGHT</span><span class="p">,</span> <span class="n">OUTLIERS_DARK</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="dims"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.operations.outliers.outliers.html#mantidimaging.core.operations.outliers.outliers.dims">[docs]</a><span class="k">def</span> <span class="nf">dims</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">DIM_2D</span><span class="p">,</span> <span class="n">DIM_1D</span><span class="p">]</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.operations.outliers.outliers</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

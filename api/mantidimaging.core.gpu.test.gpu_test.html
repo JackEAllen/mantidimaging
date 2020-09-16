@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.core.gpu.test.gpu_test module &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mantidimaging.core.gpu.test.import_test module" href="mantidimaging.core.gpu.test.import_test.html" />
+    <link rel="prev" title="mantidimaging.core.gpu.test package" href="mantidimaging.core.gpu.test.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.core.gpu.test.import_test.html" title="mantidimaging.core.gpu.test.import_test module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.core.gpu.test.html" title="mantidimaging.core.gpu.test package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="mantidimaging.core.html" >mantidimaging.core package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="mantidimaging.core.gpu.html" >mantidimaging.core.gpu package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="mantidimaging.core.gpu.test.html" accesskey="U">mantidimaging.core.gpu.test package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.gpu.test.gpu_test module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-mantidimaging.core.gpu.test.gpu_test">
+<span id="mantidimaging-core-gpu-test-gpu-test-module"></span><h1>mantidimaging.core.gpu.test.gpu_test module<a class="headerlink" href="#module-mantidimaging.core.gpu.test.gpu_test" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="mantidimaging.core.gpu.test.gpu_test.GPUTest">
+<em class="property">class </em><code class="sig-prename descclassname">mantidimaging.core.gpu.test.gpu_test.</code><code class="sig-name descname">GPUTest</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/core/gpu/test/gpu_test.html#GPUTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.core.gpu.test.gpu_test.GPUTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<p>Test median filter.</p>
+<p>Tests return value and in-place modified data.</p>
+<dl class="py method">
+<dt id="mantidimaging.core.gpu.test.gpu_test.GPUTest.run_serial">
+<em class="property">static </em><code class="sig-name descname">run_serial</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">size</span></em>, <em class="sig-param"><span class="n">mode</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/core/gpu/test/gpu_test.html#GPUTest.run_serial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.core.gpu.test.gpu_test.GPUTest.run_serial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the median filter in serial.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.core.gpu.test.gpu_test.GPUTest.test_array_input_unchanged_when_gpu_runs_out_of_memory">
+<code class="sig-name descname">test_array_input_unchanged_when_gpu_runs_out_of_memory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/core/gpu/test/gpu_test.html#GPUTest.test_array_input_unchanged_when_gpu_runs_out_of_memory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.core.gpu.test.gpu_test.GPUTest.test_array_input_unchanged_when_gpu_runs_out_of_memory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mock the GPU running out of memory. Check that this leaves the input array to be unchanged.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.core.gpu.test.gpu_test.GPUTest.test_double_is_used_in_cuda_for_float_64_arrays">
+<code class="sig-name descname">test_double_is_used_in_cuda_for_float_64_arrays</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/core/gpu/test/gpu_test.html#GPUTest.test_double_is_used_in_cuda_for_float_64_arrays"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.core.gpu.test.gpu_test.GPUTest.test_double_is_used_in_cuda_for_float_64_arrays" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the median filter on the CPU and GPU with a float64 array. This demonstrates that replacing instances of
+‘float’ with ‘double’ in the CUDA file is doing the right thing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.core.gpu.test.gpu_test.GPUTest.test_gpu_result_matches_cpu_result_for_different_filter_sizes">
+<code class="sig-name descname">test_gpu_result_matches_cpu_result_for_different_filter_sizes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/core/gpu/test/gpu_test.html#GPUTest.test_gpu_result_matches_cpu_result_for_different_filter_sizes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.core.gpu.test.gpu_test.GPUTest.test_gpu_result_matches_cpu_result_for_different_filter_sizes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the median filter on the CPU and GPU with different filter sizes. Check that the results match.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.core.gpu.test.gpu_test.GPUTest.test_gpu_result_matches_cpu_result_for_larger_images">
+<code class="sig-name descname">test_gpu_result_matches_cpu_result_for_larger_images</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/core/gpu/test/gpu_test.html#GPUTest.test_gpu_result_matches_cpu_result_for_larger_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.core.gpu.test.gpu_test.GPUTest.test_gpu_result_matches_cpu_result_for_larger_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the median filter on the CPU and GPU with a larger image size. Check that the results match. This test may
+reveal issues such as the grid and dimension size arguments going wrong.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.core.gpu.test.gpu_test.GPUTest.test_gpu_running_out_of_memory_causes_free_memory_to_be_called">
+<code class="sig-name descname">test_gpu_running_out_of_memory_causes_free_memory_to_be_called</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/core/gpu/test/gpu_test.html#GPUTest.test_gpu_running_out_of_memory_causes_free_memory_to_be_called"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.core.gpu.test.gpu_test.GPUTest.test_gpu_running_out_of_memory_causes_free_memory_to_be_called" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mock the GPU running out of memory. Check that this causes the free memory block function to be called.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.core.gpu.test.gpu_test.GPUTest.test_image_slicing_works">
+<code class="sig-name descname">test_image_slicing_works</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/core/gpu/test/gpu_test.html#GPUTest.test_image_slicing_works"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.core.gpu.test.gpu_test.GPUTest.test_image_slicing_works" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the median filter on the CPU and GPU with an image stack that is larger than the limit permitted on the GPU.
+This demonstrates that the algorithm for slicing the stack and overwriting GPU arrays is working correctly.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.core.gpu.test.gpu_test.GPUTest.test_numpy_pad_modes_match_scipy_median_modes">
+<code class="sig-name descname">test_numpy_pad_modes_match_scipy_median_modes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/core/gpu/test/gpu_test.html#GPUTest.test_numpy_pad_modes_match_scipy_median_modes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.core.gpu.test.gpu_test.GPUTest.test_numpy_pad_modes_match_scipy_median_modes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the median filter on the GPU and CPU with the different scipy modes. Check that the results match.
+Should demonstrate that the arguments passed to numpy pad are the correct equivalents to the scipy modes.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mantidimaging.core.gpu.test.html"
+                        title="previous chapter">mantidimaging.core.gpu.test package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mantidimaging.core.gpu.test.import_test.html"
+                        title="next chapter">mantidimaging.core.gpu.test.import_test module</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.core.gpu.test.import_test.html" title="mantidimaging.core.gpu.test.import_test module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.core.gpu.test.html" title="mantidimaging.core.gpu.test package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="mantidimaging.core.html" >mantidimaging.core package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="mantidimaging.core.gpu.html" >mantidimaging.core.gpu package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="mantidimaging.core.gpu.test.html" >mantidimaging.core.gpu.test package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.gpu.test.gpu_test module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

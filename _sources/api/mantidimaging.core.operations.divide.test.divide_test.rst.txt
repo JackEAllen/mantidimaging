@@ -1,0 +1,7 @@
+mantidimaging.core.operations.divide.test.divide\_test module
+=============================================================
+
+.. automodule:: mantidimaging.core.operations.divide.test.divide_test
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.gui.windows.main.view module &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mantidimaging.gui.windows.operations package" href="mantidimaging.gui.windows.operations.html" />
+    <link rel="prev" title="mantidimaging.gui.windows.main.save_dialog module" href="mantidimaging.gui.windows.main.save_dialog.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.operations.html" title="mantidimaging.gui.windows.operations package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.main.save_dialog.html" title="mantidimaging.gui.windows.main.save_dialog module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="mantidimaging.gui.html" >mantidimaging.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="mantidimaging.gui.windows.html" >mantidimaging.gui.windows package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="mantidimaging.gui.windows.main.html" accesskey="U">mantidimaging.gui.windows.main package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.main.view module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-mantidimaging.gui.windows.main.view">
+<span id="mantidimaging-gui-windows-main-view-module"></span><h1>mantidimaging.gui.windows.main.view module<a class="headerlink" href="#module-mantidimaging.gui.windows.main.view" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView">
+<em class="property">class </em><code class="sig-prename descclassname">mantidimaging.gui.windows.main.view.</code><code class="sig-name descname">MainWindowView</code><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="mantidimaging.gui.mvp_base.view.html#mantidimaging.gui.mvp_base.view.BaseMainWindowView" title="mantidimaging.gui.mvp_base.view.BaseMainWindowView"><code class="xref py py-class docutils literal notranslate"><span class="pre">mantidimaging.gui.mvp_base.view.BaseMainWindowView</span></code></a></p>
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.actionDebug_Me">
+<code class="sig-name descname">actionDebug_Me</code><em class="property">: PyQt5.QtWidgets.QAction</em><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.actionDebug_Me" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.actionFilters">
+<code class="sig-name descname">actionFilters</code><em class="property">: PyQt5.QtWidgets.QAction</em><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.actionFilters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.actionRecon">
+<code class="sig-name descname">actionRecon</code><em class="property">: PyQt5.QtWidgets.QAction</em><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.actionRecon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.actionSavuFilters">
+<code class="sig-name descname">actionSavuFilters</code><em class="property">: PyQt5.QtWidgets.QAction</em><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.actionSavuFilters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.active_stacks_changed">
+<code class="sig-name descname">active_stacks_changed</code><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.active_stacks_changed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.attach_debugger">
+<code class="sig-name descname">attach_debugger</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.attach_debugger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.attach_debugger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.backend_message">
+<code class="sig-name descname">backend_message</code><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.backend_message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.closeEvent">
+<code class="sig-name descname">closeEvent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.closeEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.closeEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles a request to quit the application from the user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.create_new_stack">
+<code class="sig-name descname">create_new_stack</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span><span class="p">:</span> <span class="n"><a class="reference internal" href="mantidimaging.core.data.images.html#mantidimaging.core.data.images.Images" title="mantidimaging.core.data.images.Images">mantidimaging.core.data.images.Images</a></span></em>, <em class="sig-param"><span class="n">title</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.create_new_stack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.create_new_stack" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.execute_load">
+<code class="sig-name descname">execute_load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.execute_load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.execute_load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.execute_save">
+<code class="sig-name descname">execute_save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.execute_save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.execute_save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.filters">
+<code class="sig-name descname">filters</code><em class="property">: Optional<span class="p">[</span><a class="reference internal" href="mantidimaging.gui.windows.operations.view.html#mantidimaging.gui.windows.operations.view.FiltersWindowView" title="mantidimaging.gui.windows.operations.view.FiltersWindowView">mantidimaging.gui.windows.operations.view.FiltersWindowView</a><span class="p">]</span></em><em class="property"> = None</em><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.filters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.get_stack_history">
+<code class="sig-name descname">get_stack_history</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stack_uuid</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.get_stack_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.get_stack_history" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.get_stack_visualiser">
+<code class="sig-name descname">get_stack_visualiser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stack_uuid</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.get_stack_visualiser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.get_stack_visualiser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.load_dialogue">
+<code class="sig-name descname">load_dialogue</code><em class="property">: Optional<span class="p">[</span><a class="reference internal" href="mantidimaging.gui.windows.load_dialog.view.html#mantidimaging.gui.windows.load_dialog.view.MWLoadDialog" title="mantidimaging.gui.windows.load_dialog.view.MWLoadDialog">mantidimaging.gui.windows.load_dialog.view.MWLoadDialog</a><span class="p">]</span></em><em class="property"> = None</em><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.load_dialogue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.not_latest_version_warning">
+<code class="sig-name descname">not_latest_version_warning</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">msg</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.not_latest_version_warning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.not_latest_version_warning" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.open_online_documentation">
+<em class="property">static </em><code class="sig-name descname">open_online_documentation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.open_online_documentation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.open_online_documentation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.recon">
+<code class="sig-name descname">recon</code><em class="property">: Optional<span class="p">[</span><a class="reference internal" href="mantidimaging.gui.windows.recon.view.html#mantidimaging.gui.windows.recon.view.ReconstructWindowView" title="mantidimaging.gui.windows.recon.view.ReconstructWindowView">mantidimaging.gui.windows.recon.view.ReconstructWindowView</a><span class="p">]</span></em><em class="property"> = None</em><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.recon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.remove_stack">
+<code class="sig-name descname">remove_stack</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span><span class="p">:</span> <span class="n"><a class="reference internal" href="mantidimaging.gui.windows.stack_visualiser.view.html#mantidimaging.gui.windows.stack_visualiser.view.StackVisualiserView" title="mantidimaging.gui.windows.stack_visualiser.view.StackVisualiserView">mantidimaging.gui.windows.stack_visualiser.view.StackVisualiserView</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.remove_stack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.remove_stack" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.rename_stack">
+<code class="sig-name descname">rename_stack</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">current_name</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em>, <em class="sig-param"><span class="n">new_name</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.rename_stack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.rename_stack" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.save_dialogue">
+<code class="sig-name descname">save_dialogue</code><em class="property">: Optional<span class="p">[</span><a class="reference internal" href="mantidimaging.gui.windows.main.save_dialog.html#mantidimaging.gui.windows.main.save_dialog.MWSaveDialog" title="mantidimaging.gui.windows.main.save_dialog.MWSaveDialog">mantidimaging.gui.windows.main.save_dialog.MWSaveDialog</a><span class="p">]</span></em><em class="property"> = None</em><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.save_dialogue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.savu_filters">
+<code class="sig-name descname">savu_filters</code><em class="property">: Optional<span class="p">[</span><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.view.html#mantidimaging.gui.windows.savu_operations.view.SavuFiltersWindowView" title="mantidimaging.gui.windows.savu_operations.view.SavuFiltersWindowView">mantidimaging.gui.windows.savu_operations.view.SavuFiltersWindowView</a><span class="p">]</span></em><em class="property"> = None</em><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.savu_filters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.setup_shortcuts">
+<code class="sig-name descname">setup_shortcuts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.setup_shortcuts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.setup_shortcuts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.show_about">
+<code class="sig-name descname">show_about</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.show_about"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.show_about" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.show_filters_window">
+<code class="sig-name descname">show_filters_window</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.show_filters_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.show_filters_window" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.show_load_dialogue">
+<code class="sig-name descname">show_load_dialogue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.show_load_dialogue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.show_load_dialogue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.show_recon_window">
+<code class="sig-name descname">show_recon_window</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.show_recon_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.show_recon_window" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.show_save_dialogue">
+<code class="sig-name descname">show_save_dialogue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.show_save_dialogue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.show_save_dialogue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.show_savu_filters_window">
+<code class="sig-name descname">show_savu_filters_window</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.show_savu_filters_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.show_savu_filters_window" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.stack_list">
+<em class="property">property </em><code class="sig-name descname">stack_list</code><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.stack_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.stack_names">
+<em class="property">property </em><code class="sig-name descname">stack_names</code><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.stack_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.uncaught_exception">
+<code class="sig-name descname">uncaught_exception</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_error_msg</span></em>, <em class="sig-param"><span class="n">log_error_msg</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.uncaught_exception"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.uncaught_exception" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.update_shortcuts">
+<code class="sig-name descname">update_shortcuts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.update_shortcuts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.update_shortcuts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.main.view.MainWindowView.update_stack_with_images">
+<code class="sig-name descname">update_stack_with_images</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span><span class="p">:</span> <span class="n"><a class="reference internal" href="mantidimaging.core.data.images.html#mantidimaging.core.data.images.Images" title="mantidimaging.core.data.images.Images">mantidimaging.core.data.images.Images</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/main/view.html#MainWindowView.update_stack_with_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.main.view.MainWindowView.update_stack_with_images" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mantidimaging.gui.windows.main.save_dialog.html"
+                        title="previous chapter">mantidimaging.gui.windows.main.save_dialog module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mantidimaging.gui.windows.operations.html"
+                        title="next chapter">mantidimaging.gui.windows.operations package</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.operations.html" title="mantidimaging.gui.windows.operations package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.main.save_dialog.html" title="mantidimaging.gui.windows.main.save_dialog module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="mantidimaging.gui.html" >mantidimaging.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="mantidimaging.gui.windows.html" >mantidimaging.gui.windows package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="mantidimaging.gui.windows.main.html" >mantidimaging.gui.windows.main package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.main.view module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.core.data.test.fake_logfile &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.data.test.fake_logfile</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.core.data.test.fake_logfile</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">mantidimaging.core.utility.imat_log_file_parser</span> <span class="kn">import</span> <span class="n">IMATLogFile</span>
+
+
+<div class="viewcode-block" id="generate_logfile"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.data.test.fake_logfile.html#mantidimaging.core.data.test.fake_logfile.generate_logfile">[docs]</a><span class="k">def</span> <span class="nf">generate_logfile</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">IMATLogFile</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">[</span><span class="s2">&quot;column headers&quot;</span><span class="p">],</span>  <span class="c1"># skipped when parsing</span>
+        <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">],</span>  <span class="c1"># skipped when parsing</span>
+        <span class="c1"># for each row a list with 4 entries is currently expected</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;Sun Feb 10 00:22:04 2019&quot;</span><span class="p">,</span> <span class="s2">&quot;Projection:  0  angle: 0.0&quot;</span><span class="p">,</span> <span class="s2">&quot;Monitor 3 before:  4577907&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Monitor 3 after:  4720271&quot;</span>
+        <span class="p">],</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;Sun Feb 10 00:22:37 2019&quot;</span><span class="p">,</span> <span class="s2">&quot;Projection:  1  angle: 0.3152&quot;</span><span class="p">,</span> <span class="s2">&quot;Monitor 3 before:  4729337&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Monitor 3 after:  4871319&quot;</span>
+        <span class="p">],</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;Sun Feb 10 00:23:10 2019&quot;</span><span class="p">,</span> <span class="s2">&quot;Projection:  2  angle: 0.6304&quot;</span><span class="p">,</span> <span class="s2">&quot;Monitor 3 before:  4879923&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Monitor 3 after:  5022689&quot;</span>
+        <span class="p">],</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;Sun Feb 10 00:23:43 2019&quot;</span><span class="p">,</span> <span class="s2">&quot;Projection:  3  angle: 0.9456&quot;</span><span class="p">,</span> <span class="s2">&quot;Monitor 3 before:  5031423&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Monitor 3 after:  5172216&quot;</span>
+        <span class="p">],</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;Sun Feb 10 00:24:16 2019&quot;</span><span class="p">,</span> <span class="s2">&quot;Projection:  4  angle: 1.2608&quot;</span><span class="p">,</span> <span class="s2">&quot;Monitor 3 before:  5180904&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Monitor 3 after:  5322691&quot;</span>
+        <span class="p">],</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;Sun Feb 10 00:24:49 2019&quot;</span><span class="p">,</span> <span class="s2">&quot;Projection:  5  angle: 1.576&quot;</span><span class="p">,</span> <span class="s2">&quot;Monitor 3 before:  5334225&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Monitor 3 after:  5475239&quot;</span>
+        <span class="p">],</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;Sun Feb 10 00:25:22 2019&quot;</span><span class="p">,</span> <span class="s2">&quot;Projection:  6  angle: 1.8912&quot;</span><span class="p">,</span> <span class="s2">&quot;Monitor 3 before:  5483964&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Monitor 3 after:  5626608&quot;</span>
+        <span class="p">],</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;Sun Feb 10 00:25:55 2019&quot;</span><span class="p">,</span> <span class="s2">&quot;Projection:  7  angle: 2.2064&quot;</span><span class="p">,</span> <span class="s2">&quot;Monitor 3 before:  5635673&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Monitor 3 after:  5777316&quot;</span>
+        <span class="p">],</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;Sun Feb 10 00:26:29 2019&quot;</span><span class="p">,</span> <span class="s2">&quot;Projection:  8  angle: 2.5216&quot;</span><span class="p">,</span> <span class="s2">&quot;Monitor 3 before:  5786535&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Monitor 3 after:  5929002&quot;</span>
+        <span class="p">],</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;Sun Feb 10 00:27:02 2019&quot;</span><span class="p">,</span> <span class="s2">&quot;Projection:  9  angle: 2.8368&quot;</span><span class="p">,</span> <span class="s2">&quot;Monitor 3 before:  5938142&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Monitor 3 after:  6078866&quot;</span>
+        <span class="p">]</span>
+    <span class="p">]</span>
+    <span class="k">return</span> <span class="n">IMATLogFile</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.data.test.fake_logfile</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

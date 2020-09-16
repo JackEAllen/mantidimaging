@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.core.configs.savu_backend_docker &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.configs.savu_backend_docker</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.core.configs.savu_backend_docker</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># Name of the environment variable expected to contain</span>
+<span class="c1"># the name of the output directory. This is needed to</span>
+<span class="c1"># load the images back after processing remotely</span>
+<span class="n">MANTIDIMAGING_OUTPUT_DIR_NAME</span> <span class="o">=</span> <span class="s2">&quot;MANTIDIMAGING_OUTPUT_DIR&quot;</span>
+
+
+<div class="viewcode-block" id="env"><a class="viewcode-back" href="../../../../api/mantidimaging.core.configs.savu_backend_docker.html#mantidimaging.core.configs.savu_backend_docker.env">[docs]</a><span class="k">def</span> <span class="nf">env</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="RemoteConfig"><a class="viewcode-back" href="../../../../api/mantidimaging.core.configs.savu_backend_docker.html#mantidimaging.core.configs.savu_backend_docker.RemoteConfig">[docs]</a><span class="k">class</span> <span class="nc">RemoteConfig</span><span class="p">:</span>
+    <span class="n">LOCAL_OUTPUT_DIR</span> <span class="o">=</span> <span class="n">env</span><span class="p">(</span><span class="n">MANTIDIMAGING_OUTPUT_DIR_NAME</span><span class="p">,</span> <span class="s2">&quot;~/savu-output&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RemoteConstants"><a class="viewcode-back" href="../../../../api/mantidimaging.core.configs.savu_backend_docker.html#mantidimaging.core.configs.savu_backend_docker.RemoteConstants">[docs]</a><span class="k">class</span> <span class="nc">RemoteConstants</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    These are constants that are set in the Hebi application.</span>
+<span class="sd">    They are paths on the remote server/docker container/host.</span>
+<span class="sd">    Changing them without adjustment is guaranteed</span>
+<span class="sd">    to be a breaking change.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># dir on which the outside of the container is mounted</span>
+    <span class="n">OUTSIDE_MOUNT_DIR</span> <span class="o">=</span> <span class="s2">&quot;/outside&quot;</span>
+    <span class="c1"># dir where the output will be stored</span>
+    <span class="n">OUTPUT_DIR</span> <span class="o">=</span> <span class="s2">&quot;/output&quot;</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.configs.savu_backend_docker</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

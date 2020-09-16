@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.core.utility.data_containers &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.utility.data_containers</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.core.utility.data_containers</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Containers for data. They don&#39;t do much apart from storing the data,</span>
+<span class="sd">and optionally provide helpful operations.</span>
+
+<span class="sd">The biggest benefit is explicitly marking what the value represents (e.g. Degrees),</span>
+<span class="sd">and helps the type hints to tell you that you might be passing the wrong value (e.g. ScalarCoR to a VectorCoR),</span>
+<span class="sd">while they&#39;re both Float underneath and the value can be used, it just will produce nonsense.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+
+<div class="viewcode-block" id="SingleValue"><a class="viewcode-back" href="../../../../api/mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.SingleValue">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SingleValue</span><span class="p">:</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="s1">&#39;value&#39;</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Value is not float. Actual type:</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">SingleValue</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
+
+    <span class="k">def</span> <span class="fm">__abs__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s1">&#39;SingleValue&#39;</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">SingleValue</span><span class="p">),</span> <span class="s2">&quot;Can only compare against other `SingleValue`s&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="ScalarCoR"><a class="viewcode-back" href="../../../../api/mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.ScalarCoR">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ScalarCoR</span><span class="p">(</span><span class="n">SingleValue</span><span class="p">):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="s1">&#39;value&#39;</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">float</span>
+
+<div class="viewcode-block" id="ScalarCoR.to_vec"><a class="viewcode-back" href="../../../../api/mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.ScalarCoR.to_vec">[docs]</a>    <span class="k">def</span> <span class="nf">to_vec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">detector_width</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">VectorCoR</span><span class="p">(</span><span class="n">detector_width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="VectorCoR"><a class="viewcode-back" href="../../../../api/mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.VectorCoR">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">VectorCoR</span><span class="p">(</span><span class="n">SingleValue</span><span class="p">):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="s1">&#39;value&#39;</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">float</span>
+
+<div class="viewcode-block" id="VectorCoR.to_scalar"><a class="viewcode-back" href="../../../../api/mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.VectorCoR.to_scalar">[docs]</a>    <span class="k">def</span> <span class="nf">to_scalar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">detector_width</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ScalarCoR</span><span class="p">(</span><span class="n">detector_width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Degrees"><a class="viewcode-back" href="../../../../api/mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.Degrees">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Degrees</span><span class="p">(</span><span class="n">SingleValue</span><span class="p">):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="s1">&#39;value&#39;</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">°&quot;</span></div>
+
+
+<div class="viewcode-block" id="Slope"><a class="viewcode-back" href="../../../../api/mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.Slope">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Slope</span><span class="p">(</span><span class="n">SingleValue</span><span class="p">):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="s1">&#39;value&#39;</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">float</span></div>
+
+
+<div class="viewcode-block" id="ProjectionAngles"><a class="viewcode-back" href="../../../../api/mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.ProjectionAngles">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ProjectionAngles</span><span class="p">(</span><span class="n">SingleValue</span><span class="p">):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="s1">&#39;value&#39;</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span></div>
+
+
+<div class="viewcode-block" id="Micron"><a class="viewcode-back" href="../../../../api/mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.Micron">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Micron</span><span class="p">(</span><span class="n">SingleValue</span><span class="p">):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="s1">&#39;value&#39;</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">int</span></div>
+
+
+<div class="viewcode-block" id="ReconstructionParameters"><a class="viewcode-back" href="../../../../api/mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.ReconstructionParameters">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ReconstructionParameters</span><span class="p">:</span>
+    <span class="n">algorithm</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">filter_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">num_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">cor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ScalarCoR</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">tilt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Degrees</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="ReconstructionParameters.to_dict"><a class="viewcode-back" href="../../../../api/mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.ReconstructionParameters.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;algorithm&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">,</span>
+            <span class="s1">&#39;filter_name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_name</span><span class="p">,</span>
+            <span class="s1">&#39;num_iter&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_iter</span><span class="p">,</span>
+            <span class="s1">&#39;cor&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cor</span><span class="p">),</span>
+            <span class="s1">&#39;tilt&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tilt</span><span class="p">)</span>
+        <span class="p">}</span></div></div>
+
+
+<span class="n">Indices</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Indices&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="s1">&#39;step&#39;</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="ImageParameters"><a class="viewcode-back" href="../../../../api/mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.ImageParameters">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ImageParameters</span><span class="p">:</span>
+    <span class="n">input_path</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">indices</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Indices</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">log_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="LoadingParameters"><a class="viewcode-back" href="../../../../api/mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.LoadingParameters">[docs]</a><span class="k">class</span> <span class="nc">LoadingParameters</span><span class="p">:</span>
+    <span class="n">sample</span><span class="p">:</span> <span class="n">ImageParameters</span>
+    <span class="n">flat</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ImageParameters</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">dark</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ImageParameters</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">proj_180deg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ImageParameters</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">pixel_size</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">dtype</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">sinograms</span><span class="p">:</span> <span class="nb">bool</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.utility.data_containers</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

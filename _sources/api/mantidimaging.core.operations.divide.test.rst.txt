@@ -1,0 +1,15 @@
+mantidimaging.core.operations.divide.test package
+=================================================
+
+.. automodule:: mantidimaging.core.operations.divide.test
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.operations.divide.test.divide_test

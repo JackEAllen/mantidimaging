@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.gui.windows.operations.filter_previews &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.operations.filter_previews</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.gui.windows.operations.filter_previews</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">ndarray</span>
+<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="kn">import</span> <span class="n">GraphicsLayoutWidget</span><span class="p">,</span> <span class="n">ImageItem</span><span class="p">,</span> <span class="n">PlotItem</span><span class="p">,</span> <span class="n">LegendItem</span><span class="p">,</span> <span class="n">ViewBox</span><span class="p">,</span> <span class="n">ColorMap</span>
+
+<span class="kn">from</span> <span class="nn">mantidimaging.core.utility.close_enough_point</span> <span class="kn">import</span> <span class="n">CloseEnoughPoint</span>
+
+<span class="n">histogram_axes_labels</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="s1">&#39;Count&#39;</span><span class="p">,</span> <span class="s1">&#39;bottom&#39;</span><span class="p">:</span> <span class="s1">&#39;Gray value&#39;</span><span class="p">}</span>
+<span class="n">before_pen</span> <span class="o">=</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">after_pen</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">diff_pen</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+
+<span class="n">Coord</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Coord&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;row&#39;</span><span class="p">,</span> <span class="s1">&#39;col&#39;</span><span class="p">])</span>
+<span class="n">histogram_coords</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;before&quot;</span><span class="p">:</span> <span class="n">Coord</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;after&quot;</span><span class="p">:</span> <span class="n">Coord</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;combined&quot;</span><span class="p">:</span> <span class="n">Coord</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">)}</span>
+
+<span class="n">label_coords</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;before&quot;</span><span class="p">:</span> <span class="n">Coord</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;after&quot;</span><span class="p">:</span> <span class="n">Coord</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;combined&quot;</span><span class="p">:</span> <span class="n">Coord</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)}</span>
+
+
+<span class="k">def</span> <span class="nf">_data_valid_for_histogram</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="FilterPreviews"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.filter_previews.html#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews">[docs]</a><span class="k">class</span> <span class="nc">FilterPreviews</span><span class="p">(</span><span class="n">GraphicsLayoutWidget</span><span class="p">):</span>
+    <span class="n">image_before</span><span class="p">:</span> <span class="n">ImageItem</span>
+    <span class="n">image_after</span><span class="p">:</span> <span class="n">ImageItem</span>
+    <span class="n">image_diff</span><span class="p">:</span> <span class="n">ImageItem</span>
+    <span class="n">histogram_before</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PlotItem</span><span class="p">]</span>
+    <span class="n">histogram_after</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PlotItem</span><span class="p">]</span>
+    <span class="n">histogram</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PlotItem</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FilterPreviews</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">before_histogram_data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">after_histogram_data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">histogram</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">before_histogram</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">after_histogram</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">combined_histograms</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">histogram_legend_visible</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">addLabel</span><span class="p">(</span><span class="s2">&quot;Image before&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addLabel</span><span class="p">(</span><span class="s2">&quot;Image after&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addLabel</span><span class="p">(</span><span class="s2">&quot;Image difference&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nextRow</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_before</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_before_vb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_in_vb</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_after</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_after_vb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_in_vb</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_difference</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_difference_vb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_in_vb</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;difference&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_after_overlay</span> <span class="o">=</span> <span class="n">ImageItem</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_after_overlay</span><span class="o">.</span><span class="n">setZValue</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_after_vb</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_after_overlay</span><span class="p">)</span>
+
+        <span class="c1"># Ensure images resize equally</span>
+        <span class="n">image_layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">colspan</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">image_layout</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_before_vb</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">image_layout</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_after_vb</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">image_layout</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_difference_vb</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nextRow</span><span class="p">()</span>
+
+        <span class="n">before_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addLabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">after_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addLabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">difference_details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addLabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_formatted_detail</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image_before</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">before_details</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Before: </span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image_after</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">after_details</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After: </span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image_difference</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">difference_details</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Difference: </span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_before</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_after</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_difference</span><span class="p">:</span>
+            <span class="n">img</span><span class="o">.</span><span class="n">hoverEvent</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">ev</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mouse_over</span><span class="p">(</span><span class="n">ev</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FilterPreviews.image_in_vb"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.filter_previews.html#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.image_in_vb">[docs]</a>    <span class="k">def</span> <span class="nf">image_in_vb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">ImageItem</span><span class="p">()</span>
+        <span class="n">im</span><span class="o">.</span><span class="n">setAutoDownsample</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">vb</span> <span class="o">=</span> <span class="n">ViewBox</span><span class="p">(</span><span class="n">invertY</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lockAspect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">vb</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">im</span><span class="p">,</span> <span class="n">vb</span></div>
+
+<div class="viewcode-block" id="FilterPreviews.clear_items"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.filter_previews.html#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.clear_items">[docs]</a>    <span class="k">def</span> <span class="nf">clear_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_before</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_after</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_difference</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_after_overlay</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delete_histograms</span><span class="p">()</span></div>
+
+    <span class="c1"># There seems to be a bug with pyqtgraph.PlotDataItem.setData not forcing a redraw.</span>
+    <span class="c1"># We work around this by redrawing everything completely every time, which is unreasonably fast anyway.</span>
+<div class="viewcode-block" id="FilterPreviews.redraw_histograms"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.filter_previews.html#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.redraw_histograms">[docs]</a>    <span class="k">def</span> <span class="nf">redraw_histograms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delete_histograms</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delete_histogram_labels</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">combined_histograms</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_combined_histogram</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_separate_histograms</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FilterPreviews.delete_histograms"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.filter_previews.html#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.delete_histograms">[docs]</a>    <span class="k">def</span> <span class="nf">delete_histograms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">histogram_coords</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">histograms</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getItem</span><span class="p">(</span><span class="o">*</span><span class="n">coord</span><span class="p">)</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">histogram</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">h</span><span class="p">:</span> <span class="n">h</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="n">histograms</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="n">histogram</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">histogram</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">before_histogram</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">after_histogram</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diff_histogram</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="FilterPreviews.delete_histogram_labels"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.filter_previews.html#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.delete_histogram_labels">[docs]</a>    <span class="k">def</span> <span class="nf">delete_histogram_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">label_coords</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getItem</span><span class="p">(</span><span class="o">*</span><span class="n">coord</span><span class="p">)</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">h</span><span class="p">:</span> <span class="n">h</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FilterPreviews.draw_combined_histogram"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.filter_previews.html#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.draw_combined_histogram">[docs]</a>    <span class="k">def</span> <span class="nf">draw_combined_histogram</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">histogram</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addPlot</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">histogram_coords</span><span class="p">[</span><span class="s2">&quot;combined&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">row</span><span class="p">,</span>
+                                      <span class="n">col</span><span class="o">=</span><span class="n">histogram_coords</span><span class="p">[</span><span class="s2">&quot;combined&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">col</span><span class="p">,</span>
+                                      <span class="n">labels</span><span class="o">=</span><span class="n">histogram_axes_labels</span><span class="p">,</span>
+                                      <span class="n">lockAspect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                      <span class="n">colspan</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addLabel</span><span class="p">(</span><span class="s2">&quot;Pixel values&quot;</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="n">label_coords</span><span class="p">[</span><span class="s2">&quot;combined&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="n">label_coords</span><span class="p">[</span><span class="s2">&quot;combined&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">col</span><span class="p">)</span>
+
+        <span class="n">legend</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">histogram</span><span class="o">.</span><span class="n">addLegend</span><span class="p">()</span>
+        <span class="c1"># Plot any histogram that has data, and add a legend if both exist</span>
+        <span class="k">if</span> <span class="n">_data_valid_for_histogram</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">before_histogram_data</span><span class="p">):</span>
+            <span class="n">before_plot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">histogram</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">before_histogram_data</span><span class="p">,</span> <span class="n">pen</span><span class="o">=</span><span class="n">before_pen</span><span class="p">)</span>
+            <span class="n">legend</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">before_plot</span><span class="p">,</span> <span class="s2">&quot;Before&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_data_valid_for_histogram</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">after_histogram_data</span><span class="p">):</span>
+            <span class="n">after_plot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">histogram</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">after_histogram_data</span><span class="p">,</span> <span class="n">pen</span><span class="o">=</span><span class="n">after_pen</span><span class="p">)</span>
+            <span class="n">legend</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">after_plot</span><span class="p">,</span> <span class="s2">&quot;After&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FilterPreviews.draw_separate_histograms"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.filter_previews.html#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.draw_separate_histograms">[docs]</a>    <span class="k">def</span> <span class="nf">draw_separate_histograms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">hc</span> <span class="o">=</span> <span class="n">histogram_coords</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">before_histogram</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addPlot</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">hc</span><span class="p">[</span><span class="s2">&quot;before&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">row</span><span class="p">,</span>
+                                             <span class="n">col</span><span class="o">=</span><span class="n">hc</span><span class="p">[</span><span class="s2">&quot;before&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">col</span><span class="p">,</span>
+                                             <span class="n">labels</span><span class="o">=</span><span class="n">histogram_axes_labels</span><span class="p">,</span>
+                                             <span class="n">lockAspect</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">after_histogram</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addPlot</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">hc</span><span class="p">[</span><span class="s2">&quot;after&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">row</span><span class="p">,</span>
+                                            <span class="n">col</span><span class="o">=</span><span class="n">hc</span><span class="p">[</span><span class="s2">&quot;after&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">col</span><span class="p">,</span>
+                                            <span class="n">labels</span><span class="o">=</span><span class="n">histogram_axes_labels</span><span class="p">,</span>
+                                            <span class="n">lockAspect</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">lc</span> <span class="o">=</span> <span class="n">label_coords</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addLabel</span><span class="p">(</span><span class="s2">&quot;Pixel values before&quot;</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="n">lc</span><span class="p">[</span><span class="s2">&quot;before&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="n">lc</span><span class="p">[</span><span class="s2">&quot;before&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">col</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addLabel</span><span class="p">(</span><span class="s2">&quot;Pixel values after&quot;</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="n">lc</span><span class="p">[</span><span class="s2">&quot;after&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="n">lc</span><span class="p">[</span><span class="s2">&quot;after&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">col</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_data_valid_for_histogram</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">before_histogram_data</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">before_histogram</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">before_histogram_data</span><span class="p">,</span> <span class="n">pen</span><span class="o">=</span><span class="n">before_pen</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_data_valid_for_histogram</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">after_histogram_data</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">after_histogram</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">after_histogram_data</span><span class="p">,</span> <span class="n">pen</span><span class="o">=</span><span class="n">after_pen</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FilterPreviews.set_before_histogram"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.filter_previews.html#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.set_before_histogram">[docs]</a>    <span class="k">def</span> <span class="nf">set_before_histogram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ndarray</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">before_histogram_data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw_histograms</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FilterPreviews.set_after_histogram"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.filter_previews.html#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.set_after_histogram">[docs]</a>    <span class="k">def</span> <span class="nf">set_after_histogram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ndarray</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">after_histogram_data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw_histograms</span><span class="p">()</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">histogram_legend</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">LegendItem</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">histogram</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">histogram</span><span class="o">.</span><span class="n">legend</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">histogram</span><span class="o">.</span><span class="n">legend</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="FilterPreviews.mouse_over"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.filter_previews.html#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.mouse_over">[docs]</a>    <span class="k">def</span> <span class="nf">mouse_over</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
+        <span class="c1"># Ignore events triggered by leaving window or right clicking</span>
+        <span class="k">if</span> <span class="n">ev</span><span class="o">.</span><span class="n">exit</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">CloseEnoughPoint</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">pos</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_before</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_after</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_difference</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">image</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">img</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="n">img</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">pixel_value</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">image</span><span class="p">[</span><span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">display_formatted_detail</span><span class="p">[</span><span class="n">img</span><span class="p">](</span><span class="n">pixel_value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FilterPreviews.link_all_views"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.filter_previews.html#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.link_all_views">[docs]</a>    <span class="k">def</span> <span class="nf">link_all_views</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">view1</span><span class="p">,</span> <span class="n">view2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">image_before_vb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_after_vb</span><span class="p">],</span>
+                                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">image_after_vb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_difference_vb</span><span class="p">]):</span>
+            <span class="n">view1</span><span class="o">.</span><span class="n">linkView</span><span class="p">(</span><span class="n">ViewBox</span><span class="o">.</span><span class="n">XAxis</span><span class="p">,</span> <span class="n">view2</span><span class="p">)</span>
+            <span class="n">view1</span><span class="o">.</span><span class="n">linkView</span><span class="p">(</span><span class="n">ViewBox</span><span class="o">.</span><span class="n">YAxis</span><span class="p">,</span> <span class="n">view2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FilterPreviews.unlink_all_views"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.filter_previews.html#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.unlink_all_views">[docs]</a>    <span class="k">def</span> <span class="nf">unlink_all_views</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">view</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_before_vb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_after_vb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_difference_vb</span><span class="p">:</span>
+            <span class="n">view</span><span class="o">.</span><span class="n">linkView</span><span class="p">(</span><span class="n">ViewBox</span><span class="o">.</span><span class="n">XAxis</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">view</span><span class="o">.</span><span class="n">linkView</span><span class="p">(</span><span class="n">ViewBox</span><span class="o">.</span><span class="n">YAxis</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FilterPreviews.add_difference_overlay"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.filter_previews.html#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.add_difference_overlay">[docs]</a>    <span class="k">def</span> <span class="nf">add_difference_overlay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diff</span><span class="p">):</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="o">-</span><span class="n">diff</span>
+        <span class="n">diff</span><span class="p">[</span><span class="n">diff</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ubyte</span><span class="p">)</span>
+        <span class="nb">map</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_after_overlay</span><span class="o">.</span><span class="n">setOpacity</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_after_overlay</span><span class="o">.</span><span class="n">setImage</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+        <span class="n">lut</span> <span class="o">=</span> <span class="nb">map</span><span class="o">.</span><span class="n">getLookupTable</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_after_overlay</span><span class="o">.</span><span class="n">setLookupTable</span><span class="p">(</span><span class="n">lut</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FilterPreviews.hide_difference_overlay"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.filter_previews.html#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.hide_difference_overlay">[docs]</a>    <span class="k">def</span> <span class="nf">hide_difference_overlay</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_after_overlay</span><span class="o">.</span><span class="n">setOpacity</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.operations.filter_previews</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

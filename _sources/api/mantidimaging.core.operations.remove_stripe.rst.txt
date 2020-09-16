@@ -1,0 +1,23 @@
+mantidimaging.core.operations.remove\_stripe package
+====================================================
+
+.. automodule:: mantidimaging.core.operations.remove_stripe
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.operations.remove_stripe.test
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.operations.remove_stripe.stripe_removal

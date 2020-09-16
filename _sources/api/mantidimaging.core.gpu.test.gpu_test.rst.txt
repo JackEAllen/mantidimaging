@@ -1,0 +1,7 @@
+mantidimaging.core.gpu.test.gpu\_test module
+============================================
+
+.. automodule:: mantidimaging.core.gpu.test.gpu_test
+   :members:
+   :undoc-members:
+   :show-inheritance:

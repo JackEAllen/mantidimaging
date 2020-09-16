@@ -1,0 +1,7 @@
+mantidimaging.core.operations.clip\_values.test.clip\_values\_test module
+=========================================================================
+
+.. automodule:: mantidimaging.core.operations.clip_values.test.clip_values_test
+   :members:
+   :undoc-members:
+   :show-inheritance:

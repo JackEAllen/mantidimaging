@@ -1,0 +1,7 @@
+mantidimaging.core.rotation.test.data\_model\_test module
+=========================================================
+
+.. automodule:: mantidimaging.core.rotation.test.data_model_test
+   :members:
+   :undoc-members:
+   :show-inheritance:

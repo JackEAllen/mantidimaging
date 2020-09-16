@@ -1,0 +1,7 @@
+mantidimaging.core.configs.savu\_backend\_docker module
+=======================================================
+
+.. automodule:: mantidimaging.core.configs.savu_backend_docker
+   :members:
+   :undoc-members:
+   :show-inheritance:

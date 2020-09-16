@@ -1,0 +1,18 @@
+mantidimaging.core.utility.savu\_interop package
+================================================
+
+.. automodule:: mantidimaging.core.utility.savu_interop
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.utility.savu_interop.citations
+   mantidimaging.core.utility.savu_interop.nxclasses
+   mantidimaging.core.utility.savu_interop.plugin_list
+   mantidimaging.core.utility.savu_interop.webapi

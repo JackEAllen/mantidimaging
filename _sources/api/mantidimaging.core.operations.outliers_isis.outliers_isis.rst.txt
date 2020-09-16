@@ -1,0 +1,7 @@
+mantidimaging.core.operations.outliers\_isis.outliers\_isis module
+==================================================================
+
+.. automodule:: mantidimaging.core.operations.outliers_isis.outliers_isis
+   :members:
+   :undoc-members:
+   :show-inheritance:

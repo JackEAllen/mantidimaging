@@ -1,0 +1,7 @@
+mantidimaging.gui.windows.savu\_operations.job\_run\_response module
+====================================================================
+
+.. automodule:: mantidimaging.gui.windows.savu_operations.job_run_response
+   :members:
+   :undoc-members:
+   :show-inheritance:

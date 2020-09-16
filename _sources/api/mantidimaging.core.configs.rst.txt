@@ -1,0 +1,15 @@
+mantidimaging.core.configs package
+==================================
+
+.. automodule:: mantidimaging.core.configs
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.configs.savu_backend_docker

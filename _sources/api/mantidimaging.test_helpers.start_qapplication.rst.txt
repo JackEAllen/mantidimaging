@@ -1,0 +1,7 @@
+mantidimaging.test\_helpers.start\_qapplication module
+======================================================
+
+.. automodule:: mantidimaging.test_helpers.start_qapplication
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,7 @@
+mantidimaging.core.operations.remove\_stripe\_sorting\_fitting.test.remove\_stripe\_sorting\_fitting\_test module
+=================================================================================================================
+
+.. automodule:: mantidimaging.core.operations.remove_stripe_sorting_fitting.test.remove_stripe_sorting_fitting_test
+   :members:
+   :undoc-members:
+   :show-inheritance:

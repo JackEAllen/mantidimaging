@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.gui.windows.main.model &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.main.model</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.gui.windows.main.model</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">mantidimaging.core.data</span> <span class="kn">import</span> <span class="n">Images</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.data.dataset</span> <span class="kn">import</span> <span class="n">Dataset</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.io</span> <span class="kn">import</span> <span class="n">loader</span><span class="p">,</span> <span class="n">saver</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.utility.data_containers</span> <span class="kn">import</span> <span class="n">LoadingParameters</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.windows.stack_visualiser</span> <span class="kn">import</span> <span class="n">StackVisualiserView</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">PyQt5.Qt</span> <span class="kn">import</span> <span class="n">QDockWidget</span>
+
+<span class="n">StackId</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;StackId&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="MainWindowModel"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.main.model.html#mantidimaging.gui.windows.main.model.MainWindowModel">[docs]</a><span class="k">class</span> <span class="nc">MainWindowModel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MainWindowModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_stacks</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span><span class="p">,</span> <span class="n">StackVisualiserView</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="MainWindowModel.do_load_stack"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.main.model.html#mantidimaging.gui.windows.main.model.MainWindowModel.do_load_stack">[docs]</a>    <span class="k">def</span> <span class="nf">do_load_stack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">LoadingParameters</span><span class="p">,</span> <span class="n">progress</span><span class="p">):</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">loader</span><span class="o">.</span><span class="n">load_p</span><span class="p">(</span><span class="n">parameters</span><span class="o">.</span><span class="n">sample</span><span class="p">,</span> <span class="n">parameters</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">progress</span><span class="p">))</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">_is_sinograms</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">sinograms</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">pixel_size</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">pixel_size</span>
+
+        <span class="k">if</span> <span class="n">parameters</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">log_file</span><span class="p">:</span>
+            <span class="n">ds</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">log_file</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_log</span><span class="p">(</span><span class="n">parameters</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">log_file</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">parameters</span><span class="o">.</span><span class="n">flat</span><span class="p">:</span>
+            <span class="n">ds</span><span class="o">.</span><span class="n">flat</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_p</span><span class="p">(</span><span class="n">parameters</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">parameters</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">progress</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">parameters</span><span class="o">.</span><span class="n">flat</span><span class="o">.</span><span class="n">log_file</span><span class="p">:</span>
+                <span class="n">ds</span><span class="o">.</span><span class="n">flat</span><span class="o">.</span><span class="n">log_file</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_log</span><span class="p">(</span><span class="n">parameters</span><span class="o">.</span><span class="n">flat</span><span class="o">.</span><span class="n">log_file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">parameters</span><span class="o">.</span><span class="n">dark</span><span class="p">:</span>
+            <span class="n">ds</span><span class="o">.</span><span class="n">dark</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_p</span><span class="p">(</span><span class="n">parameters</span><span class="o">.</span><span class="n">dark</span><span class="p">,</span> <span class="n">parameters</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">progress</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">parameters</span><span class="o">.</span><span class="n">proj_180deg</span><span class="p">:</span>
+            <span class="n">ds</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">proj180deg</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_p</span><span class="p">(</span><span class="n">parameters</span><span class="o">.</span><span class="n">proj_180deg</span><span class="p">,</span> <span class="n">parameters</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">progress</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ds</span></div>
+
+<div class="viewcode-block" id="MainWindowModel.do_saving"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.main.model.html#mantidimaging.gui.windows.main.model.MainWindowModel.do_saving">[docs]</a>    <span class="k">def</span> <span class="nf">do_saving</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stack_uuid</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">name_prefix</span><span class="p">,</span> <span class="n">image_format</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">,</span> <span class="n">progress</span><span class="p">):</span>
+        <span class="n">svp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_stack_visualiser</span><span class="p">(</span><span class="n">stack_uuid</span><span class="p">)</span><span class="o">.</span><span class="n">presenter</span>
+        <span class="n">filenames</span> <span class="o">=</span> <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">svp</span><span class="o">.</span><span class="n">images</span><span class="p">,</span>
+                               <span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span>
+                               <span class="n">name_prefix</span><span class="o">=</span><span class="n">name_prefix</span><span class="p">,</span>
+                               <span class="n">overwrite_all</span><span class="o">=</span><span class="n">overwrite</span><span class="p">,</span>
+                               <span class="n">out_format</span><span class="o">=</span><span class="n">image_format</span><span class="p">,</span>
+                               <span class="n">progress</span><span class="o">=</span><span class="n">progress</span><span class="p">)</span>
+        <span class="n">svp</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">filenames</span> <span class="o">=</span> <span class="n">filenames</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="MainWindowModel.create_name"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.main.model.html#mantidimaging.gui.windows.main.model.MainWindowModel.create_name">[docs]</a>    <span class="k">def</span> <span class="nf">create_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a suitable name for a newly loaded stack.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Avoid file extensions in names</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># Avoid duplicate names</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="n">current_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack_names</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">current_names</span><span class="p">:</span>
+            <span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">return</span> <span class="n">name</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">stack_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">StackId</span><span class="p">]:</span>
+        <span class="n">stacks</span> <span class="o">=</span> <span class="p">[</span><span class="n">StackId</span><span class="p">(</span><span class="n">stack_id</span><span class="p">,</span> <span class="n">widget</span><span class="o">.</span><span class="n">windowTitle</span><span class="p">())</span> <span class="k">for</span> <span class="n">stack_id</span><span class="p">,</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_stacks</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">stacks</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_stack_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">stack</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">stack</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack_list</span><span class="p">]</span>
+
+<div class="viewcode-block" id="MainWindowModel.add_stack"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.main.model.html#mantidimaging.gui.windows.main.model.MainWindowModel.add_stack">[docs]</a>    <span class="k">def</span> <span class="nf">add_stack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stack_visualiser</span><span class="p">:</span> <span class="n">StackVisualiserView</span><span class="p">,</span> <span class="n">dock_widget</span><span class="p">:</span> <span class="s1">&#39;QDockWidget&#39;</span><span class="p">):</span>
+        <span class="n">stack_visualiser</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid1</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_stacks</span><span class="p">[</span><span class="n">stack_visualiser</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">dock_widget</span>
+        <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Active stacks: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">active_stacks</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MainWindowModel.get_stack"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.main.model.html#mantidimaging.gui.windows.main.model.MainWindowModel.get_stack">[docs]</a>    <span class="k">def</span> <span class="nf">get_stack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stack_uuid</span><span class="p">:</span> <span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StackVisualiserView</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param stack_uuid: The unique ID of the stack that will be retrieved.</span>
+<span class="sd">        :return The QDockWidget that contains the Stack Visualiser.</span>
+<span class="sd">                For direct access to the Stack Visualiser widget use</span>
+<span class="sd">                get_stack_visualiser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_stacks</span><span class="p">[</span><span class="n">stack_uuid</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="MainWindowModel.get_stack_by_name"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.main.model.html#mantidimaging.gui.windows.main.model.MainWindowModel.get_stack_by_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_stack_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">search_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">StackVisualiserView</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">stack_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">stack_id</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">search_name</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_stack</span><span class="p">(</span><span class="n">stack_id</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="MainWindowModel.get_stack_by_images"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.main.model.html#mantidimaging.gui.windows.main.model.MainWindowModel.get_stack_by_images">[docs]</a>    <span class="k">def</span> <span class="nf">get_stack_by_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="p">:</span> <span class="n">Images</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">StackVisualiserView</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">dock_widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_stacks</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">sv</span> <span class="o">=</span> <span class="n">dock_widget</span><span class="o">.</span><span class="n">widget</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">images</span> <span class="ow">is</span> <span class="n">sv</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">images</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">sv</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Did not find stack </span><span class="si">{</span><span class="n">images</span><span class="si">}</span><span class="s2"> in active stacks! &quot;</span>
+                           <span class="sa">f</span><span class="s2">&quot;Active stacks: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">active_stacks</span><span class="o">.</span><span class="n">items</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MainWindowModel.get_stack_visualiser"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.main.model.html#mantidimaging.gui.windows.main.model.MainWindowModel.get_stack_visualiser">[docs]</a>    <span class="k">def</span> <span class="nf">get_stack_visualiser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stack_uuid</span><span class="p">:</span> <span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StackVisualiserView</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param stack_uuid: The unique ID of the stack that will be retrieved.</span>
+<span class="sd">        :return The Stack Visualiser widget that contains the data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_stacks</span><span class="p">[</span><span class="n">stack_uuid</span><span class="p">]</span><span class="o">.</span><span class="n">widget</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MainWindowModel.get_stack_history"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.main.model.html#mantidimaging.gui.windows.main.model.MainWindowModel.get_stack_history">[docs]</a>    <span class="k">def</span> <span class="nf">get_stack_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stack_uuid</span><span class="p">:</span> <span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_stack_visualiser</span><span class="p">(</span><span class="n">stack_uuid</span><span class="p">)</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">metadata</span></div>
+
+<div class="viewcode-block" id="MainWindowModel.do_remove_stack"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.main.model.html#mantidimaging.gui.windows.main.model.MainWindowModel.do_remove_stack">[docs]</a>    <span class="k">def</span> <span class="nf">do_remove_stack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stack_uuid</span><span class="p">:</span> <span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes the stack from the active_stacks dictionary.</span>
+
+<span class="sd">        :param stack_uuid: The unique ID of the stack that will be removed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_stacks</span><span class="p">[</span><span class="n">stack_uuid</span><span class="p">]</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">have_active_stacks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_stacks</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.main.model</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

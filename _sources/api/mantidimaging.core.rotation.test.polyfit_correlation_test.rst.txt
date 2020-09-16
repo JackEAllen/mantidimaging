@@ -1,0 +1,7 @@
+mantidimaging.core.rotation.test.polyfit\_correlation\_test module
+==================================================================
+
+.. automodule:: mantidimaging.core.rotation.test.polyfit_correlation_test
+   :members:
+   :undoc-members:
+   :show-inheritance:

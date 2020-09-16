@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.gui.windows.load_dialog.presenter &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.load_dialog.presenter</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.gui.windows.load_dialog.presenter</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">auto</span><span class="p">,</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">mantidimaging.core.io.loader</span> <span class="kn">import</span> <span class="n">read_in_shape</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.io.utility</span> <span class="kn">import</span> <span class="n">get_file_extension</span><span class="p">,</span> <span class="n">get_prefix</span><span class="p">,</span> <span class="n">get_file_names</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.utility.data_containers</span> <span class="kn">import</span> <span class="n">LoadingParameters</span><span class="p">,</span> <span class="n">ImageParameters</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.windows.load_dialog.field</span> <span class="kn">import</span> <span class="n">Field</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">mantidimaging.gui.windows.load_dialog</span> <span class="kn">import</span> <span class="n">MWLoadDialog</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Notification"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.load_dialog.presenter.html#mantidimaging.gui.windows.load_dialog.presenter.Notification">[docs]</a><span class="k">class</span> <span class="nc">Notification</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">UPDATE_ALL_FIELDS</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">UPDATE_OTHER</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="LoadPresenter"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.load_dialog.presenter.html#mantidimaging.gui.windows.load_dialog.presenter.LoadPresenter">[docs]</a><span class="k">class</span> <span class="nc">LoadPresenter</span><span class="p">:</span>
+    <span class="n">view</span><span class="p">:</span> <span class="s1">&#39;MWLoadDialog&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view</span><span class="p">:</span> <span class="s1">&#39;MWLoadDialog&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">=</span> <span class="n">view</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_format</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">single_mem</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="s1">&#39;32&#39;</span>
+
+<div class="viewcode-block" id="LoadPresenter.notify"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.load_dialog.presenter.html#mantidimaging.gui.windows.load_dialog.presenter.LoadPresenter.notify">[docs]</a>    <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Notification</span><span class="p">,</span> <span class="o">**</span><span class="n">baggage</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="n">Notification</span><span class="o">.</span><span class="n">UPDATE_ALL_FIELDS</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">do_update_sample</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="n">Notification</span><span class="o">.</span><span class="n">UPDATE_OTHER</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">do_update_other</span><span class="p">(</span><span class="o">**</span><span class="n">baggage</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LoadPresenter.do_update_sample"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.load_dialog.presenter.html#mantidimaging.gui.windows.load_dialog.presenter.LoadPresenter.do_update_sample">[docs]</a>    <span class="k">def</span> <span class="nf">do_update_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the memory usage and the indices in the dialog.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">selected_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">select_file</span><span class="p">(</span><span class="s2">&quot;Sample&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">selected_file</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">selected_file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">setExpanded</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">sample_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">file</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_format</span> <span class="o">=</span> <span class="n">get_file_extension</span><span class="p">(</span><span class="n">sample_filename</span><span class="p">)</span>
+
+        <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">path_text</span><span class="p">()</span>
+        <span class="n">dirname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">directory</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_shape</span><span class="p">,</span> <span class="n">sinograms</span> <span class="o">=</span> <span class="n">read_in_shape</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span>
+                                                       <span class="n">in_prefix</span><span class="o">=</span><span class="n">get_prefix</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span>
+                                                       <span class="n">in_format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_format</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to read file </span><span class="si">{</span><span class="n">sample_filename</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">show_error</span><span class="p">(</span><span class="s2">&quot;Failed to read this file. See log for details.&quot;</span><span class="p">,</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">sinograms</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">sample_dirname</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">flat</span><span class="o">.</span><span class="n">set_images</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_find_images</span><span class="p">(</span><span class="n">sample_dirname</span><span class="p">,</span> <span class="s2">&quot;Flat&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">dark</span><span class="o">.</span><span class="n">set_images</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_find_images</span><span class="p">(</span><span class="n">sample_dirname</span><span class="p">,</span> <span class="s2">&quot;Dark&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">proj_180deg</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_180deg_proj</span><span class="p">(</span><span class="n">sample_dirname</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">sample_log</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_log</span><span class="p">(</span><span class="n">sample_dirname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">directory</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">sample_log</span><span class="o">.</span><span class="n">use</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">flat_log</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_log</span><span class="p">(</span><span class="n">sample_dirname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">flat</span><span class="o">.</span><span class="n">directory</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">flat_log</span><span class="o">.</span><span class="n">use</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">images_are_sinograms</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">sinograms</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">update_indices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">update_shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span></div>
+
+    <span class="k">def</span> <span class="nf">_find_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_dirname</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="c1"># same folder</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">get_file_names</span><span class="p">(</span><span class="n">sample_dirname</span><span class="o">.</span><span class="n">absolute</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_format</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;*</span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find </span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2"> files in </span><span class="si">{</span><span class="n">sample_dirname</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># look into different directories 1 level above</span>
+        <span class="n">dirs</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2">_After&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2">_Before&quot;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dirs</span><span class="p">:</span>
+            <span class="n">expected_folder_path</span> <span class="o">=</span> <span class="n">sample_dirname</span> <span class="o">/</span> <span class="s2">&quot;..&quot;</span> <span class="o">/</span> <span class="n">d</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">get_file_names</span><span class="p">(</span><span class="n">expected_folder_path</span><span class="o">.</span><span class="n">absolute</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_format</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find </span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2"> files in </span><span class="si">{</span><span class="n">expected_folder_path</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">_find_180deg_proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_dirname</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+        <span class="n">expected_path</span> <span class="o">=</span> <span class="n">sample_dirname</span> <span class="o">/</span> <span class="s1">&#39;..&#39;</span> <span class="o">/</span> <span class="s1">&#39;180deg&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">get_file_names</span><span class="p">(</span><span class="n">expected_path</span><span class="o">.</span><span class="n">absolute</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_format</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find 180 degree projection in </span><span class="si">{</span><span class="n">expected_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_find_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dirname</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">log_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">expected_path</span> <span class="o">=</span> <span class="n">dirname</span> <span class="o">/</span> <span class="s1">&#39;..&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">get_file_names</span><span class="p">(</span><span class="n">expected_path</span><span class="o">.</span><span class="n">absolute</span><span class="p">(),</span> <span class="s2">&quot;txt&quot;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">log_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find a log file for </span><span class="si">{</span><span class="n">log_name</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">dirname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+<div class="viewcode-block" id="LoadPresenter.do_update_other"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.load_dialog.presenter.html#mantidimaging.gui.windows.load_dialog.presenter.LoadPresenter.do_update_other">[docs]</a>    <span class="k">def</span> <span class="nf">do_update_other</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="n">Field</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">selected_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">select_file</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">selected_file</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">selected_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">selected_file</span><span class="p">))</span>
+        <span class="n">field</span><span class="o">.</span><span class="n">set_images</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_find_images</span><span class="p">(</span><span class="n">selected_dir</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="LoadPresenter.get_parameters"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.load_dialog.presenter.html#mantidimaging.gui.windows.load_dialog.presenter.LoadPresenter.get_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">get_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LoadingParameters</span><span class="p">:</span>
+        <span class="n">lp</span> <span class="o">=</span> <span class="n">LoadingParameters</span><span class="p">()</span>
+        <span class="n">lp</span><span class="o">.</span><span class="n">sample</span> <span class="o">=</span> <span class="n">ImageParameters</span><span class="p">(</span><span class="n">input_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">directory</span><span class="p">(),</span>
+                                    <span class="nb">format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_format</span><span class="p">,</span>
+                                    <span class="n">prefix</span><span class="o">=</span><span class="n">get_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">path_text</span><span class="p">()),</span>
+                                    <span class="n">indices</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span>
+                                    <span class="n">log_file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">sample_log</span><span class="o">.</span><span class="n">path_text</span><span class="p">())</span>
+
+        <span class="n">lp</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">file</span><span class="p">()</span>
+        <span class="n">lp</span><span class="o">.</span><span class="n">pixel_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">pixelSize</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">flat</span><span class="o">.</span><span class="n">use</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">flat</span><span class="o">.</span><span class="n">path_text</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">lp</span><span class="o">.</span><span class="n">flat</span> <span class="o">=</span> <span class="n">ImageParameters</span><span class="p">(</span><span class="n">input_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">flat</span><span class="o">.</span><span class="n">directory</span><span class="p">(),</span>
+                                      <span class="n">prefix</span><span class="o">=</span><span class="n">get_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">flat</span><span class="o">.</span><span class="n">path_text</span><span class="p">()),</span>
+                                      <span class="nb">format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_format</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">dark</span><span class="o">.</span><span class="n">use</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">dark</span><span class="o">.</span><span class="n">path_text</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">lp</span><span class="o">.</span><span class="n">dark</span> <span class="o">=</span> <span class="n">ImageParameters</span><span class="p">(</span><span class="n">input_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">dark</span><span class="o">.</span><span class="n">directory</span><span class="p">(),</span>
+                                      <span class="n">prefix</span><span class="o">=</span><span class="n">get_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">dark</span><span class="o">.</span><span class="n">path_text</span><span class="p">()),</span>
+                                      <span class="nb">format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_format</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">proj_180deg</span><span class="o">.</span><span class="n">use</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">proj_180deg</span><span class="o">.</span><span class="n">path_text</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">lp</span><span class="o">.</span><span class="n">proj_180deg</span> <span class="o">=</span> <span class="n">ImageParameters</span><span class="p">(</span><span class="n">input_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">proj_180deg</span><span class="o">.</span><span class="n">directory</span><span class="p">(),</span>
+                                             <span class="n">prefix</span><span class="o">=</span><span class="n">get_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">proj_180deg</span><span class="o">.</span><span class="n">path_text</span><span class="p">()),</span>
+                                             <span class="nb">format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">image_format</span><span class="p">)</span>
+
+        <span class="n">lp</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">pixel_bit_depth</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+        <span class="n">lp</span><span class="o">.</span><span class="n">sinograms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">images_are_sinograms</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
+        <span class="n">lp</span><span class="o">.</span><span class="n">pixel_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">pixelSize</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">lp</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.load_dialog.presenter</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

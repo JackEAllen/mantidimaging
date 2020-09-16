@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.gui.windows.savu_operations.sio_model module &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mantidimaging.gui.windows.savu_operations.view module" href="mantidimaging.gui.windows.savu_operations.view.html" />
+    <link rel="prev" title="mantidimaging.gui.windows.savu_operations.remote_presenter module" href="mantidimaging.gui.windows.savu_operations.remote_presenter.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.savu_operations.view.html" title="mantidimaging.gui.windows.savu_operations.view module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.savu_operations.remote_presenter.html" title="mantidimaging.gui.windows.savu_operations.remote_presenter module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="mantidimaging.gui.html" >mantidimaging.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="mantidimaging.gui.windows.html" >mantidimaging.gui.windows package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="mantidimaging.gui.windows.savu_operations.html" accesskey="U">mantidimaging.gui.windows.savu_operations package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.savu_operations.sio_model module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-mantidimaging.gui.windows.savu_operations.sio_model">
+<span id="mantidimaging-gui-windows-savu-operations-sio-model-module"></span><h1>mantidimaging.gui.windows.savu_operations.sio_model module<a class="headerlink" href="#module-mantidimaging.gui.windows.savu_operations.sio_model" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="mantidimaging.gui.windows.savu_operations.sio_model.SavuFiltersSIOModel">
+<em class="property">class </em><code class="sig-prename descclassname">mantidimaging.gui.windows.savu_operations.sio_model.</code><code class="sig-name descname">SavuFiltersSIOModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">presenter</span><span class="p">:</span> <span class="n">SavuFiltersRemotePresenter</span></em>, <em class="sig-param"><span class="n">namespace</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/sio_model.html#SavuFiltersSIOModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.sio_model.SavuFiltersSIOModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Handles remote events</p>
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.savu_operations.sio_model.SavuFiltersSIOModel.EVENT_JOB_END">
+<code class="sig-name descname">EVENT_JOB_END</code><em class="property"> = 'job_end'</em><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.sio_model.SavuFiltersSIOModel.EVENT_JOB_END" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.savu_operations.sio_model.SavuFiltersSIOModel.EVENT_STATUS">
+<code class="sig-name descname">EVENT_STATUS</code><em class="property"> = 'status'</em><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.sio_model.SavuFiltersSIOModel.EVENT_STATUS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.sio_model.SavuFiltersSIOModel.action_event_job_end">
+<code class="sig-name descname">action_event_job_end</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">remote_output</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/sio_model.html#SavuFiltersSIOModel.action_event_job_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.sio_model.SavuFiltersSIOModel.action_event_job_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.sio_model.SavuFiltersSIOModel.action_event_status">
+<code class="sig-name descname">action_event_status</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">remote_output</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/sio_model.html#SavuFiltersSIOModel.action_event_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.sio_model.SavuFiltersSIOModel.action_event_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.sio_model.SavuFiltersSIOModel.disconnect">
+<code class="sig-name descname">disconnect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/sio_model.html#SavuFiltersSIOModel.disconnect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.sio_model.SavuFiltersSIOModel.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.sio_model.SavuFiltersSIOModel.join">
+<code class="sig-name descname">join</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">job_response</span><span class="p">:</span> <span class="n"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.job_run_response.html#mantidimaging.gui.windows.savu_operations.job_run_response.JobRunResponseContent" title="mantidimaging.gui.windows.savu_operations.job_run_response.JobRunResponseContent">mantidimaging.gui.windows.savu_operations.job_run_response.JobRunResponseContent</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/sio_model.html#SavuFiltersSIOModel.join"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.sio_model.SavuFiltersSIOModel.join" title="Permalink to this definition">¶</a></dt>
+<dd><p>Joins the room for this job
+:param job_response: Parsed response from the remote service</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.sio_model.SavuFiltersSIOModel.retrieve_plugins_json">
+<code class="sig-name descname">retrieve_plugins_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/sio_model.html#SavuFiltersSIOModel.retrieve_plugins_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.sio_model.SavuFiltersSIOModel.retrieve_plugins_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mantidimaging.gui.windows.savu_operations.remote_presenter.html"
+                        title="previous chapter">mantidimaging.gui.windows.savu_operations.remote_presenter module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mantidimaging.gui.windows.savu_operations.view.html"
+                        title="next chapter">mantidimaging.gui.windows.savu_operations.view module</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.savu_operations.view.html" title="mantidimaging.gui.windows.savu_operations.view module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.savu_operations.remote_presenter.html" title="mantidimaging.gui.windows.savu_operations.remote_presenter module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="mantidimaging.gui.html" >mantidimaging.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="mantidimaging.gui.windows.html" >mantidimaging.gui.windows package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="mantidimaging.gui.windows.savu_operations.html" >mantidimaging.gui.windows.savu_operations package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.savu_operations.sio_model module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

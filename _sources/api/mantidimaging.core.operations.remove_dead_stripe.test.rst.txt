@@ -1,0 +1,15 @@
+mantidimaging.core.operations.remove\_dead\_stripe.test package
+===============================================================
+
+.. automodule:: mantidimaging.core.operations.remove_dead_stripe.test
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.operations.remove_dead_stripe.test.remove_dead_stripe_test

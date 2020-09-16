@@ -1,0 +1,16 @@
+mantidimaging.gui.windows.recon.test package
+============================================
+
+.. automodule:: mantidimaging.gui.windows.recon.test
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.gui.windows.recon.test.model_test
+   mantidimaging.gui.windows.recon.test.presenter_test

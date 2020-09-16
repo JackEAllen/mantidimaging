@@ -1,0 +1,18 @@
+mantidimaging.test\_helpers package
+===================================
+
+.. automodule:: mantidimaging.test_helpers
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.test_helpers.file_outputting_test_case
+   mantidimaging.test_helpers.qt_mocks
+   mantidimaging.test_helpers.start_qapplication
+   mantidimaging.test_helpers.unit_test_helper

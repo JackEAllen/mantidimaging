@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.gui.windows.recon.image_view module &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mantidimaging.gui.windows.recon.model module" href="mantidimaging.gui.windows.recon.model.html" />
+    <link rel="prev" title="mantidimaging.gui.windows.recon.test.presenter_test module" href="mantidimaging.gui.windows.recon.test.presenter_test.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.recon.model.html" title="mantidimaging.gui.windows.recon.model module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.recon.test.presenter_test.html" title="mantidimaging.gui.windows.recon.test.presenter_test module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="mantidimaging.gui.html" >mantidimaging.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="mantidimaging.gui.windows.html" >mantidimaging.gui.windows package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="mantidimaging.gui.windows.recon.html" accesskey="U">mantidimaging.gui.windows.recon package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.recon.image_view module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-mantidimaging.gui.windows.recon.image_view">
+<span id="mantidimaging-gui-windows-recon-image-view-module"></span><h1>mantidimaging.gui.windows.recon.image_view module<a class="headerlink" href="#module-mantidimaging.gui.windows.recon.image_view" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="mantidimaging.gui.windows.recon.image_view.ReconImagesView">
+<em class="property">class </em><code class="sig-prename descclassname">mantidimaging.gui.windows.recon.image_view.</code><code class="sig-name descname">ReconImagesView</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/image_view.html#ReconImagesView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.image_view.ReconImagesView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pyqtgraph.widgets.GraphicsLayoutWidget.GraphicsLayoutWidget</span></code></p>
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.image_view.ReconImagesView.clear_recon">
+<code class="sig-name descname">clear_recon</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/image_view.html#ReconImagesView.clear_recon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.image_view.ReconImagesView.clear_recon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.image_view.ReconImagesView.hide_tilt">
+<code class="sig-name descname">hide_tilt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/image_view.html#ReconImagesView.hide_tilt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.image_view.ReconImagesView.hide_tilt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hides the tilt line. This stops infinite zooming out loop that messes up the image view
+(the line likes to be unbound when the degree isn’t a multiple o 90 - and the tilt never is)
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.image_view.ReconImagesView.image_in_vb">
+<em class="property">static </em><code class="sig-name descname">image_in_vb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>pyqtgraph.graphicsItems.ImageItem.ImageItem<span class="p">, </span>pyqtgraph.graphicsItems.ViewBox.ViewBox.ViewBox<span class="p">, </span>pyqtgraph.graphicsItems.HistogramLUTItem.HistogramLUTItem<span class="p">]</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/image_view.html#ReconImagesView.image_in_vb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.image_view.ReconImagesView.image_in_vb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.image_view.ReconImagesView.mouse_click">
+<code class="sig-name descname">mouse_click</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ev</span></em>, <em class="sig-param"><span class="n">line</span><span class="p">:</span> <span class="n">pyqtgraph.graphicsItems.InfiniteLine.InfiniteLine</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/image_view.html#ReconImagesView.mouse_click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.image_view.ReconImagesView.mouse_click" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.image_view.ReconImagesView.mouse_over">
+<code class="sig-name descname">mouse_over</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ev</span></em>, <em class="sig-param"><span class="n">img</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/image_view.html#ReconImagesView.mouse_over"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.image_view.ReconImagesView.mouse_over" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.image_view.ReconImagesView.reset_slice_and_tilt">
+<code class="sig-name descname">reset_slice_and_tilt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">slice_index</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/image_view.html#ReconImagesView.reset_slice_and_tilt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.image_view.ReconImagesView.reset_slice_and_tilt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.image_view.ReconImagesView.set_tilt">
+<code class="sig-name descname">set_tilt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tilt</span><span class="p">:</span> <span class="n"><a class="reference internal" href="mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.Degrees" title="mantidimaging.core.utility.data_containers.Degrees">mantidimaging.core.utility.data_containers.Degrees</a></span></em>, <em class="sig-param"><span class="n">pos</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/image_view.html#ReconImagesView.set_tilt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.image_view.ReconImagesView.set_tilt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.image_view.ReconImagesView.update_projection">
+<code class="sig-name descname">update_projection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_data</span><span class="p">:</span> <span class="n">numpy.ndarray</span></em>, <em class="sig-param"><span class="n">preview_slice_index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span></em>, <em class="sig-param"><span class="n">tilt_angle</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference internal" href="mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.Degrees" title="mantidimaging.core.utility.data_containers.Degrees">mantidimaging.core.utility.data_containers.Degrees</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/image_view.html#ReconImagesView.update_projection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.image_view.ReconImagesView.update_projection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.image_view.ReconImagesView.update_recon">
+<code class="sig-name descname">update_recon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_data</span></em>, <em class="sig-param"><span class="n">refresh_recon_slice_histogram</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/image_view.html#ReconImagesView.update_recon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.image_view.ReconImagesView.update_recon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.image_view.ReconImagesView.update_sinogram">
+<code class="sig-name descname">update_sinogram</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/image_view.html#ReconImagesView.update_sinogram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.image_view.ReconImagesView.update_sinogram" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mantidimaging.gui.windows.recon.test.presenter_test.html"
+                        title="previous chapter">mantidimaging.gui.windows.recon.test.presenter_test module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mantidimaging.gui.windows.recon.model.html"
+                        title="next chapter">mantidimaging.gui.windows.recon.model module</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.recon.model.html" title="mantidimaging.gui.windows.recon.model module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.recon.test.presenter_test.html" title="mantidimaging.gui.windows.recon.test.presenter_test module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="mantidimaging.gui.html" >mantidimaging.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="mantidimaging.gui.windows.html" >mantidimaging.gui.windows package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="mantidimaging.gui.windows.recon.html" >mantidimaging.gui.windows.recon package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.recon.image_view module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

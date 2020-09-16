@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.core.utility.savu_interop.plugin_list &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.utility.savu_interop.plugin_list</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.core.utility.savu_interop.plugin_list</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Iterable</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">mantidimaging.core.utility.savu_interop.citations</span> <span class="kn">import</span> <span class="n">Citation</span>
+
+
+<div class="viewcode-block" id="SAVUParameter"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.utility.savu_interop.plugin_list.html#mantidimaging.core.utility.savu_interop.plugin_list.SAVUParameter">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SAVUParameter</span><span class="p">:</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;is_hidden&quot;</span><span class="p">,</span> <span class="s2">&quot;is_user&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">)</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">is_hidden</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">is_user</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+<div class="viewcode-block" id="SAVUPlugin"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.utility.savu_interop.plugin_list.html#mantidimaging.core.utility.savu_interop.plugin_list.SAVUPlugin">[docs]</a><span class="k">class</span> <span class="nc">SAVUPlugin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">,</span> <span class="s2">&quot;synopsis&quot;</span><span class="p">,</span> <span class="s2">&quot;warn&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;citation&quot;</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">)</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">info</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">synopsis</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">warn</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">citation</span><span class="p">:</span> <span class="n">Citation</span>
+    <span class="n">parameters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SAVUParameter</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">details</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">details</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">synopsis</span> <span class="o">=</span> <span class="n">details</span><span class="p">[</span><span class="s2">&quot;synopsis&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">warn</span> <span class="o">=</span> <span class="n">details</span><span class="p">[</span><span class="s2">&quot;warn&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">details</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">citation</span> <span class="o">=</span> <span class="n">details</span><span class="p">[</span><span class="s2">&quot;citation&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">details</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SAVUParameter</span><span class="p">(</span><span class="o">**</span><span class="n">param</span><span class="p">))</span>
+
+<div class="viewcode-block" id="SAVUPlugin.visible_parameters"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.utility.savu_interop.plugin_list.html#mantidimaging.core.utility.savu_interop.plugin_list.SAVUPlugin.visible_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">visible_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the list of parameters that will be visible in the GUI</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">param</span><span class="o">.</span><span class="n">is_hidden</span> <span class="ow">and</span> \
+                    <span class="n">param</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;in_datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;out_datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;preview&quot;</span><span class="p">]:</span>
+                <span class="k">yield</span> <span class="n">param</span></div></div>
+
+
+<div class="viewcode-block" id="SAVUPluginListEntry"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.utility.savu_interop.plugin_list.html#mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginListEntry">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SAVUPluginListEntry</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This contains a specialised subset of parameters that are put into the process list.</span>
+<span class="sd">    It does not contain all the data of the plugin.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">active</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span>
+    <span class="n">desc</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span>
+    <span class="n">hide</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span>
+    <span class="n">user</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span>
+
+    <span class="k">def</span> <span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">),</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__dir__</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="SAVUPluginList"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.utility.savu_interop.plugin_list.html#mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginList">[docs]</a><span class="k">class</span> <span class="nc">SAVUPluginList</span><span class="p">:</span>
+    <span class="n">ENTRY_PATH</span> <span class="o">=</span> <span class="s2">&quot;entry&quot;</span>
+    <span class="n">PLUGIN_PATH</span> <span class="o">=</span> <span class="s2">&quot;plugin&quot;</span>
+    <span class="n">CITATIONS_PATH</span> <span class="o">=</span> <span class="s2">&quot;framework_citations&quot;</span>
+    <span class="c1"># Savu has these spaces in there, they can&#39;t be removed or it won&#39;t properly load</span>
+    <span class="n">PLUGIN_INDEX_FMT</span> <span class="o">=</span> <span class="s2">&quot;   </span><span class="si">{}</span><span class="s2"> &quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_prefix</span><span class="p">,</span> <span class="n">num_images</span><span class="p">,</span> <span class="n">preview</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># preview is in format: [&lt;indices start:end:step&gt;, &lt;rows start:end:step&gt;, &lt;columns start:end:step&gt;]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prepend_plugins</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SAVUPluginListEntry</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">SAVUPluginListEntry</span><span class="p">(</span>
+                <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">{{</span><span class="s1">&quot;data_prefix&quot;: &quot;</span><span class="si">{</span><span class="n">data_prefix</span><span class="si">}</span><span class="s1">&quot;, &quot;flat_prefix&quot;: null, &quot;dark_prefix&quot;: null, &#39;</span>
+                                <span class="sa">f</span><span class="s1">&#39;&quot;angles&quot;: &quot;np.linspace(0, 360, </span><span class="si">{</span><span class="n">num_images</span><span class="si">}</span><span class="s1">)&quot;, &#39;</span>
+                                <span class="sa">f</span><span class="s1">&#39;&quot;frame_dim&quot;: 0, &quot;preview&quot;: [&quot;</span><span class="si">{</span><span class="n">preview</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">preview</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">preview</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;, &quot;:&quot;, &quot;:&quot;],&#39;</span>
+                                <span class="sa">f</span><span class="s1">&#39;&quot;dataset_name&quot;: &quot;tomo&quot;</span><span class="se">}}</span><span class="s1">&#39;</span><span class="p">),</span>
+                <span class="n">desc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;{&quot;data_prefix&quot;: &quot;A file prefix for the data file.&quot;, &quot;flat_prefix&quot;: &quot;A file prefix &#39;</span>
+                                <span class="s1">&#39;for the flat field files, including the folder path if different from the data.&quot;, &#39;</span>
+                                <span class="s1">&#39;&quot;dark_prefix&quot;: &quot;A file prefix for the dark field files, including the folder path &#39;</span>
+                                <span class="s1">&#39;if different from the data.&quot;, &quot;angles&quot;: &quot;A python statement to be evaluated (e.g &#39;</span>
+                                <span class="s1">&#39;np.linspace(0, 180, nAngles)) or a file.&quot;, &quot;frame_dim&quot;: &quot;Which dimension requires &#39;</span>
+                                <span class="s1">&#39;stitching?&quot;, &quot;preview&quot;: &quot;A slice list of required frames.&quot;, &quot;dataset_name&quot;: &quot;The &#39;</span>
+                                <span class="s1">&#39;name assigned to the dataset.&quot;}&#39;</span><span class="p">),</span>
+                <span class="n">hide</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;[]&#39;</span><span class="p">),</span>
+                <span class="nb">id</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;savu.plugins.loaders.full_field_loaders.image_loader&#39;</span><span class="p">),</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;ImageLoader&#39;</span><span class="p">),</span>
+                <span class="n">user</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;[&quot;preview&quot;]&#39;</span><span class="p">))</span>
+        <span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">plugins</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SAVUPluginListEntry</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">append_plugins</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SAVUPluginListEntry</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="SAVUPluginList.add_plugin"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.utility.savu_interop.plugin_list.html#mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginList.add_plugin">[docs]</a>    <span class="k">def</span> <span class="nf">add_plugin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin</span><span class="p">:</span> <span class="n">SAVUPluginListEntry</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SAVUPluginList.finalize"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.utility.savu_interop.plugin_list.html#mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginList.finalize">[docs]</a>    <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Append a saver plugin to the list. This should be called as a final method before saving the SPL.</span>
+
+<span class="sd">        This is not included in the constructor as the pattern of the data tob e saved is dependent on intermediate</span>
+<span class="sd">        plugins, which are added later, and entries are immutable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="s2">&quot;VOLUME_XZ&quot;</span> <span class="k">if</span> <span class="sa">b</span><span class="s2">&quot;recon&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugins</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span> <span class="k">else</span> <span class="s2">&quot;PROJECTION&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append_plugins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">SAVUPluginListEntry</span><span class="p">(</span><span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;{&quot;in_datasets&quot;: [], &quot;out_datasets&quot;: [], &quot;prefix&quot;: null, &quot;pattern&quot;: &quot;&#39;</span> <span class="o">+</span>
+                                                <span class="n">pattern</span> <span class="o">+</span> <span class="s1">&#39;&quot;}&#39;</span><span class="p">),</span>
+                                <span class="n">desc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span>
+                                    <span class="s1">&#39;{&quot;in_datasets&quot;: &quot;The name of the dataset to save.&quot;, &quot;out_datasets&quot;: &quot;Hidden, &#39;</span>
+                                    <span class="s1">&#39;dummy out_datasets entry.&quot;, &quot;prefix&quot;: &quot;Override the default output tiff file &#39;</span>
+                                    <span class="s1">&#39;prefix.&quot;, &quot;pattern&quot;: &quot;How to slice the data.&quot;}&#39;</span><span class="p">),</span>
+                                <span class="n">hide</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;[&quot;out_datasets&quot;]&#39;</span><span class="p">),</span>
+                                <span class="nb">id</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;savu.plugins.savers.tiff_saver&#39;</span><span class="p">),</span>
+                                <span class="n">name</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;TiffSaver&#39;</span><span class="p">),</span>
+                                <span class="n">user</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;[]&#39;</span><span class="p">)))</span></div>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prepend_plugins</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plugins</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">append_plugins</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># -2 trims the trailing comma and space</span>
+        <span class="k">return</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prepend_plugins</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugins</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">append_plugins</span><span class="p">])[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.utility.savu_interop.plugin_list</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

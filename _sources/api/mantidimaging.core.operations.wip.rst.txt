@@ -1,0 +1,15 @@
+mantidimaging.core.operations.wip package
+=========================================
+
+.. automodule:: mantidimaging.core.operations.wip
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.operations.wip.mcp_corrections

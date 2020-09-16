@@ -1,0 +1,7 @@
+mantidimaging.gui.windows.savu\_operations.process\_list.view module
+====================================================================
+
+.. automodule:: mantidimaging.gui.windows.savu_operations.process_list.view
+   :members:
+   :undoc-members:
+   :show-inheritance:

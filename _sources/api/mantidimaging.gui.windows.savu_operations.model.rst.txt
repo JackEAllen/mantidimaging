@@ -1,0 +1,7 @@
+mantidimaging.gui.windows.savu\_operations.model module
+=======================================================
+
+.. automodule:: mantidimaging.gui.windows.savu_operations.model
+   :members:
+   :undoc-members:
+   :show-inheritance:

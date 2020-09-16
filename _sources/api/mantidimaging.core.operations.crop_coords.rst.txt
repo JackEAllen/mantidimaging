@@ -1,0 +1,23 @@
+mantidimaging.core.operations.crop\_coords package
+==================================================
+
+.. automodule:: mantidimaging.core.operations.crop_coords
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.operations.crop_coords.test
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.operations.crop_coords.crop_coords

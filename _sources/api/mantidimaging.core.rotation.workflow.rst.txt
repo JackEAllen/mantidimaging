@@ -1,0 +1,7 @@
+mantidimaging.core.rotation.workflow module
+===========================================
+
+.. automodule:: mantidimaging.core.rotation.workflow
+   :members:
+   :undoc-members:
+   :show-inheritance:

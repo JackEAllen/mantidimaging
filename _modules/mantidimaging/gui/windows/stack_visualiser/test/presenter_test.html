@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.gui.windows.stack_visualiser.test.presenter_test &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../../../" src="../../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../../_static/jquery.js"></script>
+    <script src="../../../../../../_static/underscore.js"></script>
+    <script src="../../../../../../_static/doctools.js"></script>
+    <script src="../../../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.stack_visualiser.test.presenter_test</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.gui.windows.stack_visualiser.test.presenter_test</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="kn">import</span> <span class="nn">SharedArray</span> <span class="k">as</span> <span class="nn">sa</span>
+<span class="kn">import</span> <span class="nn">mock</span>
+<span class="kn">import</span> <span class="nn">numpy.testing</span> <span class="k">as</span> <span class="nn">npt</span>
+
+<span class="kn">import</span> <span class="nn">mantidimaging.test_helpers.unit_test_helper</span> <span class="k">as</span> <span class="nn">th</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.data</span> <span class="kn">import</span> <span class="n">Images</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.windows.stack_visualiser</span> <span class="kn">import</span> <span class="n">StackVisualiserPresenter</span><span class="p">,</span> <span class="n">StackVisualiserView</span><span class="p">,</span> <span class="n">SVNotification</span><span class="p">,</span> \
+    <span class="n">SVImageMode</span>
+
+
+<div class="viewcode-block" id="StackVisualiserPresenterTest"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.stack_visualiser.test.presenter_test.html#mantidimaging.gui.windows.stack_visualiser.test.presenter_test.StackVisualiserPresenterTest">[docs]</a><span class="k">class</span> <span class="nc">StackVisualiserPresenterTest</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="n">test_data</span><span class="p">:</span> <span class="n">Images</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">StackVisualiserPresenterTest</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StackVisualiserPresenterTest.setUp"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.stack_visualiser.test.presenter_test.html#mantidimaging.gui.windows.stack_visualiser.test.presenter_test.StackVisualiserPresenterTest.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_data</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">generate_images</span><span class="p">()</span>
+        <span class="c1"># mock the view so it has the same methods</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">create_autospec</span><span class="p">(</span><span class="n">StackVisualiserView</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span> <span class="o">=</span> <span class="n">StackVisualiserPresenter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StackVisualiserPresenterTest.tearDown"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.stack_visualiser.test.presenter_test.html#mantidimaging.gui.windows.stack_visualiser.test.presenter_test.StackVisualiserPresenterTest.tearDown">[docs]</a>    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">test_data</span><span class="o">.</span><span class="n">free_memory</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+            <span class="c1"># the test has deleted the data manually</span>
+            <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="StackVisualiserPresenterTest.setUpClass"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.stack_visualiser.test.presenter_test.html#mantidimaging.gui.windows.stack_visualiser.test.presenter_test.StackVisualiserPresenterTest.setUpClass">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">sa</span><span class="o">.</span><span class="n">list</span><span class="p">():</span>
+            <span class="n">sa</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="StackVisualiserPresenterTest.tearDownClass"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.stack_visualiser.test.presenter_test.html#mantidimaging.gui.windows.stack_visualiser.test.presenter_test.StackVisualiserPresenterTest.tearDownClass">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">tearDownClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">sa</span><span class="o">.</span><span class="n">list</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Not all shared arrays have been freed. Leftover: </span><span class="si">{</span><span class="n">sa</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="StackVisualiserPresenterTest.test_get_image"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.stack_visualiser.test.presenter_test.html#mantidimaging.gui.windows.stack_visualiser.test.presenter_test.StackVisualiserPresenterTest.test_get_image">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="mi">3</span>
+
+        <span class="n">test_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_data</span>
+
+        <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">get_image</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">npt</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">test_data</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">img</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="StackVisualiserPresenterTest.test_delete_data"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.stack_visualiser.test.presenter_test.html#mantidimaging.gui.windows.stack_visualiser.test.presenter_test.StackVisualiserPresenterTest.test_delete_data">[docs]</a>    <span class="k">def</span> <span class="nf">test_delete_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">generate_images</span><span class="p">(</span><span class="n">automatic_free</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">delete_data</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StackVisualiserPresenterTest.test_notify_refresh_image_normal_image_mode"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.stack_visualiser.test.presenter_test.html#mantidimaging.gui.windows.stack_visualiser.test.presenter_test.StackVisualiserPresenterTest.test_notify_refresh_image_normal_image_mode">[docs]</a>    <span class="k">def</span> <span class="nf">test_notify_refresh_image_normal_image_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">=</span> <span class="n">SVImageMode</span><span class="o">.</span><span class="n">NORMAL</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">SVNotification</span><span class="o">.</span><span class="n">REFRESH_IMAGE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;Image should have been set as sample images&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StackVisualiserPresenterTest.test_notify_refresh_image_averaged_image_mode"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.stack_visualiser.test.presenter_test.html#mantidimaging.gui.windows.stack_visualiser.test.presenter_test.StackVisualiserPresenterTest.test_notify_refresh_image_averaged_image_mode">[docs]</a>    <span class="k">def</span> <span class="nf">test_notify_refresh_image_averaged_image_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">image_mode</span> <span class="o">=</span> <span class="n">SVImageMode</span><span class="o">.</span><span class="n">SUMMED</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">SVNotification</span><span class="o">.</span><span class="n">REFRESH_IMAGE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">summed_image</span><span class="p">,</span> <span class="s2">&quot;Image should have been set as averaged image&quot;</span><span class="p">)</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.stack_visualiser.test.presenter_test</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.gui.windows.savu_operations.view &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.savu_operations.view</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.gui.windows.savu_operations.view</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">float32</span> <span class="k">as</span> <span class="n">np_float32</span>
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QMainWindow</span><span class="p">,</span> <span class="n">QSpinBox</span><span class="p">,</span> <span class="n">QTextEdit</span>
+
+<span class="kn">from</span> <span class="nn">mantidimaging.core.configs.savu_backend_docker</span> <span class="kn">import</span> <span class="n">RemoteConfig</span><span class="p">,</span> <span class="n">RemoteConstants</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.mvp_base</span> <span class="kn">import</span> <span class="n">BaseMainWindowView</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.windows.savu_operations.presenter</span> <span class="kn">import</span> <span class="n">Notification</span> <span class="k">as</span> <span class="n">PresNotification</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.windows.savu_operations.presenter</span> <span class="kn">import</span> <span class="n">SavuFiltersWindowPresenter</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">mantidimaging.gui.windows.main.view</span> <span class="kn">import</span> <span class="n">MainWindowView</span>  <span class="c1"># noqa:F401</span>
+
+
+<div class="viewcode-block" id="SavuFiltersWindowView"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.savu_operations.view.html#mantidimaging.gui.windows.savu_operations.view.SavuFiltersWindowView">[docs]</a><span class="k">class</span> <span class="nc">SavuFiltersWindowView</span><span class="p">(</span><span class="n">BaseMainWindowView</span><span class="p">):</span>
+    <span class="n">new_output</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">savu_finished</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">info</span><span class="p">:</span> <span class="n">QLabel</span>
+    <span class="n">description</span><span class="p">:</span> <span class="n">QLabel</span>
+    <span class="n">startInput</span><span class="p">:</span> <span class="n">QSpinBox</span>
+    <span class="n">endInput</span><span class="p">:</span> <span class="n">QSpinBox</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_window</span><span class="p">:</span> <span class="s1">&#39;MainWindowView&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        TODO add Show plugins directory button</span>
+<span class="sd">        Use qt/python/mantidqt/utils/show_in_explorer.py from Mantid</span>
+<span class="sd">        :param main_window:</span>
+<span class="sd">        :param cmap:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SavuFiltersWindowView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">main_window</span><span class="p">,</span> <span class="s1">&#39;gui/ui/savu_filters_window.ui&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span> <span class="o">=</span> <span class="n">SavuFiltersWindowPresenter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span> <span class="o">=</span> <span class="n">main_window</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">floating_output_window</span> <span class="o">=</span> <span class="n">QMainWindow</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">floating_output</span> <span class="o">=</span> <span class="n">QTextEdit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floating_output_window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">floating_output_window</span><span class="o">.</span><span class="n">setCentralWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">floating_output</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">floating_output_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_output</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_output_text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">savu_finished</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load_savu_stack</span><span class="p">)</span>
+
+        <span class="c1"># Populate list of operations and handle filter selection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filterSelector</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">filter_names</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filterSelector</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_filter_selection</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handle_filter_selection</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">stackSelector</span><span class="o">.</span><span class="n">stack_selected_uuid</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">set_stack_uuid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">applyButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">PresNotification</span><span class="o">.</span><span class="n">APPLY_FILTER</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">applyListButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">PresNotification</span><span class="o">.</span><span class="n">APPLY_LIST</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">confirmPluginButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">PresNotification</span><span class="o">.</span><span class="n">CONFIRM_PLUGIN</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">stackSelector</span><span class="o">.</span><span class="n">subscribe_to_main_window</span><span class="p">(</span><span class="n">main_window</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SavuFiltersWindowView.cleanup"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.savu_operations.view.html#mantidimaging.gui.windows.savu_operations.view.SavuFiltersWindowView.cleanup">[docs]</a>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stackSelector</span><span class="o">.</span><span class="n">unsubscribe_from_main_window</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">savu_filters</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="SavuFiltersWindowView.show"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.savu_operations.view.html#mantidimaging.gui.windows.savu_operations.view.SavuFiltersWindowView.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SavuFiltersWindowView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SavuFiltersWindowView.handle_filter_selection"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.savu_operations.view.html#mantidimaging.gui.windows.savu_operations.view.SavuFiltersWindowView.handle_filter_selection">[docs]</a>    <span class="k">def</span> <span class="nf">handle_filter_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">PresNotification</span><span class="o">.</span><span class="n">REGISTER_ACTIVE_FILTER</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SavuFiltersWindowView.set_description"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.savu_operations.view.html#mantidimaging.gui.windows.savu_operations.view.SavuFiltersWindowView.set_description">[docs]</a>    <span class="k">def</span> <span class="nf">set_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">desc</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">info</span><span class="p">,</span> <span class="n">desc</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="SavuFiltersWindowView.show_output_text"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.savu_operations.view.html#mantidimaging.gui.windows.savu_operations.view.SavuFiltersWindowView.show_output_text">[docs]</a>    <span class="k">def</span> <span class="nf">show_output_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">floating_output</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">text</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">floating_output</span><span class="o">.</span><span class="n">toPlainText</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="SavuFiltersWindowView.clear_output_text"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.savu_operations.view.html#mantidimaging.gui.windows.savu_operations.view.SavuFiltersWindowView.clear_output_text">[docs]</a>    <span class="k">def</span> <span class="nf">clear_output_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">floating_output</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SavuFiltersWindowView.load_savu_stack"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.savu_operations.view.html#mantidimaging.gui.windows.savu_operations.view.SavuFiltersWindowView.load_savu_stack">[docs]</a>    <span class="k">def</span> <span class="nf">load_savu_stack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># replace remote output with the local output path equivalent</span>
+        <span class="n">local_output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">RemoteConstants</span><span class="o">.</span><span class="n">OUTPUT_DIR</span><span class="p">,</span> <span class="n">RemoteConfig</span><span class="o">.</span><span class="n">LOCAL_OUTPUT_DIR</span><span class="p">)</span>
+        <span class="c1"># navigate to the first folder - that should be the folder created by the output plugin</span>
+        <span class="n">output_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">local_output</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">local_output</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_output</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;TiffSaver-tomo&quot;</span><span class="p">)</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;sample_path&#39;</span><span class="p">:</span> <span class="n">local_output</span><span class="p">,</span>
+            <span class="s1">&#39;flat_path&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;dark_path&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;image_format&#39;</span><span class="p">:</span> <span class="s2">&quot;tiff&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;indices&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;dtype&#39;</span><span class="p">:</span> <span class="n">np_float32</span><span class="p">,</span>
+            <span class="s1">&#39;custom_name&#39;</span><span class="p">:</span> <span class="n">output_folder</span><span class="p">,</span>
+            <span class="s1">&#39;in_prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">load_stack</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SavuFiltersWindowView.reset_indices_inputs"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.savu_operations.view.html#mantidimaging.gui.windows.savu_operations.view.SavuFiltersWindowView.reset_indices_inputs">[docs]</a>    <span class="k">def</span> <span class="nf">reset_indices_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_indices</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startInput</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="n">image_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endInput</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="n">image_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stepInput</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="n">image_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startInput</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endInput</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">image_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.savu_operations.view</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

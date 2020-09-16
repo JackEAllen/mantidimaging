@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.gui.windows.savu_operations.process_list.view module &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mantidimaging.gui.windows.savu_operations.job_run_response module" href="mantidimaging.gui.windows.savu_operations.job_run_response.html" />
+    <link rel="prev" title="mantidimaging.gui.windows.savu_operations.process_list.presenter module" href="mantidimaging.gui.windows.savu_operations.process_list.presenter.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.savu_operations.job_run_response.html" title="mantidimaging.gui.windows.savu_operations.job_run_response module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.savu_operations.process_list.presenter.html" title="mantidimaging.gui.windows.savu_operations.process_list.presenter module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="mantidimaging.gui.html" >mantidimaging.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="mantidimaging.gui.windows.html" >mantidimaging.gui.windows package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="mantidimaging.gui.windows.savu_operations.html" >mantidimaging.gui.windows.savu_operations package</a> &#187;</li>
+          <li class="nav-item nav-item-6"><a href="mantidimaging.gui.windows.savu_operations.process_list.html" accesskey="U">mantidimaging.gui.windows.savu_operations.process_list package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.savu_operations.process_list.view module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-mantidimaging.gui.windows.savu_operations.process_list.view">
+<span id="mantidimaging-gui-windows-savu-operations-process-list-view-module"></span><h1>mantidimaging.gui.windows.savu_operations.process_list.view module<a class="headerlink" href="#module-mantidimaging.gui.windows.savu_operations.process_list.view" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="mantidimaging.gui.windows.savu_operations.process_list.view.PluginDisplayWidget">
+<em class="property">class </em><code class="sig-prename descclassname">mantidimaging.gui.windows.savu_operations.process_list.view.</code><code class="sig-name descname">PluginDisplayWidget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="p">:</span> <span class="n">PyQt5.QtWidgets.QWidget</span></em>, <em class="sig-param"><span class="n">pos</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">plugin_name</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em>, <em class="sig-param"><span class="n">fixed</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/process_list/view.html#PluginDisplayWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.process_list.view.PluginDisplayWidget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<p>Widget representing a plugin in the process list.</p>
+<dl class="simple">
+<dt>Each widget is laid out horizontally and consists (in order) of:</dt><dd><ol class="arabic simple">
+<li><p>A label with the plugins position in the process list</p></li>
+<li><p>A button with the plugins name. Clicking this makes the parameters of the plugin editable.</p></li>
+<li><p>Up/Down arrows to change the plugins position in the process list</p></li>
+<li><p>A remove button.</p></li>
+</ol>
+</dd>
+</dl>
+<p>All elements except the plugin button are fixed size, taking up as little (horizontal) space as possible.
+The plugin button fills the remaining space, which will be determined by the width of the largest
+name of any plugin in the parent layout.</p>
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.process_list.view.PluginDisplayWidget.index">
+<em class="property">property </em><code class="sig-name descname">index</code><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.process_list.view.PluginDisplayWidget.index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView">
+<em class="property">class </em><code class="sig-prename descclassname">mantidimaging.gui.windows.savu_operations.process_list.view.</code><code class="sig-name descname">ProcessListView</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/process_list/view.html#ProcessListView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QGroupBox</span></code></p>
+<p>The view of the process list in the savu operations window.</p>
+<p>A fixed loader and saver plugin are represented by non-interactive widgets.
+Processing plugins are laid out in between, and can be edited, removed, and have their positions changed.</p>
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.add_plugin">
+<code class="sig-name descname">add_plugin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">plugin</span><span class="p">:</span> <span class="n"><a class="reference internal" href="mantidimaging.core.utility.savu_interop.plugin_list.html#mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginListEntry" title="mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginListEntry">mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginListEntry</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/process_list/view.html#ProcessListView.add_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.add_plugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.display_plugin">
+<code class="sig-name descname">display_plugin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">plugin_name</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em>, <em class="sig-param"><span class="n">fixed</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/process_list/view.html#ProcessListView.display_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.display_plugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.plugin_change_request">
+<code class="sig-name descname">plugin_change_request</code><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.plugin_change_request" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.plugin_entries">
+<em class="property">property </em><code class="sig-name descname">plugin_entries</code><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.plugin_entries" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.plugin_to_edit">
+<em class="property">property </em><code class="sig-name descname">plugin_to_edit</code><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.plugin_to_edit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.remove_plugin">
+<code class="sig-name descname">remove_plugin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/process_list/view.html#ProcessListView.remove_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.remove_plugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.save_edited_plugin">
+<code class="sig-name descname">save_edited_plugin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entry</span><span class="p">:</span> <span class="n"><a class="reference internal" href="mantidimaging.core.utility.savu_interop.plugin_list.html#mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginListEntry" title="mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginListEntry">mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginListEntry</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/process_list/view.html#ProcessListView.save_edited_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.save_edited_plugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.signal_edit_plugin">
+<code class="sig-name descname">signal_edit_plugin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/process_list/view.html#ProcessListView.signal_edit_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.signal_edit_plugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.signal_order_change">
+<code class="sig-name descname">signal_order_change</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">old_index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span></em>, <em class="sig-param"><span class="n">new_index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/process_list/view.html#ProcessListView.signal_order_change"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.signal_order_change" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.signal_remove_plugin">
+<code class="sig-name descname">signal_remove_plugin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/process_list/view.html#ProcessListView.signal_remove_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.signal_remove_plugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.swap">
+<code class="sig-name descname">swap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index_1</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span></em>, <em class="sig-param"><span class="n">index_2</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/process_list/view.html#ProcessListView.swap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.process_list.view.ProcessListView.swap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mantidimaging.gui.windows.savu_operations.process_list.presenter.html"
+                        title="previous chapter">mantidimaging.gui.windows.savu_operations.process_list.presenter module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mantidimaging.gui.windows.savu_operations.job_run_response.html"
+                        title="next chapter">mantidimaging.gui.windows.savu_operations.job_run_response module</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.savu_operations.job_run_response.html" title="mantidimaging.gui.windows.savu_operations.job_run_response module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.savu_operations.process_list.presenter.html" title="mantidimaging.gui.windows.savu_operations.process_list.presenter module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="mantidimaging.gui.html" >mantidimaging.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="mantidimaging.gui.windows.html" >mantidimaging.gui.windows package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="mantidimaging.gui.windows.savu_operations.html" >mantidimaging.gui.windows.savu_operations package</a> &#187;</li>
+          <li class="nav-item nav-item-6"><a href="mantidimaging.gui.windows.savu_operations.process_list.html" >mantidimaging.gui.windows.savu_operations.process_list package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.savu_operations.process_list.view module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

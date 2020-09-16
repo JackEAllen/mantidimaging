@@ -1,0 +1,275 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.gui.windows.recon.test.presenter_test &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../../../" src="../../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../../_static/jquery.js"></script>
+    <script src="../../../../../../_static/underscore.js"></script>
+    <script src="../../../../../../_static/doctools.js"></script>
+    <script src="../../../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.recon.test.presenter_test</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.gui.windows.recon.test.presenter_test</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="kn">import</span> <span class="nn">mock</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">mantidimaging.core.data</span> <span class="kn">import</span> <span class="n">Images</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.rotation.data_model</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.utility.data_containers</span> <span class="kn">import</span> <span class="n">ScalarCoR</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.windows.recon</span> <span class="kn">import</span> <span class="n">ReconstructWindowPresenter</span><span class="p">,</span> <span class="n">ReconstructWindowView</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.windows.recon.presenter</span> <span class="kn">import</span> <span class="n">Notifications</span> <span class="k">as</span> <span class="n">PresNotification</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.windows.stack_visualiser</span> <span class="kn">import</span> <span class="n">StackVisualiserPresenter</span><span class="p">,</span> <span class="n">StackVisualiserView</span>
+
+
+<div class="viewcode-block" id="ReconWindowPresenterTest"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.recon.test.presenter_test.html#mantidimaging.gui.windows.recon.test.presenter_test.ReconWindowPresenterTest">[docs]</a><span class="k">class</span> <span class="nc">ReconWindowPresenterTest</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="ReconWindowPresenterTest.setUp"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.recon.test.presenter_test.html#mantidimaging.gui.windows.recon.test.presenter_test.ReconWindowPresenterTest.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Mock view</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">make_view</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span> <span class="o">=</span> <span class="n">ReconstructWindowPresenter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="c1"># Mock stack</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sv_view</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">create_autospec</span><span class="p">(</span><span class="n">StackVisualiserView</span><span class="p">)</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="n">Images</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">128</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sv_view</span><span class="o">.</span><span class="n">presenter</span> <span class="o">=</span> <span class="n">StackVisualiserPresenter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sv_view</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">initial_select_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sv_view</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">get_stack_visualiser</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sv_view</span><span class="p">)</span>
+
+        <span class="kn">import</span> <span class="nn">uuid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReconWindowPresenterTest.make_view"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.recon.test.presenter_test.html#mantidimaging.gui.windows.recon.test.presenter_test.ReconWindowPresenterTest.make_view">[docs]</a>    <span class="k">def</span> <span class="nf">make_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">create_autospec</span><span class="p">(</span><span class="n">ReconstructWindowView</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">filterName</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">filterNameLabel</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">numIter</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">numIterLabel</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReconWindowPresenterTest.test_set_stack_uuid"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.recon.test.presenter_test.html#mantidimaging.gui.windows.recon.test.presenter_test.ReconWindowPresenterTest.test_set_stack_uuid">[docs]</a>    <span class="nd">@mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s1">&#39;mantidimaging.gui.windows.recon.model.get_reconstructor_for&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_set_stack_uuid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_get_reconstructor_for</span><span class="p">):</span>
+        <span class="c1"># reset the model data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">initial_select_data</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+        <span class="n">mock_reconstructor</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="n">mock_reconstructor</span><span class="o">.</span><span class="n">single_sino</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="n">mock_get_reconstructor_for</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">mock_reconstructor</span>
+
+        <span class="c1"># first-time selecting this data after reset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">set_stack_uuid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">get_stack_visualiser</span><span class="o">.</span><span class="n">assert_called_once_with</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">update_projection</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">clear_cor_table</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">update_projection</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">update_sinogram</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">update_recon_preview</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="n">mock_get_reconstructor_for</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="n">mock_reconstructor</span><span class="o">.</span><span class="n">single_sino</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+
+        <span class="c1"># calling again with the same stack shouldn&#39;t re-do everything</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">set_stack_uuid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">get_stack_visualiser</span><span class="o">.</span><span class="n">call_count</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">get_stack_visualiser</span><span class="o">.</span><span class="n">assert_has_calls</span><span class="p">([</span><span class="n">mock</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">),</span> <span class="n">mock</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">)])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">update_projection</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">clear_cor_table</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">update_projection</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">update_sinogram</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">update_recon_preview</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="n">mock_get_reconstructor_for</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="n">mock_reconstructor</span><span class="o">.</span><span class="n">single_sino</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReconWindowPresenterTest.test_set_projection_preview_index"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.recon.test.presenter_test.html#mantidimaging.gui.windows.recon.test.presenter_test.ReconWindowPresenterTest.test_set_projection_preview_index">[docs]</a>    <span class="k">def</span> <span class="nf">test_set_projection_preview_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">set_preview_projection_idx</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">preview_projection_idx</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">update_projection</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReconWindowPresenterTest.test_set_slice_preview_index"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.recon.test.presenter_test.html#mantidimaging.gui.windows.recon.test.presenter_test.ReconWindowPresenterTest.test_set_slice_preview_index">[docs]</a>    <span class="nd">@mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s1">&#39;mantidimaging.gui.windows.recon.model.get_reconstructor_for&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_set_slice_preview_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_get_reconstructor_for</span><span class="p">):</span>
+        <span class="n">mock_reconstructor</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="n">mock_reconstructor</span><span class="o">.</span><span class="n">single_sino</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="n">mock_get_reconstructor_for</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">mock_reconstructor</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">set_preview_slice_idx</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">preview_slice_idx</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">update_projection</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">update_sinogram</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">update_recon_preview</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+
+        <span class="n">mock_get_reconstructor_for</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="n">mock_reconstructor</span><span class="o">.</span><span class="n">single_sino</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReconWindowPresenterTest.test_do_add_manual_cor_table_row"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.recon.test.presenter_test.html#mantidimaging.gui.windows.recon.test.presenter_test.ReconWindowPresenterTest.test_do_add_manual_cor_table_row">[docs]</a>    <span class="nd">@mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s1">&#39;mantidimaging.gui.windows.recon.model.ReconstructWindowModel.get_me_a_cor&#39;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="n">ScalarCoR</span><span class="p">(</span><span class="mi">15</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">test_do_add_manual_cor_table_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_get_me_a_cor</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">selected_row</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">preview_slice_idx</span> <span class="o">=</span> <span class="mi">15</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">PresNotification</span><span class="o">.</span><span class="n">ADD_COR</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">add_cor_table_row</span><span class="o">.</span><span class="n">assert_called_once_with</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">selected_row</span><span class="p">,</span>
+                                                            <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">preview_slice_idx</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+        <span class="n">mock_get_me_a_cor</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReconWindowPresenterTest.test_do_reconstruct_slice"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.recon.test.presenter_test.html#mantidimaging.gui.windows.recon.test.presenter_test.ReconWindowPresenterTest.test_do_reconstruct_slice">[docs]</a>    <span class="nd">@mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s1">&#39;mantidimaging.gui.windows.recon.model.get_reconstructor_for&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_do_reconstruct_slice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_get_reconstructor_for</span><span class="p">):</span>
+        <span class="n">mock_reconstructor</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="n">mock_reconstructor</span><span class="o">.</span><span class="n">single_sino</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="n">mock_get_reconstructor_for</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">mock_reconstructor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">preview_slice_idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">last_cor</span> <span class="o">=</span> <span class="n">ScalarCoR</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">data_model</span><span class="o">.</span><span class="n">_cached_gradient</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">do_reconstruct_slice</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">update_sinogram</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">update_recon_preview</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+
+        <span class="n">mock_get_reconstructor_for</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="n">mock_reconstructor</span><span class="o">.</span><span class="n">single_sino</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReconWindowPresenterTest.test_do_reconstruct_volume"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.recon.test.presenter_test.html#mantidimaging.gui.windows.recon.test.presenter_test.ReconWindowPresenterTest.test_do_reconstruct_volume">[docs]</a>    <span class="nd">@mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s1">&#39;mantidimaging.gui.windows.recon.presenter.start_async_task_view&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_do_reconstruct_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_async_task</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">do_reconstruct_volume</span><span class="p">()</span>
+        <span class="c1"># kind of a pointless test, but at least it might capture some parameter change</span>
+        <span class="n">mock_async_task</span><span class="o">.</span><span class="n">assert_called_once_with</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">run_full_recon</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">_on_volume_recon_done</span><span class="p">,</span>
+                                                <span class="p">{</span><span class="s1">&#39;recon_params&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">recon_params</span><span class="p">()})</span></div>
+
+<div class="viewcode-block" id="ReconWindowPresenterTest.test_do_refine_selected_cor_declined"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.recon.test.presenter_test.html#mantidimaging.gui.windows.recon.test.presenter_test.ReconWindowPresenterTest.test_do_refine_selected_cor_declined">[docs]</a>    <span class="nd">@mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s1">&#39;mantidimaging.gui.windows.recon.presenter.CORInspectionDialogView&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_do_refine_selected_cor_declined</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_corview</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">preview_slice_idx</span> <span class="o">=</span> <span class="mi">155</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">last_cor</span> <span class="o">=</span> <span class="n">ScalarCoR</span><span class="p">(</span><span class="mi">314</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">do_reconstruct_slice</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+
+        <span class="n">mock_dialog</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="n">mock_corview</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">mock_dialog</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">_do_refine_selected_cor</span><span class="p">()</span>
+
+        <span class="n">mock_corview</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="n">mock_dialog</span><span class="o">.</span><span class="n">exec</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">do_reconstruct_slice</span><span class="o">.</span><span class="n">assert_not_called</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReconWindowPresenterTest.test_do_refine_selected_cor_accepted"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.recon.test.presenter_test.html#mantidimaging.gui.windows.recon.test.presenter_test.ReconWindowPresenterTest.test_do_refine_selected_cor_accepted">[docs]</a>    <span class="nd">@mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s1">&#39;mantidimaging.gui.windows.recon.presenter.CORInspectionDialogView&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_do_refine_selected_cor_accepted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_corview</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">preview_slice_idx</span> <span class="o">=</span> <span class="mi">155</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">last_cor</span> <span class="o">=</span> <span class="n">ScalarCoR</span><span class="p">(</span><span class="mi">314</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">do_reconstruct_slice</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="n">mock_dialog</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="n">mock_dialog</span><span class="o">.</span><span class="n">exec</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">mock_corview</span><span class="o">.</span><span class="n">Accepted</span>
+        <span class="n">mock_corview</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">mock_dialog</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">_do_refine_selected_cor</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">data_model</span><span class="o">.</span><span class="n">set_cor_at_slice</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">last_cor</span><span class="p">,</span> <span class="n">mock_dialog</span><span class="o">.</span><span class="n">optimal_rotation_centre</span><span class="p">)</span>
+        <span class="n">mock_corview</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="n">mock_dialog</span><span class="o">.</span><span class="n">exec</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">do_reconstruct_slice</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReconWindowPresenterTest.test_do_cor_fit"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.recon.test.presenter_test.html#mantidimaging.gui.windows.recon.test.presenter_test.ReconWindowPresenterTest.test_do_cor_fit">[docs]</a>    <span class="k">def</span> <span class="nf">test_do_cor_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">do_reconstruct_slice</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">do_update_projection</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">do_cor_fit</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">set_results</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">do_update_projection</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">do_reconstruct_slice</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReconWindowPresenterTest.test_set_precalculated_cor_tilt"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.recon.test.presenter_test.html#mantidimaging.gui.windows.recon.test.presenter_test.ReconWindowPresenterTest.test_set_precalculated_cor_tilt">[docs]</a>    <span class="k">def</span> <span class="nf">test_set_precalculated_cor_tilt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">rotation_centre</span> <span class="o">=</span> <span class="mi">150</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">tilt</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">do_reconstruct_slice</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">do_update_projection</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">data_model</span><span class="o">.</span><span class="n">iter_points</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">do_calculate_cors_from_manual_tilt</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">data_model</span><span class="o">.</span><span class="n">iter_points</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">set_table_point</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_results</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">set_results</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">do_update_projection</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">do_reconstruct_slice</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReconWindowPresenterTest.test_auto_find_correlation"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.recon.test.presenter_test.html#mantidimaging.gui.windows.recon.test.presenter_test.ReconWindowPresenterTest.test_auto_find_correlation">[docs]</a>    <span class="nd">@mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s1">&#39;mantidimaging.gui.windows.recon.presenter.start_async_task_view&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_auto_find_correlation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_start_async</span><span class="p">:</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">_auto_find_correlation</span><span class="p">()</span>
+        <span class="n">mock_start_async</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="n">mock_first_call</span> <span class="o">=</span> <span class="n">mock_start_async</span><span class="o">.</span><span class="n">call_args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">view</span><span class="p">,</span> <span class="n">mock_first_call</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">auto_find_correlation</span><span class="p">,</span> <span class="n">mock_first_call</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.recon.test.presenter_test</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

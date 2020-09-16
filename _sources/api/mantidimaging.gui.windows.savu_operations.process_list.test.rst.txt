@@ -1,0 +1,16 @@
+mantidimaging.gui.windows.savu\_operations.process\_list.test package
+=====================================================================
+
+.. automodule:: mantidimaging.gui.windows.savu_operations.process_list.test
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.gui.windows.savu_operations.process_list.test.presenter_test
+   mantidimaging.gui.windows.savu_operations.process_list.test.view_test

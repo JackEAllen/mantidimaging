@@ -1,0 +1,7 @@
+mantidimaging.core.utility.savu\_interop.webapi module
+======================================================
+
+.. automodule:: mantidimaging.core.utility.savu_interop.webapi
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,7 @@
+mantidimaging.core.utility.savu\_interop.nxclasses module
+=========================================================
+
+.. automodule:: mantidimaging.core.utility.savu_interop.nxclasses
+   :members:
+   :undoc-members:
+   :show-inheritance:

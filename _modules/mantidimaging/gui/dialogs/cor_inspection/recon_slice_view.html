@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.gui.dialogs.cor_inspection.recon_slice_view &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.dialogs.cor_inspection.recon_slice_view</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.gui.dialogs.cor_inspection.recon_slice_view</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QPushButton</span>
+<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="kn">import</span> <span class="n">GraphicsLayoutWidget</span><span class="p">,</span> <span class="n">ImageItem</span><span class="p">,</span> <span class="n">ViewBox</span><span class="p">,</span> <span class="n">HistogramLUTItem</span><span class="p">,</span> <span class="n">LabelItem</span>
+
+<span class="kn">from</span> <span class="nn">mantidimaging.core.utility.close_enough_point</span> <span class="kn">import</span> <span class="n">CloseEnoughPoint</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.dialogs.cor_inspection.types</span> <span class="kn">import</span> <span class="n">ImageType</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">mantidimaging.gui.dialogs.cor_inspection</span> <span class="kn">import</span> <span class="n">CORInspectionDialogView</span>
+
+
+<div class="viewcode-block" id="CompareSlicesView"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.dialogs.cor_inspection.recon_slice_view.html#mantidimaging.gui.dialogs.cor_inspection.recon_slice_view.CompareSlicesView">[docs]</a><span class="k">class</span> <span class="nc">CompareSlicesView</span><span class="p">(</span><span class="n">GraphicsLayoutWidget</span><span class="p">):</span>
+    <span class="n">less_img</span><span class="p">:</span> <span class="n">ImageItem</span>
+    <span class="n">current_img</span><span class="p">:</span> <span class="n">ImageItem</span>
+    <span class="n">more_img</span><span class="p">:</span> <span class="n">ImageItem</span>
+
+    <span class="n">lessButton</span><span class="p">:</span> <span class="n">QPushButton</span>
+    <span class="n">currentButton</span><span class="p">:</span> <span class="n">QPushButton</span>
+    <span class="n">moreButton</span><span class="p">:</span> <span class="n">QPushButton</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="s1">&#39;CORInspectionDialogView&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">less_img</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">less_img_vb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">less_hist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_in_vb</span><span class="p">(</span><span class="s2">&quot;less&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_img</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_img_vb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_hist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_in_vb</span><span class="p">(</span><span class="s2">&quot;current&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">more_img</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">more_img_vb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">more_hist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_in_vb</span><span class="p">(</span><span class="s2">&quot;more&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">on_level_change</span><span class="p">():</span>
+            <span class="n">levels</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_hist</span><span class="o">.</span><span class="n">getLevels</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">less_hist</span><span class="o">.</span><span class="n">setLevels</span><span class="p">(</span><span class="o">*</span><span class="n">levels</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">more_hist</span><span class="o">.</span><span class="n">setLevels</span><span class="p">(</span><span class="o">*</span><span class="n">levels</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_hist</span><span class="o">.</span><span class="n">sigLevelsChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">on_level_change</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">view</span><span class="p">,</span> <span class="n">view2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">less_img_vb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_img_vb</span><span class="p">],</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_img_vb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">more_img_vb</span><span class="p">]):</span>
+            <span class="n">view</span><span class="o">.</span><span class="n">linkView</span><span class="p">(</span><span class="n">ViewBox</span><span class="o">.</span><span class="n">XAxis</span><span class="p">,</span> <span class="n">view2</span><span class="p">)</span>
+            <span class="n">view</span><span class="o">.</span><span class="n">linkView</span><span class="p">(</span><span class="n">ViewBox</span><span class="o">.</span><span class="n">YAxis</span><span class="p">,</span> <span class="n">view2</span><span class="p">)</span>
+
+        <span class="n">image_layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">colspan</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">less_label</span> <span class="o">=</span> <span class="n">LabelItem</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">image_layout</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">less_label</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_label</span> <span class="o">=</span> <span class="n">LabelItem</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">image_layout</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_label</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">more_label</span> <span class="o">=</span> <span class="n">LabelItem</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+        <span class="n">image_layout</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">more_label</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">image_layout</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">less_img_vb</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">image_layout</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">less_hist</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">image_layout</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_img_vb</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">image_layout</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_hist</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">image_layout</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">more_img_vb</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">image_layout</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">more_hist</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+        <span class="n">less_pixel</span> <span class="o">=</span> <span class="n">LabelItem</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+        <span class="n">image_layout</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">less_pixel</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">current_pixel</span> <span class="o">=</span> <span class="n">LabelItem</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+        <span class="n">image_layout</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">current_pixel</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">more_pixel</span> <span class="o">=</span> <span class="n">LabelItem</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+        <span class="n">image_layout</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">more_pixel</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">less_sumsq</span> <span class="o">=</span> <span class="n">LabelItem</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+        <span class="n">image_layout</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">less_sumsq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">current_sumsq</span> <span class="o">=</span> <span class="n">LabelItem</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+        <span class="n">image_layout</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">current_sumsq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">more_sumsq</span> <span class="o">=</span> <span class="n">LabelItem</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+        <span class="n">image_layout</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">more_sumsq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">update_text</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">sqsum</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">pixel_label</span><span class="p">:</span> <span class="n">LabelItem</span><span class="p">,</span> <span class="n">sqsum_label</span><span class="p">:</span> <span class="n">LabelItem</span><span class="p">):</span>
+            <span class="n">pixel_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Value: </span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">sqsum_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sum of SQ: </span><span class="si">{</span><span class="n">sqsum</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_formatted_detail</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="c1"># &#39;&#39; if val &lt; 0 else &#39; &#39; pads out the line</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">less_img</span><span class="p">:</span>
+            <span class="k">lambda</span> <span class="n">val</span><span class="p">,</span> <span class="n">sumsq</span><span class="p">:</span> <span class="n">update_text</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">sumsq</span><span class="p">,</span> <span class="n">less_pixel</span><span class="p">,</span> <span class="n">less_sumsq</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_img</span><span class="p">:</span>
+            <span class="k">lambda</span> <span class="n">val</span><span class="p">,</span> <span class="n">sumsq</span><span class="p">:</span> <span class="n">update_text</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">sumsq</span><span class="p">,</span> <span class="n">current_pixel</span><span class="p">,</span> <span class="n">current_sumsq</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">more_img</span><span class="p">:</span>
+            <span class="k">lambda</span> <span class="n">val</span><span class="p">,</span> <span class="n">sumsq</span><span class="p">:</span> <span class="n">update_text</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">sumsq</span><span class="p">,</span> <span class="n">more_pixel</span><span class="p">,</span> <span class="n">more_sumsq</span><span class="p">),</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">less_img</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_img</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">more_img</span><span class="p">:</span>
+            <span class="n">img</span><span class="o">.</span><span class="n">hoverEvent</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">ev</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mouse_over</span><span class="p">(</span><span class="n">ev</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CompareSlicesView.mouse_over"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.dialogs.cor_inspection.recon_slice_view.html#mantidimaging.gui.dialogs.cor_inspection.recon_slice_view.CompareSlicesView.mouse_over">[docs]</a>    <span class="k">def</span> <span class="nf">mouse_over</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
+        <span class="c1"># Ignore events triggered by leaving window or right clicking</span>
+        <span class="k">if</span> <span class="n">ev</span><span class="o">.</span><span class="n">exit</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">CloseEnoughPoint</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">pos</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_value_labels</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_refresh_value_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">:</span> <span class="n">CloseEnoughPoint</span><span class="p">):</span>
+        <span class="n">diffs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">less_img</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_img</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">more_img</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">image</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">img</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pos</span><span class="o">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="n">img</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">pixel_value</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">image</span><span class="p">[</span><span class="n">pos</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">x</span><span class="p">]</span>
+                <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">image</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">display_formatted_detail</span><span class="p">[</span><span class="n">img</span><span class="p">](</span><span class="n">pixel_value</span><span class="p">,</span> <span class="n">diff</span><span class="p">)</span>
+                <span class="n">diffs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">diffs</span>
+
+<div class="viewcode-block" id="CompareSlicesView.image_in_vb"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.dialogs.cor_inspection.recon_slice_view.html#mantidimaging.gui.dialogs.cor_inspection.recon_slice_view.CompareSlicesView.image_in_vb">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">image_in_vb</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ImageItem</span><span class="p">,</span> <span class="n">ViewBox</span><span class="p">,</span> <span class="n">HistogramLUTItem</span><span class="p">]:</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">ImageItem</span><span class="p">()</span>
+        <span class="n">vb</span> <span class="o">=</span> <span class="n">ViewBox</span><span class="p">(</span><span class="n">invertY</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lockAspect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">vb</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+        <span class="n">hist</span> <span class="o">=</span> <span class="n">HistogramLUTItem</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">im</span><span class="p">,</span> <span class="n">vb</span><span class="p">,</span> <span class="n">hist</span></div>
+
+<div class="viewcode-block" id="CompareSlicesView.set_image"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.dialogs.cor_inspection.recon_slice_view.html#mantidimaging.gui.dialogs.cor_inspection.recon_slice_view.CompareSlicesView.set_image">[docs]</a>    <span class="k">def</span> <span class="nf">set_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_type</span><span class="p">:</span> <span class="n">ImageType</span><span class="p">,</span> <span class="n">recon_data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">image_type</span> <span class="o">==</span> <span class="n">ImageType</span><span class="o">.</span><span class="n">LESS</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">less_img</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">less_img</span><span class="o">.</span><span class="n">setImage</span><span class="p">(</span><span class="n">recon_data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">less_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">image_type</span> <span class="o">==</span> <span class="n">ImageType</span><span class="o">.</span><span class="n">CURRENT</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_img</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_img</span><span class="o">.</span><span class="n">setImage</span><span class="p">(</span><span class="n">recon_data</span><span class="p">,</span> <span class="n">autoLevels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">image_type</span> <span class="o">==</span> <span class="n">ImageType</span><span class="o">.</span><span class="n">MORE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">more_img</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">more_img</span><span class="o">.</span><span class="n">setImage</span><span class="p">(</span><span class="n">recon_data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">more_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">less_hist</span><span class="o">.</span><span class="n">imageChanged</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">more_hist</span><span class="o">.</span><span class="n">imageChanged</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_hist</span><span class="o">.</span><span class="n">sigLevelsChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_hist</span><span class="p">)</span>
+        <span class="n">diffs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_value_labels</span><span class="p">(</span><span class="n">CloseEnoughPoint</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mark_best_recon</span><span class="p">(</span><span class="n">diffs</span><span class="p">)</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.dialogs.cor_inspection.recon_slice_view</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

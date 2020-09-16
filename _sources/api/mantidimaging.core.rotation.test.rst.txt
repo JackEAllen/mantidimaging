@@ -1,0 +1,16 @@
+mantidimaging.core.rotation.test package
+========================================
+
+.. automodule:: mantidimaging.core.rotation.test
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.rotation.test.data_model_test
+   mantidimaging.core.rotation.test.polyfit_correlation_test

@@ -1,0 +1,23 @@
+mantidimaging.core.operations.cut\_off package
+==============================================
+
+.. automodule:: mantidimaging.core.operations.cut_off
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.operations.cut_off.test
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.operations.cut_off.cut_off

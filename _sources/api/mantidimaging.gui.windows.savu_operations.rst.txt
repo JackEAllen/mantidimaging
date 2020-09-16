@@ -1,0 +1,28 @@
+mantidimaging.gui.windows.savu\_operations package
+==================================================
+
+.. automodule:: mantidimaging.gui.windows.savu_operations
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.gui.windows.savu_operations.process_list
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.gui.windows.savu_operations.job_run_response
+   mantidimaging.gui.windows.savu_operations.model
+   mantidimaging.gui.windows.savu_operations.presenter
+   mantidimaging.gui.windows.savu_operations.remote_presenter
+   mantidimaging.gui.windows.savu_operations.sio_model
+   mantidimaging.gui.windows.savu_operations.view

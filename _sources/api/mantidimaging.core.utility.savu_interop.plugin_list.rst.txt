@@ -1,0 +1,7 @@
+mantidimaging.core.utility.savu\_interop.plugin\_list module
+============================================================
+
+.. automodule:: mantidimaging.core.utility.savu_interop.plugin_list
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,314 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.core.io.test.io_test &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.io.test.io_test</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.core.io.test.io_test</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="kn">import</span> <span class="nn">numpy.testing</span> <span class="k">as</span> <span class="nn">npt</span>
+
+<span class="kn">import</span> <span class="nn">mantidimaging.test_helpers.unit_test_helper</span> <span class="k">as</span> <span class="nn">th</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.data</span> <span class="kn">import</span> <span class="n">Images</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.io</span> <span class="kn">import</span> <span class="n">loader</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.io</span> <span class="kn">import</span> <span class="n">saver</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.helper</span> <span class="kn">import</span> <span class="n">initialise_logging</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.test_helpers</span> <span class="kn">import</span> <span class="n">FileOutputtingTestCase</span>
+
+
+<div class="viewcode-block" id="IOTest"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest">[docs]</a><span class="k">class</span> <span class="nc">IOTest</span><span class="p">(</span><span class="n">FileOutputtingTestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">IOTest</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># force silent outputs</span>
+        <span class="n">initialise_logging</span><span class="p">()</span>
+
+<div class="viewcode-block" id="IOTest.setUpClass"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.setUpClass">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">SharedArray</span> <span class="k">as</span> <span class="nn">sa</span>
+        <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">sa</span><span class="o">.</span><span class="n">list</span><span class="p">():</span>
+            <span class="n">sa</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="IOTest.tearDown"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.tearDown">[docs]</a>    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">SharedArray</span> <span class="k">as</span> <span class="nn">sa</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">sa</span><span class="o">.</span><span class="n">list</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="IOTest.assert_files_exist"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.assert_files_exist">[docs]</a>    <span class="k">def</span> <span class="nf">assert_files_exist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_name</span><span class="p">,</span> <span class="n">file_format</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_images</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">stack</span><span class="p">:</span>
+            <span class="c1"># this way we account for only selected indices in the filenames</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">indices</span><span class="p">:</span>
+                <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_images</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+            <span class="n">filenames</span> <span class="o">=</span> <span class="n">saver</span><span class="o">.</span><span class="n">generate_names</span><span class="p">(</span><span class="n">base_name</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">num_images</span><span class="p">,</span> <span class="n">out_format</span><span class="o">=</span><span class="n">file_format</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">base_name</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">file_format</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span></div>
+
+    <span class="c1"># fits sequential</span>
+<div class="viewcode-block" id="IOTest.test_preproc_fits_seq"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_preproc_fits_seq">[docs]</a>    <span class="k">def</span> <span class="nf">test_preproc_fits_seq</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_preproc</span><span class="p">(</span><span class="s1">&#39;fits&#39;</span><span class="p">)</span></div>
+
+    <span class="c1"># fits sequential loader indices</span>
+<div class="viewcode-block" id="IOTest.test_preproc_fits_seq_loader_indices_4_5"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_preproc_fits_seq_loader_indices_4_5">[docs]</a>    <span class="k">def</span> <span class="nf">test_preproc_fits_seq_loader_indices_4_5</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_preproc</span><span class="p">(</span><span class="s1">&#39;fits&#39;</span><span class="p">,</span> <span class="n">loader_indices</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">expected_len</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IOTest.test_preproc_fits_seq_loader_indices_0_7"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_preproc_fits_seq_loader_indices_0_7">[docs]</a>    <span class="k">def</span> <span class="nf">test_preproc_fits_seq_loader_indices_0_7</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_preproc</span><span class="p">(</span><span class="s1">&#39;fits&#39;</span><span class="p">,</span> <span class="n">loader_indices</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">expected_len</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IOTest.test_preproc_fits_seq_loader_indices_3_9"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_preproc_fits_seq_loader_indices_3_9">[docs]</a>    <span class="k">def</span> <span class="nf">test_preproc_fits_seq_loader_indices_3_9</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_preproc</span><span class="p">(</span><span class="s1">&#39;fits&#39;</span><span class="p">,</span> <span class="n">loader_indices</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">expected_len</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IOTest.test_preproc_fits_seq_loader_indices_5_9"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_preproc_fits_seq_loader_indices_5_9">[docs]</a>    <span class="k">def</span> <span class="nf">test_preproc_fits_seq_loader_indices_5_9</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_preproc</span><span class="p">(</span><span class="s1">&#39;fits&#39;</span><span class="p">,</span> <span class="n">loader_indices</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">expected_len</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span></div>
+
+    <span class="c1"># fits sequential saver indices</span>
+<div class="viewcode-block" id="IOTest.test_preproc_fits_seq_saver_indices_0_5"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_preproc_fits_seq_saver_indices_0_5">[docs]</a>    <span class="k">def</span> <span class="nf">test_preproc_fits_seq_saver_indices_0_5</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_preproc</span><span class="p">(</span><span class="s1">&#39;fits&#39;</span><span class="p">,</span> <span class="n">saver_indices</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">expected_len</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IOTest.test_preproc_fits_seq_saver_indices_0_2"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_preproc_fits_seq_saver_indices_0_2">[docs]</a>    <span class="k">def</span> <span class="nf">test_preproc_fits_seq_saver_indices_0_2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_preproc</span><span class="p">(</span><span class="s1">&#39;fits&#39;</span><span class="p">,</span> <span class="n">saver_indices</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">expected_len</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IOTest.test_preproc_fits_seq_saver_indices_3_10"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_preproc_fits_seq_saver_indices_3_10">[docs]</a>    <span class="k">def</span> <span class="nf">test_preproc_fits_seq_saver_indices_3_10</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_preproc</span><span class="p">(</span><span class="s1">&#39;fits&#39;</span><span class="p">,</span> <span class="n">saver_indices</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">expected_len</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IOTest.test_preproc_fits_seq_saver_indices_7_10"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_preproc_fits_seq_saver_indices_7_10">[docs]</a>    <span class="k">def</span> <span class="nf">test_preproc_fits_seq_saver_indices_7_10</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_preproc</span><span class="p">(</span><span class="s1">&#39;fits&#39;</span><span class="p">,</span> <span class="n">saver_indices</span><span class="o">=</span><span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">expected_len</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span></div>
+
+    <span class="c1"># tiff sequential</span>
+<div class="viewcode-block" id="IOTest.test_preproc_tiff_seq"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_preproc_tiff_seq">[docs]</a>    <span class="k">def</span> <span class="nf">test_preproc_tiff_seq</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_preproc</span><span class="p">(</span><span class="s1">&#39;tiff&#39;</span><span class="p">)</span></div>
+
+    <span class="c1"># tiff sequential loader indices</span>
+<div class="viewcode-block" id="IOTest.test_preproc_tiff_seq_loader_indices_4_5"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_preproc_tiff_seq_loader_indices_4_5">[docs]</a>    <span class="k">def</span> <span class="nf">test_preproc_tiff_seq_loader_indices_4_5</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_preproc</span><span class="p">(</span><span class="s1">&#39;tiff&#39;</span><span class="p">,</span> <span class="n">loader_indices</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">expected_len</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IOTest.test_preproc_tiff_seq_loader_indices_0_7"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_preproc_tiff_seq_loader_indices_0_7">[docs]</a>    <span class="k">def</span> <span class="nf">test_preproc_tiff_seq_loader_indices_0_7</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_preproc</span><span class="p">(</span><span class="s1">&#39;tiff&#39;</span><span class="p">,</span> <span class="n">loader_indices</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">expected_len</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IOTest.test_preproc_tiff_seq_loader_indices_3_9"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_preproc_tiff_seq_loader_indices_3_9">[docs]</a>    <span class="k">def</span> <span class="nf">test_preproc_tiff_seq_loader_indices_3_9</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_preproc</span><span class="p">(</span><span class="s1">&#39;tiff&#39;</span><span class="p">,</span> <span class="n">loader_indices</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">expected_len</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IOTest.test_preproc_tiff_seq_loader_indices_5_9"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_preproc_tiff_seq_loader_indices_5_9">[docs]</a>    <span class="k">def</span> <span class="nf">test_preproc_tiff_seq_loader_indices_5_9</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_preproc</span><span class="p">(</span><span class="s1">&#39;tiff&#39;</span><span class="p">,</span> <span class="n">loader_indices</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">expected_len</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span></div>
+
+    <span class="c1"># tiff sequential saver indices</span>
+<div class="viewcode-block" id="IOTest.test_preproc_tiff_seq_saver_indices_0_5"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_preproc_tiff_seq_saver_indices_0_5">[docs]</a>    <span class="k">def</span> <span class="nf">test_preproc_tiff_seq_saver_indices_0_5</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_preproc</span><span class="p">(</span><span class="s1">&#39;tiff&#39;</span><span class="p">,</span> <span class="n">saver_indices</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">expected_len</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IOTest.test_preproc_tiff_seq_saver_indices_0_2"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_preproc_tiff_seq_saver_indices_0_2">[docs]</a>    <span class="k">def</span> <span class="nf">test_preproc_tiff_seq_saver_indices_0_2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_preproc</span><span class="p">(</span><span class="s1">&#39;tiff&#39;</span><span class="p">,</span> <span class="n">saver_indices</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">expected_len</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IOTest.test_preproc_tiff_seq_saver_indices_3_10"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_preproc_tiff_seq_saver_indices_3_10">[docs]</a>    <span class="k">def</span> <span class="nf">test_preproc_tiff_seq_saver_indices_3_10</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_preproc</span><span class="p">(</span><span class="s1">&#39;tiff&#39;</span><span class="p">,</span> <span class="n">saver_indices</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">expected_len</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IOTest.test_preproc_tiff_seq_saver_indices_7_10"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_preproc_tiff_seq_saver_indices_7_10">[docs]</a>    <span class="k">def</span> <span class="nf">test_preproc_tiff_seq_saver_indices_7_10</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_preproc</span><span class="p">(</span><span class="s1">&#39;tiff&#39;</span><span class="p">,</span> <span class="n">saver_indices</span><span class="o">=</span><span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">expected_len</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IOTest.do_preproc"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.do_preproc">[docs]</a>    <span class="k">def</span> <span class="nf">do_preproc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_format</span><span class="p">,</span> <span class="n">loader_indices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">expected_len</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">saver_indices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_as_stack</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">expected_images</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">generate_images</span><span class="p">()</span>
+
+        <span class="c1"># saver indices only affects the enumeration of the data</span>
+        <span class="k">if</span> <span class="n">saver_indices</span><span class="p">:</span>
+            <span class="c1"># crop the original images to make sure the tests is correct</span>
+            <span class="n">expected_images</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">expected_images</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">saver_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">saver_indices</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+
+        <span class="c1"># saver.save_preproc_images(expected_images)</span>
+        <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">expected_images</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="n">out_format</span><span class="o">=</span><span class="n">img_format</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="n">saver_indices</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_files_exist</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="n">saver</span><span class="o">.</span><span class="n">DEFAULT_NAME_PREFIX</span><span class="p">),</span> <span class="n">img_format</span><span class="p">,</span>
+                                <span class="n">data_as_stack</span><span class="p">,</span> <span class="n">expected_images</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">saver_indices</span><span class="p">)</span>
+
+        <span class="c1"># this does not load any flats or darks as they were not saved out</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="n">in_format</span><span class="o">=</span><span class="n">img_format</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="n">loader_indices</span><span class="p">)</span>
+        <span class="n">loaded_images</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sample</span>
+
+        <span class="k">if</span> <span class="n">loader_indices</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">loaded_images</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="n">expected_len</span><span class="p">,</span> \
+                <span class="s2">&quot;The length of the loaded data does not &quot;</span> \
+                <span class="s2">&quot;match the expected length! Expected: </span><span class="si">{0}</span><span class="s2">, &quot;</span> \
+                <span class="s2">&quot;Got </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">expected_len</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span>
+                    <span class="n">loaded_images</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+
+            <span class="n">expected_images</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">expected_images</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">loader_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">loader_indices</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+
+        <span class="n">npt</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">loaded_images</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">expected_images</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">loaded_images</span><span class="o">.</span><span class="n">free_memory</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">dataset</span><span class="o">.</span><span class="n">dark</span><span class="p">:</span>
+            <span class="n">dataset</span><span class="o">.</span><span class="n">dark</span><span class="o">.</span><span class="n">free_memory</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">dataset</span><span class="o">.</span><span class="n">flat</span><span class="p">:</span>
+            <span class="n">dataset</span><span class="o">.</span><span class="n">flat</span><span class="o">.</span><span class="n">free_memory</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="IOTest.test_load_sample_flat_and_dark"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_load_sample_flat_and_dark">[docs]</a>    <span class="k">def</span> <span class="nf">test_load_sample_flat_and_dark</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                       <span class="n">img_format</span><span class="o">=</span><span class="s1">&#39;tiff&#39;</span><span class="p">,</span>
+                                       <span class="n">loader_indices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                       <span class="n">expected_len</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                       <span class="n">saver_indices</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">generate_images</span><span class="p">()</span>
+        <span class="n">flat</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">generate_images</span><span class="p">()</span>
+        <span class="n">dark</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">generate_images</span><span class="p">()</span>
+
+        <span class="c1"># this only affects enumeration</span>
+        <span class="n">saver</span><span class="o">.</span><span class="n">_indices</span> <span class="o">=</span> <span class="n">saver_indices</span>
+
+        <span class="c1"># saver indices only affects the enumeration of the data</span>
+        <span class="k">if</span> <span class="n">saver_indices</span><span class="p">:</span>
+            <span class="c1"># crop the original images to make sure the test is checking the</span>
+            <span class="c1"># indices that were actually saved out</span>
+            <span class="n">images</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">saver_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">saver_indices</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+
+        <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="n">out_format</span><span class="o">=</span><span class="n">img_format</span><span class="p">)</span>
+        <span class="n">flat_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="s2">&quot;imgIOTest_flat&quot;</span><span class="p">)</span>
+        <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">flat</span><span class="p">,</span> <span class="n">flat_dir</span><span class="p">,</span> <span class="n">out_format</span><span class="o">=</span><span class="n">img_format</span><span class="p">)</span>
+        <span class="n">dark_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="s2">&quot;imgIOTest_dark&quot;</span><span class="p">)</span>
+        <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">dark</span><span class="p">,</span> <span class="n">dark_dir</span><span class="p">,</span> <span class="n">out_format</span><span class="o">=</span><span class="n">img_format</span><span class="p">)</span>
+
+        <span class="n">data_as_stack</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_files_exist</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span> <span class="n">saver</span><span class="o">.</span><span class="n">DEFAULT_NAME_PREFIX</span><span class="p">),</span> <span class="n">img_format</span><span class="p">,</span>
+                                <span class="n">data_as_stack</span><span class="p">,</span> <span class="n">images</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">flat_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">flat_dir</span><span class="p">,</span> <span class="n">saver</span><span class="o">.</span><span class="n">DEFAULT_NAME_PREFIX</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_files_exist</span><span class="p">(</span><span class="n">flat_dir</span><span class="p">,</span> <span class="n">img_format</span><span class="p">,</span> <span class="n">data_as_stack</span><span class="p">,</span> <span class="n">flat</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">dark_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dark_dir</span><span class="p">,</span> <span class="n">saver</span><span class="o">.</span><span class="n">DEFAULT_NAME_PREFIX</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_files_exist</span><span class="p">(</span><span class="n">dark_dir</span><span class="p">,</span> <span class="n">img_format</span><span class="p">,</span> <span class="n">data_as_stack</span><span class="p">,</span> <span class="n">dark</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">flat_filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">flat_dir</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="n">saver</span><span class="o">.</span><span class="n">DEFAULT_ZFILL_LENGTH</span><span class="p">)</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">img_format</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">dark_filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dark_dir</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="n">saver</span><span class="o">.</span><span class="n">DEFAULT_ZFILL_LENGTH</span><span class="p">)</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">img_format</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_directory</span><span class="p">,</span>
+                              <span class="n">flat_filename</span><span class="p">,</span>
+                              <span class="n">dark_filename</span><span class="p">,</span>
+                              <span class="n">in_format</span><span class="o">=</span><span class="n">img_format</span><span class="p">,</span>
+                              <span class="n">indices</span><span class="o">=</span><span class="n">loader_indices</span><span class="p">)</span>
+        <span class="n">loaded_images</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sample</span>
+
+        <span class="k">if</span> <span class="n">loader_indices</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">loaded_images</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="n">expected_len</span><span class="p">,</span> \
+                <span class="s2">&quot;The length of the loaded data doesn&#39;t &quot;</span> \
+                <span class="s2">&quot;match the expected length: </span><span class="si">{0}</span><span class="s2">, &quot;</span> \
+                <span class="s2">&quot;Got: </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">expected_len</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">loaded_images</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+
+            <span class="c1"># crop the original images to make sure the tests is correct</span>
+            <span class="n">images</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">loader_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">loader_indices</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+
+        <span class="n">npt</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">loaded_images</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">images</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="c1"># we only check the first image because they will be</span>
+        <span class="c1"># averaged out when loaded! The initial images are only 3s</span>
+        <span class="n">npt</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">flat</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">flat</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">npt</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">dark</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">dark</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="n">loaded_images</span><span class="o">.</span><span class="n">free_memory</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">dataset</span><span class="o">.</span><span class="n">dark</span><span class="p">:</span>
+            <span class="n">dataset</span><span class="o">.</span><span class="n">dark</span><span class="o">.</span><span class="n">free_memory</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">dataset</span><span class="o">.</span><span class="n">flat</span><span class="p">:</span>
+            <span class="n">dataset</span><span class="o">.</span><span class="n">flat</span><span class="o">.</span><span class="n">free_memory</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="IOTest.test_metadata_round_trip"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.io.test.io_test.html#mantidimaging.core.io.test.io_test.IOTest.test_metadata_round_trip">[docs]</a>    <span class="k">def</span> <span class="nf">test_metadata_round_trip</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Create dummy image stack</span>
+        <span class="n">sample</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">gen_img_shared_array_with_val</span><span class="p">(</span><span class="mf">42.</span><span class="p">)</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="n">Images</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+        <span class="n">images</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;hello, world!&#39;</span>
+
+        <span class="c1"># Save image stack</span>
+        <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_directory</span><span class="p">)</span>
+
+        <span class="c1"># Load image stack back</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_directory</span><span class="p">)</span>
+        <span class="n">loaded_images</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sample</span>
+
+        <span class="c1"># Ensure properties have been preserved</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">loaded_images</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> <span class="n">images</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
+
+        <span class="n">loaded_images</span><span class="o">.</span><span class="n">free_memory</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">dataset</span><span class="o">.</span><span class="n">dark</span><span class="p">:</span>
+            <span class="n">dataset</span><span class="o">.</span><span class="n">dark</span><span class="o">.</span><span class="n">free_memory</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">dataset</span><span class="o">.</span><span class="n">flat</span><span class="p">:</span>
+            <span class="n">dataset</span><span class="o">.</span><span class="n">flat</span><span class="o">.</span><span class="n">free_memory</span><span class="p">()</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.io.test.io_test</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

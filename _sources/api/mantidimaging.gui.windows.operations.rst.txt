@@ -1,0 +1,26 @@
+mantidimaging.gui.windows.operations package
+============================================
+
+.. automodule:: mantidimaging.gui.windows.operations
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.gui.windows.operations.test
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.gui.windows.operations.filter_previews
+   mantidimaging.gui.windows.operations.model
+   mantidimaging.gui.windows.operations.presenter
+   mantidimaging.gui.windows.operations.view

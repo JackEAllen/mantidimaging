@@ -1,0 +1,15 @@
+mantidimaging.core.operations.remove\_stripe\_filtering.test package
+====================================================================
+
+.. automodule:: mantidimaging.core.operations.remove_stripe_filtering.test
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.operations.remove_stripe_filtering.test.remove_stripe_filtering_test

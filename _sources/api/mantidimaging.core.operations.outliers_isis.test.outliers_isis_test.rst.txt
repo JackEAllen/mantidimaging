@@ -1,0 +1,7 @@
+mantidimaging.core.operations.outliers\_isis.test.outliers\_isis\_test module
+=============================================================================
+
+.. automodule:: mantidimaging.core.operations.outliers_isis.test.outliers_isis_test
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.gui.windows.operations.view &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.operations.view</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.gui.windows.operations.view</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QCheckBox</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QSplitter</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span> <span class="n">QComboBox</span>
+<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="kn">import</span> <span class="n">ImageItem</span>
+
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.mvp_base</span> <span class="kn">import</span> <span class="n">BaseMainWindowView</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.utility</span> <span class="kn">import</span> <span class="p">(</span><span class="n">delete_all_widgets_from_layout</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.widgets.stack_selector</span> <span class="kn">import</span> <span class="n">StackSelectorWidgetView</span>
+<span class="kn">from</span> <span class="nn">.filter_previews</span> <span class="kn">import</span> <span class="n">FilterPreviews</span>
+<span class="kn">from</span> <span class="nn">.presenter</span> <span class="kn">import</span> <span class="n">FiltersWindowPresenter</span>
+<span class="kn">from</span> <span class="nn">.presenter</span> <span class="kn">import</span> <span class="n">Notification</span> <span class="k">as</span> <span class="n">PresNotification</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">mantidimaging.gui.windows.main</span> <span class="kn">import</span> <span class="n">MainWindowView</span>  <span class="c1"># noqa:F401</span>
+
+
+<div class="viewcode-block" id="FiltersWindowView"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.view.html#mantidimaging.gui.windows.operations.view.FiltersWindowView">[docs]</a><span class="k">class</span> <span class="nc">FiltersWindowView</span><span class="p">(</span><span class="n">BaseMainWindowView</span><span class="p">):</span>
+    <span class="n">auto_update_triggered</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">()</span>
+
+    <span class="n">splitter</span><span class="p">:</span> <span class="n">QSplitter</span>
+
+    <span class="n">linkImages</span><span class="p">:</span> <span class="n">QCheckBox</span>
+    <span class="n">showHistogramLegend</span><span class="p">:</span> <span class="n">QCheckBox</span>
+    <span class="n">combinedHistograms</span><span class="p">:</span> <span class="n">QCheckBox</span>
+    <span class="n">invertDifference</span><span class="p">:</span> <span class="n">QCheckBox</span>
+    <span class="n">overlayDifference</span><span class="p">:</span> <span class="n">QCheckBox</span>
+
+    <span class="n">previewsLayout</span><span class="p">:</span> <span class="n">QVBoxLayout</span>
+    <span class="n">previews</span><span class="p">:</span> <span class="n">FilterPreviews</span>
+    <span class="n">stackSelector</span><span class="p">:</span> <span class="n">StackSelectorWidgetView</span>
+
+    <span class="n">error_icon</span><span class="p">:</span> <span class="n">QLabel</span>
+    <span class="n">error_text</span><span class="p">:</span> <span class="n">QLabel</span>
+
+    <span class="n">presenter</span><span class="p">:</span> <span class="n">FiltersWindowPresenter</span>
+
+    <span class="n">applyButton</span><span class="p">:</span> <span class="n">QPushButton</span>
+    <span class="n">filterSelector</span><span class="p">:</span> <span class="n">QComboBox</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_window</span><span class="p">:</span> <span class="s1">&#39;MainWindowView&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FiltersWindowView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">main_window</span><span class="p">,</span> <span class="s1">&#39;gui/ui/filters_window.ui&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span> <span class="o">=</span> <span class="n">main_window</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span> <span class="o">=</span> <span class="n">FiltersWindowPresenter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">splitter</span><span class="o">.</span><span class="n">setSizes</span><span class="p">([</span><span class="mi">200</span><span class="p">,</span> <span class="mi">9999</span><span class="p">])</span>
+
+        <span class="c1"># Populate list of operations and handle filter selection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filterSelector</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">filter_names</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filterSelector</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_filter_selection</span><span class="p">)</span>  <span class="c1"># type:ignore</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handle_filter_selection</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Handle stack selection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stackSelector</span><span class="o">.</span><span class="n">stack_selected_uuid</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">set_stack_uuid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stackSelector</span><span class="o">.</span><span class="n">stack_selected_uuid</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">auto_update_triggered</span><span class="o">.</span><span class="n">emit</span><span class="p">)</span>
+
+        <span class="c1"># Handle apply filter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">applyButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">PresNotification</span><span class="o">.</span><span class="n">APPLY_FILTER</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">splitter</span><span class="o">.</span><span class="n">setStretchFactor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">previews</span> <span class="o">=</span> <span class="n">FilterPreviews</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">previews</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">previewsLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">previews</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_previews</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">combinedHistograms</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">histogram_mode_changed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">showHistogramLegend</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">histogram_legend_is_changed</span><span class="p">)</span>
+        <span class="c1"># set here to trigger the changed event</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">showHistogramLegend</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">linkImages</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">link_images_changed</span><span class="p">)</span>
+        <span class="c1"># set here to trigger the changed event</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linkImages</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">invertDifference</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">PresNotification</span><span class="o">.</span><span class="n">UPDATE_PREVIEWS</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overlayDifference</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">PresNotification</span><span class="o">.</span><span class="n">UPDATE_PREVIEWS</span><span class="p">))</span>
+
+        <span class="c1"># Handle preview index selection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">previewImageIndex</span><span class="o">.</span><span class="n">valueChanged</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">set_preview_image_index</span><span class="p">)</span>
+
+        <span class="c1"># Preview update triggers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_update_triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_auto_update_triggered</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updatePreviewButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">PresNotification</span><span class="o">.</span><span class="n">UPDATE_PREVIEWS</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">stackSelector</span><span class="o">.</span><span class="n">subscribe_to_main_window</span><span class="p">(</span><span class="n">main_window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stackSelector</span><span class="o">.</span><span class="n">select_eligible_stack</span><span class="p">()</span>
+
+<div class="viewcode-block" id="FiltersWindowView.cleanup"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.view.html#mantidimaging.gui.windows.operations.view.FiltersWindowView.cleanup">[docs]</a>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stackSelector</span><span class="o">.</span><span class="n">unsubscribe_from_main_window</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">disconnect_current_stack_roi</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_update_triggered</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">filters</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="FiltersWindowView.show"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.view.html#mantidimaging.gui.windows.operations.view.FiltersWindowView.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FiltersWindowView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_update_triggered</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FiltersWindowView.handle_filter_selection"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.view.html#mantidimaging.gui.windows.operations.view.FiltersWindowView.handle_filter_selection">[docs]</a>    <span class="k">def</span> <span class="nf">handle_filter_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_idx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle selection of a filter from the drop down list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Remove all existing items from the properties layout</span>
+        <span class="n">delete_all_widgets_from_layout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filterPropertiesLayout</span><span class="p">)</span>
+
+        <span class="c1"># Do registration of new filter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">PresNotification</span><span class="o">.</span><span class="n">REGISTER_ACTIVE_FILTER</span><span class="p">)</span>
+
+        <span class="c1"># Update preview on filter selection (on the off chance the default</span>
+        <span class="c1"># options are valid)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_update_triggered</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FiltersWindowView.on_auto_update_triggered"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.view.html#mantidimaging.gui.windows.operations.view.FiltersWindowView.on_auto_update_triggered">[docs]</a>    <span class="k">def</span> <span class="nf">on_auto_update_triggered</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Called when the signal indicating the filter, filter properties or data</span>
+<span class="sd">        has changed such that the previews are now out of date.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_error_dialog</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">previewAutoUpdate</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">isVisible</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">presenter</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">PresNotification</span><span class="o">.</span><span class="n">UPDATE_PREVIEWS</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FiltersWindowView.clear_previews"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.view.html#mantidimaging.gui.windows.operations.view.FiltersWindowView.clear_previews">[docs]</a>    <span class="k">def</span> <span class="nf">clear_previews</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">previews</span><span class="o">.</span><span class="n">clear_items</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FiltersWindowView.histogram_mode_changed"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.view.html#mantidimaging.gui.windows.operations.view.FiltersWindowView.histogram_mode_changed">[docs]</a>    <span class="k">def</span> <span class="nf">histogram_mode_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">previews</span><span class="o">.</span><span class="n">combined_histograms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">combinedHistograms</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">previews</span><span class="o">.</span><span class="n">redraw_histograms</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FiltersWindowView.histogram_legend_is_changed"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.view.html#mantidimaging.gui.windows.operations.view.FiltersWindowView.histogram_legend_is_changed">[docs]</a>    <span class="k">def</span> <span class="nf">histogram_legend_is_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">previews</span><span class="o">.</span><span class="n">histogram_legend_visible</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">showHistogramLegend</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
+        <span class="n">legend</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">previews</span><span class="o">.</span><span class="n">histogram_legend</span>
+        <span class="k">if</span> <span class="n">legend</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">showHistogramLegend</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+                <span class="n">legend</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">legend</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FiltersWindowView.link_images_changed"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.view.html#mantidimaging.gui.windows.operations.view.FiltersWindowView.link_images_changed">[docs]</a>    <span class="k">def</span> <span class="nf">link_images_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">linkImages</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">previews</span><span class="o">.</span><span class="n">link_all_views</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">previews</span><span class="o">.</span><span class="n">unlink_all_views</span><span class="p">()</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">preview_image_before</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImageItem</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">previews</span><span class="o">.</span><span class="n">image_before</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">preview_image_after</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImageItem</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">previews</span><span class="o">.</span><span class="n">image_after</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">preview_image_difference</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ImageItem</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">previews</span><span class="o">.</span><span class="n">image_difference</span>
+
+<div class="viewcode-block" id="FiltersWindowView.show_error_dialog"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.view.html#mantidimaging.gui.windows.operations.view.FiltersWindowView.show_error_dialog">[docs]</a>    <span class="k">def</span> <span class="nf">show_error_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_text</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_icon</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">(</span><span class="n">QApplication</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">standardPixmap</span><span class="p">(</span><span class="n">QApplication</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">SP_MessageBoxCritical</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_text</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FiltersWindowView.clear_error_dialog"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.operations.view.html#mantidimaging.gui.windows.operations.view.FiltersWindowView.clear_error_dialog">[docs]</a>    <span class="k">def</span> <span class="nf">clear_error_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_icon</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_text</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_text</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.operations.view</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

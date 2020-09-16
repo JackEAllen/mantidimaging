@@ -1,0 +1,16 @@
+mantidimaging.core.gpu.test package
+===================================
+
+.. automodule:: mantidimaging.core.gpu.test
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.gpu.test.gpu_test
+   mantidimaging.core.gpu.test.import_test

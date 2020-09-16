@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.core.io.savu_config_writer &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.io.savu_config_writer</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.core.io.savu_config_writer</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Writes out NXS files for SAVU</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">itertools</span> <span class="k">as</span> <span class="nn">it</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Type</span>
+
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">mantidimaging.core.utility.savu_interop.citations</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Citation</span><span class="p">,</span> <span class="n">HDF5Citation</span><span class="p">,</span> <span class="n">MantidImagingCitation</span><span class="p">,</span>
+                                                               <span class="n">MPICitation</span><span class="p">,</span> <span class="n">SavuCitation</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.utility.savu_interop.nxclasses</span> <span class="kn">import</span> <span class="n">NXClasses</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.utility.savu_interop.plugin_list</span> <span class="kn">import</span> <span class="n">SAVUPluginList</span>
+
+
+<div class="viewcode-block" id="save"><a class="viewcode-back" href="../../../../api/mantidimaging.core.io.savu_config_writer.html#mantidimaging.core.io.savu_config_writer.save">[docs]</a><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="n">spl</span><span class="p">:</span> <span class="n">SAVUPluginList</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s2">&quot;.nxs&quot;</span> <span class="o">!=</span> <span class="n">file</span><span class="o">.</span><span class="n">suffix</span><span class="p">:</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.nxs&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;File exists and will not be overwritten!&quot;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">nxs</span><span class="p">:</span>
+        <span class="n">entry_group</span> <span class="o">=</span> <span class="n">nxs</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="n">spl</span><span class="o">.</span><span class="n">ENTRY_PATH</span><span class="p">)</span>
+        <span class="n">entry_group</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;NX_class&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NXClasses</span><span class="o">.</span><span class="n">NXentry</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="n">framework_group</span> <span class="o">=</span> <span class="n">entry_group</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="n">spl</span><span class="o">.</span><span class="n">CITATIONS_PATH</span><span class="p">)</span>
+        <span class="n">framework_group</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;NX_class&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NXClasses</span><span class="o">.</span><span class="n">NXcollection</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="n">_add_citation_group</span><span class="p">(</span><span class="n">framework_group</span><span class="p">,</span> <span class="n">HDF5Citation</span><span class="p">)</span>
+        <span class="n">_add_citation_group</span><span class="p">(</span><span class="n">framework_group</span><span class="p">,</span> <span class="n">MPICitation</span><span class="p">)</span>
+        <span class="n">_add_citation_group</span><span class="p">(</span><span class="n">framework_group</span><span class="p">,</span> <span class="n">SavuCitation</span><span class="p">)</span>
+        <span class="n">_add_citation_group</span><span class="p">(</span><span class="n">framework_group</span><span class="p">,</span> <span class="n">MantidImagingCitation</span><span class="p">)</span>
+
+        <span class="n">plugin_group</span> <span class="o">=</span> <span class="n">entry_group</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="n">spl</span><span class="o">.</span><span class="n">PLUGIN_PATH</span><span class="p">)</span>
+        <span class="n">plugin_group</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;NX_class&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NXClasses</span><span class="o">.</span><span class="n">NXprocess</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="n">spl</span><span class="o">.</span><span class="n">prepend_plugins</span><span class="p">,</span> <span class="n">spl</span><span class="o">.</span><span class="n">plugins</span><span class="p">,</span> <span class="n">spl</span><span class="o">.</span><span class="n">append_plugins</span><span class="p">),</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">group_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">spl</span><span class="o">.</span><span class="n">PLUGIN_INDEX_FMT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="n">plugin_group</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="n">group_path</span><span class="p">)</span>
+            <span class="n">group</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;NX_class&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NXClasses</span><span class="o">.</span><span class="n">NXnote</span><span class="o">.</span><span class="n">value</span>
+
+            <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">plugin</span><span class="p">):</span>
+                <span class="c1"># the shape=(1,) is needed because SAVU uses [:] to access the data,</span>
+                <span class="c1"># and that fails to slice it, unless the shape is manually specified</span>
+                <span class="n">group</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">plugin</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span></div>
+
+
+<span class="k">def</span> <span class="nf">_add_citation_group</span><span class="p">(</span><span class="n">framework_group</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Group</span><span class="p">,</span> <span class="n">dataclass</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Citation</span><span class="p">]):</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="n">framework_group</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="n">dataclass</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">group</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;NX_class&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NXClasses</span><span class="o">.</span><span class="n">NXcite</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="n">group</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;bibtex&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="n">dataclass</span><span class="o">.</span><span class="n">bibtex</span><span class="p">))</span>
+    <span class="n">group</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="n">dataclass</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
+    <span class="n">group</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;doi&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="n">dataclass</span><span class="o">.</span><span class="n">doi</span><span class="p">))</span>
+    <span class="n">group</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s1">&#39;endnote&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="n">dataclass</span><span class="o">.</span><span class="n">endnote</span><span class="p">))</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.io.savu_config_writer</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

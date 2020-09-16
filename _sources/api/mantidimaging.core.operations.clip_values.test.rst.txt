@@ -1,0 +1,15 @@
+mantidimaging.core.operations.clip\_values.test package
+=======================================================
+
+.. automodule:: mantidimaging.core.operations.clip_values.test
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.operations.clip_values.test.clip_values_test

@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.gui.windows.savu_operations.model module &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mantidimaging.gui.windows.savu_operations.presenter module" href="mantidimaging.gui.windows.savu_operations.presenter.html" />
+    <link rel="prev" title="mantidimaging.gui.windows.savu_operations.job_run_response module" href="mantidimaging.gui.windows.savu_operations.job_run_response.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.savu_operations.presenter.html" title="mantidimaging.gui.windows.savu_operations.presenter module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.savu_operations.job_run_response.html" title="mantidimaging.gui.windows.savu_operations.job_run_response module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="mantidimaging.gui.html" >mantidimaging.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="mantidimaging.gui.windows.html" >mantidimaging.gui.windows package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="mantidimaging.gui.windows.savu_operations.html" accesskey="U">mantidimaging.gui.windows.savu_operations package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.savu_operations.model module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-mantidimaging.gui.windows.savu_operations.model">
+<span id="mantidimaging-gui-windows-savu-operations-model-module"></span><h1>mantidimaging.gui.windows.savu_operations.model module<a class="headerlink" href="#module-mantidimaging.gui.windows.savu_operations.model" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel">
+<em class="property">class </em><code class="sig-prename descclassname">mantidimaging.gui.windows.savu_operations.model.</code><code class="sig-name descname">SavuFiltersWindowModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">presenter</span><span class="p">:</span> <span class="n">SavuFiltersWindowPresenter</span></em>, <em class="sig-param"><span class="n">plugins_json</span><span class="p">:</span> <span class="n">Dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/model.html#SavuFiltersWindowModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.PROCESS_LIST_DIR">
+<code class="sig-name descname">PROCESS_LIST_DIR</code><em class="property"> = PosixPath('/home/dtasev/mantidimaging/process_lists')</em><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.PROCESS_LIST_DIR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.apply_process_list">
+<code class="sig-name descname">apply_process_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">plugin_entries</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference internal" href="mantidimaging.core.utility.savu_interop.plugin_list.html#mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginListEntry" title="mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginListEntry">mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginListEntry</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">indices</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/model.html#SavuFiltersWindowModel.apply_process_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.apply_process_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.create_plugin_entry_from">
+<em class="property">static </em><code class="sig-name descname">create_plugin_entry_from</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">current_filter</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Tuple<span class="p">, </span>Tuple<span class="p">[</span><a class="reference internal" href="mantidimaging.core.utility.savu_interop.plugin_list.html#mantidimaging.core.utility.savu_interop.plugin_list.SAVUPlugin" title="mantidimaging.core.utility.savu_interop.plugin_list.SAVUPlugin">mantidimaging.core.utility.savu_interop.plugin_list.SAVUPlugin</a><span class="p">, </span>List<span class="p">[</span>PyQt5.QtWidgets.QWidget<span class="p">]</span><span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="mantidimaging.core.utility.savu_interop.plugin_list.html#mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginListEntry" title="mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginListEntry">mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginListEntry</a><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/model.html#SavuFiltersWindowModel.create_plugin_entry_from"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.create_plugin_entry_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.do_apply_filter">
+<code class="sig-name descname">do_apply_filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">current_filter</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Tuple<span class="p">, </span>Tuple<span class="p">[</span><a class="reference internal" href="mantidimaging.core.utility.savu_interop.plugin_list.html#mantidimaging.core.utility.savu_interop.plugin_list.SAVUPlugin" title="mantidimaging.core.utility.savu_interop.plugin_list.SAVUPlugin">mantidimaging.core.utility.savu_interop.plugin_list.SAVUPlugin</a><span class="p">, </span>List<span class="p">[</span>PyQt5.QtWidgets.QWidget<span class="p">]</span><span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">indices</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/model.html#SavuFiltersWindowModel.do_apply_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.do_apply_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies the selected filter to the selected stack.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.do_apply_process_list">
+<code class="sig-name descname">do_apply_process_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pl_path</span></em>, <em class="sig-param"><span class="n">dataset_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/model.html#SavuFiltersWindowModel.do_apply_process_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.do_apply_process_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.filter">
+<code class="sig-name descname">filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filter_idx</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="mantidimaging.core.utility.savu_interop.plugin_list.html#mantidimaging.core.utility.savu_interop.plugin_list.SAVUPlugin" title="mantidimaging.core.utility.savu_interop.plugin_list.SAVUPlugin">mantidimaging.core.utility.savu_interop.plugin_list.SAVUPlugin</a><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/model.html#SavuFiltersWindowModel.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the filter details</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.filter_names">
+<em class="property">property </em><code class="sig-name descname">filter_names</code><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.filter_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.image_shape">
+<em class="property">property </em><code class="sig-name descname">image_shape</code><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.image_shape" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.parameters_from_stack">
+<code class="sig-name descname">parameters_from_stack</code><em class="property">: Dict</em><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.parameters_from_stack" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.register_filters">
+<code class="sig-name descname">register_filters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filters</span><span class="p">:</span> <span class="n">Dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/model.html#SavuFiltersWindowModel.register_filters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.register_filters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds a local registry of operations.</p>
+<p>Filter name is used to initially populate the combo box for filter
+selection.</p>
+<p>The _gui_register function is then used to setup the filter specific
+properties and the execution mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filters</strong> – Filters received from the SAVU API</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.save_process_list">
+<code class="sig-name descname">save_process_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">plugin_entries</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference internal" href="mantidimaging.core.utility.savu_interop.plugin_list.html#mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginListEntry" title="mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginListEntry">mantidimaging.core.utility.savu_interop.plugin_list.SAVUPluginListEntry</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">indices</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/model.html#SavuFiltersWindowModel.save_process_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.save_process_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.setup_filter">
+<code class="sig-name descname">setup_filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filter_details</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/savu_operations/model.html#SavuFiltersWindowModel.setup_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.setup_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets filter properties from result of registration function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.stack_presenter">
+<em class="property">property </em><code class="sig-name descname">stack_presenter</code><a class="headerlink" href="#mantidimaging.gui.windows.savu_operations.model.SavuFiltersWindowModel.stack_presenter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mantidimaging.gui.windows.savu_operations.job_run_response.html"
+                        title="previous chapter">mantidimaging.gui.windows.savu_operations.job_run_response module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mantidimaging.gui.windows.savu_operations.presenter.html"
+                        title="next chapter">mantidimaging.gui.windows.savu_operations.presenter module</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.savu_operations.presenter.html" title="mantidimaging.gui.windows.savu_operations.presenter module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.savu_operations.job_run_response.html" title="mantidimaging.gui.windows.savu_operations.job_run_response module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="mantidimaging.gui.html" >mantidimaging.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="mantidimaging.gui.windows.html" >mantidimaging.gui.windows package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="mantidimaging.gui.windows.savu_operations.html" >mantidimaging.gui.windows.savu_operations package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.savu_operations.model module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

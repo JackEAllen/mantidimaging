@@ -1,0 +1,7 @@
+mantidimaging.core.io.savu\_config\_writer module
+=================================================
+
+.. automodule:: mantidimaging.core.io.savu_config_writer
+   :members:
+   :undoc-members:
+   :show-inheritance:

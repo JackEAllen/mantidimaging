@@ -1,0 +1,7 @@
+mantidimaging.core.utility.test.imat\_log\_file\_parser\_test module
+====================================================================
+
+.. automodule:: mantidimaging.core.utility.test.imat_log_file_parser_test
+   :members:
+   :undoc-members:
+   :show-inheritance:

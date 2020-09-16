@@ -1,0 +1,7 @@
+mantidimaging.core.operations.circular\_mask.test.circular\_mask\_test module
+=============================================================================
+
+.. automodule:: mantidimaging.core.operations.circular_mask.test.circular_mask_test
+   :members:
+   :undoc-members:
+   :show-inheritance:

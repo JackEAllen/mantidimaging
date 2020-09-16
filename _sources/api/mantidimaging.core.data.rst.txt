@@ -1,0 +1,25 @@
+mantidimaging.core.data package
+===============================
+
+.. automodule:: mantidimaging.core.data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.data.test
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.data.dataset
+   mantidimaging.core.data.images
+   mantidimaging.core.data.utility

@@ -1,0 +1,7 @@
+mantidimaging.core.operations.ring\_removal.test.ring\_removal\_test module
+===========================================================================
+
+.. automodule:: mantidimaging.core.operations.ring_removal.test.ring_removal_test
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,7 @@
+mantidimaging.core.operations.wip.mcp\_corrections.mcp\_corrections module
+==========================================================================
+
+.. automodule:: mantidimaging.core.operations.wip.mcp_corrections.mcp_corrections
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,7 @@
+mantidimaging.core.operations.cut\_off.cut\_off module
+======================================================
+
+.. automodule:: mantidimaging.core.operations.cut_off.cut_off
+   :members:
+   :undoc-members:
+   :show-inheritance:

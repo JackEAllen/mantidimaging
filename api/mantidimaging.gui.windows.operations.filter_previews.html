@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.gui.windows.operations.filter_previews module &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mantidimaging.gui.windows.operations.model module" href="mantidimaging.gui.windows.operations.model.html" />
+    <link rel="prev" title="mantidimaging.gui.windows.operations.test.presenter_test module" href="mantidimaging.gui.windows.operations.test.presenter_test.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.operations.model.html" title="mantidimaging.gui.windows.operations.model module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.operations.test.presenter_test.html" title="mantidimaging.gui.windows.operations.test.presenter_test module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="mantidimaging.gui.html" >mantidimaging.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="mantidimaging.gui.windows.html" >mantidimaging.gui.windows package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="mantidimaging.gui.windows.operations.html" accesskey="U">mantidimaging.gui.windows.operations package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.operations.filter_previews module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-mantidimaging.gui.windows.operations.filter_previews">
+<span id="mantidimaging-gui-windows-operations-filter-previews-module"></span><h1>mantidimaging.gui.windows.operations.filter_previews module<a class="headerlink" href="#module-mantidimaging.gui.windows.operations.filter_previews" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.Coord">
+<em class="property">class </em><code class="sig-prename descclassname">mantidimaging.gui.windows.operations.filter_previews.</code><code class="sig-name descname">Coord</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">row</span></em>, <em class="sig-param"><span class="n">col</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.Coord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a></p>
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.Coord.col">
+<em class="property">property </em><code class="sig-name descname">col</code><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.Coord.col" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.Coord.row">
+<em class="property">property </em><code class="sig-name descname">row</code><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.Coord.row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews">
+<em class="property">class </em><code class="sig-prename descclassname">mantidimaging.gui.windows.operations.filter_previews.</code><code class="sig-name descname">FilterPreviews</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/operations/filter_previews.html#FilterPreviews"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pyqtgraph.widgets.GraphicsLayoutWidget.GraphicsLayoutWidget</span></code></p>
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.add_difference_overlay">
+<code class="sig-name descname">add_difference_overlay</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">diff</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/operations/filter_previews.html#FilterPreviews.add_difference_overlay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.add_difference_overlay" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.clear_items">
+<code class="sig-name descname">clear_items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/operations/filter_previews.html#FilterPreviews.clear_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.clear_items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.delete_histogram_labels">
+<code class="sig-name descname">delete_histogram_labels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/operations/filter_previews.html#FilterPreviews.delete_histogram_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.delete_histogram_labels" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.delete_histograms">
+<code class="sig-name descname">delete_histograms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/operations/filter_previews.html#FilterPreviews.delete_histograms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.delete_histograms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.draw_combined_histogram">
+<code class="sig-name descname">draw_combined_histogram</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/operations/filter_previews.html#FilterPreviews.draw_combined_histogram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.draw_combined_histogram" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.draw_separate_histograms">
+<code class="sig-name descname">draw_separate_histograms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/operations/filter_previews.html#FilterPreviews.draw_separate_histograms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.draw_separate_histograms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.hide_difference_overlay">
+<code class="sig-name descname">hide_difference_overlay</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/operations/filter_previews.html#FilterPreviews.hide_difference_overlay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.hide_difference_overlay" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.histogram">
+<code class="sig-name descname">histogram</code><em class="property">: Optional<span class="p">[</span>pyqtgraph.graphicsItems.PlotItem.PlotItem.PlotItem<span class="p">]</span></em><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.histogram" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.histogram_after">
+<code class="sig-name descname">histogram_after</code><em class="property">: Optional<span class="p">[</span>pyqtgraph.graphicsItems.PlotItem.PlotItem.PlotItem<span class="p">]</span></em><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.histogram_after" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.histogram_before">
+<code class="sig-name descname">histogram_before</code><em class="property">: Optional<span class="p">[</span>pyqtgraph.graphicsItems.PlotItem.PlotItem.PlotItem<span class="p">]</span></em><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.histogram_before" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.histogram_legend">
+<em class="property">property </em><code class="sig-name descname">histogram_legend</code><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.histogram_legend" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.image_after">
+<code class="sig-name descname">image_after</code><em class="property">: pyqtgraph.graphicsItems.ImageItem.ImageItem</em><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.image_after" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.image_before">
+<code class="sig-name descname">image_before</code><em class="property">: pyqtgraph.graphicsItems.ImageItem.ImageItem</em><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.image_before" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.image_diff">
+<code class="sig-name descname">image_diff</code><em class="property">: pyqtgraph.graphicsItems.ImageItem.ImageItem</em><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.image_diff" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.image_in_vb">
+<code class="sig-name descname">image_in_vb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/operations/filter_previews.html#FilterPreviews.image_in_vb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.image_in_vb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.link_all_views">
+<code class="sig-name descname">link_all_views</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/operations/filter_previews.html#FilterPreviews.link_all_views"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.link_all_views" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.mouse_over">
+<code class="sig-name descname">mouse_over</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ev</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/operations/filter_previews.html#FilterPreviews.mouse_over"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.mouse_over" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.redraw_histograms">
+<code class="sig-name descname">redraw_histograms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/operations/filter_previews.html#FilterPreviews.redraw_histograms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.redraw_histograms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.set_after_histogram">
+<code class="sig-name descname">set_after_histogram</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>numpy.ndarray<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/operations/filter_previews.html#FilterPreviews.set_after_histogram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.set_after_histogram" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.set_before_histogram">
+<code class="sig-name descname">set_before_histogram</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>numpy.ndarray<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/operations/filter_previews.html#FilterPreviews.set_before_histogram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.set_before_histogram" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.unlink_all_views">
+<code class="sig-name descname">unlink_all_views</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/operations/filter_previews.html#FilterPreviews.unlink_all_views"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.operations.filter_previews.FilterPreviews.unlink_all_views" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mantidimaging.gui.windows.operations.test.presenter_test.html"
+                        title="previous chapter">mantidimaging.gui.windows.operations.test.presenter_test module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mantidimaging.gui.windows.operations.model.html"
+                        title="next chapter">mantidimaging.gui.windows.operations.model module</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.operations.model.html" title="mantidimaging.gui.windows.operations.model module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.operations.test.presenter_test.html" title="mantidimaging.gui.windows.operations.test.presenter_test module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="mantidimaging.gui.html" >mantidimaging.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="mantidimaging.gui.windows.html" >mantidimaging.gui.windows package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="mantidimaging.gui.windows.operations.html" >mantidimaging.gui.windows.operations package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.operations.filter_previews module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+mantidimaging.core.operations.remove\_large\_stripe.test.remove\_large\_stripe\_test module
+===========================================================================================
+
+.. automodule:: mantidimaging.core.operations.remove_large_stripe.test.remove_large_stripe_test
+   :members:
+   :undoc-members:
+   :show-inheritance:

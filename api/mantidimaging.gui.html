@@ -1,0 +1,381 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.gui package &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mantidimaging.gui.dialogs package" href="mantidimaging.gui.dialogs.html" />
+    <link rel="prev" title="mantidimaging.core.utility.version_check module" href="mantidimaging.core.utility.version_check.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.dialogs.html" title="mantidimaging.gui.dialogs package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.core.utility.version_check.html" title="mantidimaging.core.utility.version_check module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" accesskey="U">mantidimaging package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-mantidimaging.gui">
+<span id="mantidimaging-gui-package"></span><h1>mantidimaging.gui package<a class="headerlink" href="#module-mantidimaging.gui" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mantidimaging.gui.dialogs.html">mantidimaging.gui.dialogs package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mantidimaging.gui.dialogs.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.dialogs.async_task.html">mantidimaging.gui.dialogs.async_task package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.dialogs.async_task.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.dialogs.async_task.test.html">mantidimaging.gui.dialogs.async_task.test package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="mantidimaging.gui.dialogs.async_task.test.html#submodules">Submodules</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="mantidimaging.gui.dialogs.async_task.test.model_test.html">mantidimaging.gui.dialogs.async_task.test.model_test module</a></li>
+<li class="toctree-l7"><a class="reference internal" href="mantidimaging.gui.dialogs.async_task.test.presenter_test.html">mantidimaging.gui.dialogs.async_task.test.presenter_test module</a></li>
+<li class="toctree-l7"><a class="reference internal" href="mantidimaging.gui.dialogs.async_task.test.task_test.html">mantidimaging.gui.dialogs.async_task.test.task_test module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.dialogs.async_task.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.dialogs.async_task.model.html">mantidimaging.gui.dialogs.async_task.model module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.dialogs.async_task.presenter.html">mantidimaging.gui.dialogs.async_task.presenter module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.dialogs.async_task.task.html">mantidimaging.gui.dialogs.async_task.task module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.dialogs.async_task.view.html">mantidimaging.gui.dialogs.async_task.view module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.dialogs.cor_inspection.html">mantidimaging.gui.dialogs.cor_inspection package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.dialogs.cor_inspection.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.dialogs.cor_inspection.test.html">mantidimaging.gui.dialogs.cor_inspection.test package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="mantidimaging.gui.dialogs.cor_inspection.test.html#submodules">Submodules</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="mantidimaging.gui.dialogs.cor_inspection.test.model_test.html">mantidimaging.gui.dialogs.cor_inspection.test.model_test module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.dialogs.cor_inspection.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.dialogs.cor_inspection.model.html">mantidimaging.gui.dialogs.cor_inspection.model module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.dialogs.cor_inspection.presenter.html">mantidimaging.gui.dialogs.cor_inspection.presenter module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.dialogs.cor_inspection.recon_slice_view.html">mantidimaging.gui.dialogs.cor_inspection.recon_slice_view module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.dialogs.cor_inspection.types.html">mantidimaging.gui.dialogs.cor_inspection.types module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.dialogs.cor_inspection.view.html">mantidimaging.gui.dialogs.cor_inspection.view module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.dialogs.op_history_copy.html">mantidimaging.gui.dialogs.op_history_copy package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.dialogs.op_history_copy.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.dialogs.op_history_copy.test.html">mantidimaging.gui.dialogs.op_history_copy.test package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="mantidimaging.gui.dialogs.op_history_copy.test.html#submodules">Submodules</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="mantidimaging.gui.dialogs.op_history_copy.test.model_test.html">mantidimaging.gui.dialogs.op_history_copy.test.model_test module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.dialogs.op_history_copy.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.dialogs.op_history_copy.model.html">mantidimaging.gui.dialogs.op_history_copy.model module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.dialogs.op_history_copy.presenter.html">mantidimaging.gui.dialogs.op_history_copy.presenter module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.dialogs.op_history_copy.view.html">mantidimaging.gui.dialogs.op_history_copy.view module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mantidimaging.gui.mvp_base.html">mantidimaging.gui.mvp_base package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mantidimaging.gui.mvp_base.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.mvp_base.test.html">mantidimaging.gui.mvp_base.test package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.mvp_base.test.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.mvp_base.test.presenter_test.html">mantidimaging.gui.mvp_base.test.presenter_test module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mantidimaging.gui.mvp_base.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.mvp_base.presenter.html">mantidimaging.gui.mvp_base.presenter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.mvp_base.view.html">mantidimaging.gui.mvp_base.view module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mantidimaging.gui.utility.html">mantidimaging.gui.utility package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mantidimaging.gui.utility.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.utility.common.html">mantidimaging.gui.utility.common module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.utility.get_parameters_from_stack.html">mantidimaging.gui.utility.get_parameters_from_stack module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.utility.qt_helpers.html">mantidimaging.gui.utility.qt_helpers module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mantidimaging.gui.widgets.html">mantidimaging.gui.widgets package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mantidimaging.gui.widgets.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.widgets.stack_selector.html">mantidimaging.gui.widgets.stack_selector package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.widgets.stack_selector.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.widgets.stack_selector.presenter.html">mantidimaging.gui.widgets.stack_selector.presenter module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.widgets.stack_selector.view.html">mantidimaging.gui.widgets.stack_selector.view module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mantidimaging.gui.widgets.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.widgets.mpl_navigation_toolbar_simple.html">mantidimaging.gui.widgets.mpl_navigation_toolbar_simple module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.widgets.pg_image_view.html">mantidimaging.gui.widgets.pg_image_view module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.widgets.removable_row_table_view.html">mantidimaging.gui.widgets.removable_row_table_view module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mantidimaging.gui.windows.html">mantidimaging.gui.windows package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mantidimaging.gui.windows.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.windows.load_dialog.html">mantidimaging.gui.windows.load_dialog package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.windows.load_dialog.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.load_dialog.field.html">mantidimaging.gui.windows.load_dialog.field module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.load_dialog.presenter.html">mantidimaging.gui.windows.load_dialog.presenter module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.load_dialog.view.html">mantidimaging.gui.windows.load_dialog.view module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.windows.main.html">mantidimaging.gui.windows.main package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.windows.main.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.main.test.html">mantidimaging.gui.windows.main.test package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="mantidimaging.gui.windows.main.test.html#submodules">Submodules</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="mantidimaging.gui.windows.main.test.model_test.html">mantidimaging.gui.windows.main.test.model_test module</a></li>
+<li class="toctree-l7"><a class="reference internal" href="mantidimaging.gui.windows.main.test.presenter_test.html">mantidimaging.gui.windows.main.test.presenter_test module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.windows.main.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.main.model.html">mantidimaging.gui.windows.main.model module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.main.presenter.html">mantidimaging.gui.windows.main.presenter module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.main.save_dialog.html">mantidimaging.gui.windows.main.save_dialog module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.main.view.html">mantidimaging.gui.windows.main.view module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.windows.operations.html">mantidimaging.gui.windows.operations package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.windows.operations.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.operations.test.html">mantidimaging.gui.windows.operations.test package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="mantidimaging.gui.windows.operations.test.html#submodules">Submodules</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="mantidimaging.gui.windows.operations.test.model_test.html">mantidimaging.gui.windows.operations.test.model_test module</a></li>
+<li class="toctree-l7"><a class="reference internal" href="mantidimaging.gui.windows.operations.test.presenter_test.html">mantidimaging.gui.windows.operations.test.presenter_test module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.windows.operations.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.operations.filter_previews.html">mantidimaging.gui.windows.operations.filter_previews module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.operations.model.html">mantidimaging.gui.windows.operations.model module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.operations.presenter.html">mantidimaging.gui.windows.operations.presenter module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.operations.view.html">mantidimaging.gui.windows.operations.view module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.windows.recon.html">mantidimaging.gui.windows.recon package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.windows.recon.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.recon.test.html">mantidimaging.gui.windows.recon.test package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="mantidimaging.gui.windows.recon.test.html#submodules">Submodules</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="mantidimaging.gui.windows.recon.test.model_test.html">mantidimaging.gui.windows.recon.test.model_test module</a></li>
+<li class="toctree-l7"><a class="reference internal" href="mantidimaging.gui.windows.recon.test.presenter_test.html">mantidimaging.gui.windows.recon.test.presenter_test module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.windows.recon.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.recon.image_view.html">mantidimaging.gui.windows.recon.image_view module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.recon.model.html">mantidimaging.gui.windows.recon.model module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.recon.point_table_model.html">mantidimaging.gui.windows.recon.point_table_model module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.recon.presenter.html">mantidimaging.gui.windows.recon.presenter module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.recon.view.html">mantidimaging.gui.windows.recon.view module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.html">mantidimaging.gui.windows.savu_operations package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.process_list.html">mantidimaging.gui.windows.savu_operations.process_list package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.process_list.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.process_list.test.html">mantidimaging.gui.windows.savu_operations.process_list.test package</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.process_list.test.html#submodules">Submodules</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.process_list.test.presenter_test.html">mantidimaging.gui.windows.savu_operations.process_list.test.presenter_test module</a></li>
+<li class="toctree-l9"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.process_list.test.view_test.html">mantidimaging.gui.windows.savu_operations.process_list.test.view_test module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.process_list.html#submodules">Submodules</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.process_list.model.html">mantidimaging.gui.windows.savu_operations.process_list.model module</a></li>
+<li class="toctree-l7"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.process_list.presenter.html">mantidimaging.gui.windows.savu_operations.process_list.presenter module</a></li>
+<li class="toctree-l7"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.process_list.view.html">mantidimaging.gui.windows.savu_operations.process_list.view module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.job_run_response.html">mantidimaging.gui.windows.savu_operations.job_run_response module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.model.html">mantidimaging.gui.windows.savu_operations.model module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.presenter.html">mantidimaging.gui.windows.savu_operations.presenter module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.remote_presenter.html">mantidimaging.gui.windows.savu_operations.remote_presenter module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.sio_model.html">mantidimaging.gui.windows.savu_operations.sio_model module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.savu_operations.view.html">mantidimaging.gui.windows.savu_operations.view module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mantidimaging.gui.windows.stack_visualiser.html">mantidimaging.gui.windows.stack_visualiser package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.windows.stack_visualiser.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.stack_visualiser.test.html">mantidimaging.gui.windows.stack_visualiser.test package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="mantidimaging.gui.windows.stack_visualiser.test.html#submodules">Submodules</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="mantidimaging.gui.windows.stack_visualiser.test.presenter_test.html">mantidimaging.gui.windows.stack_visualiser.test.presenter_test module</a></li>
+<li class="toctree-l7"><a class="reference internal" href="mantidimaging.gui.windows.stack_visualiser.test.view_test.html">mantidimaging.gui.windows.stack_visualiser.test.view_test module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="mantidimaging.gui.windows.stack_visualiser.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.stack_visualiser.metadata_dialog.html">mantidimaging.gui.windows.stack_visualiser.metadata_dialog module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.stack_visualiser.model.html">mantidimaging.gui.windows.stack_visualiser.model module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.stack_visualiser.presenter.html">mantidimaging.gui.windows.stack_visualiser.presenter module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="mantidimaging.gui.windows.stack_visualiser.view.html">mantidimaging.gui.windows.stack_visualiser.view module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mantidimaging.gui.gui.html">mantidimaging.gui.gui module</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">mantidimaging.gui package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mantidimaging.core.utility.version_check.html"
+                        title="previous chapter">mantidimaging.core.utility.version_check module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mantidimaging.gui.dialogs.html"
+                        title="next chapter">mantidimaging.gui.dialogs package</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.dialogs.html" title="mantidimaging.gui.dialogs package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.core.utility.version_check.html" title="mantidimaging.core.utility.version_check module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui package</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

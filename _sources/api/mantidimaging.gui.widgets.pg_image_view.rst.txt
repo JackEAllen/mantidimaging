@@ -1,0 +1,7 @@
+mantidimaging.gui.widgets.pg\_image\_view module
+================================================
+
+.. automodule:: mantidimaging.gui.widgets.pg_image_view
+   :members:
+   :undoc-members:
+   :show-inheritance:

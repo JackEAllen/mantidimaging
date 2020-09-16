@@ -1,0 +1,7 @@
+mantidimaging.gui.windows.recon.test.presenter\_test module
+===========================================================
+
+.. automodule:: mantidimaging.gui.windows.recon.test.presenter_test
+   :members:
+   :undoc-members:
+   :show-inheritance:

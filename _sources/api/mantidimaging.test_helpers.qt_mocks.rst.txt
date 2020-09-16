@@ -1,0 +1,7 @@
+mantidimaging.test\_helpers.qt\_mocks module
+============================================
+
+.. automodule:: mantidimaging.test_helpers.qt_mocks
+   :members:
+   :undoc-members:
+   :show-inheritance:

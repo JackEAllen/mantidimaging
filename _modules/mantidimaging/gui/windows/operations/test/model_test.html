@@ -1,0 +1,265 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.gui.windows.operations.test.model_test &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../../../" src="../../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../../_static/jquery.js"></script>
+    <script src="../../../../../../_static/underscore.js"></script>
+    <script src="../../../../../../_static/doctools.js"></script>
+    <script src="../../../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.operations.test.model_test</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.gui.windows.operations.test.model_test</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
+<span class="kn">import</span> <span class="nn">mock</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">mantidimaging.test_helpers.unit_test_helper</span> <span class="k">as</span> <span class="nn">th</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.operation_history</span> <span class="kn">import</span> <span class="n">const</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.windows.operations</span> <span class="kn">import</span> <span class="n">FiltersWindowModel</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.windows.stack_visualiser</span> <span class="kn">import</span> <span class="p">(</span><span class="n">StackVisualiserView</span><span class="p">,</span> <span class="n">StackVisualiserPresenter</span><span class="p">,</span> <span class="n">SVParameters</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="FiltersWindowModelTest"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.operations.test.model_test.html#mantidimaging.gui.windows.operations.test.model_test.FiltersWindowModelTest">[docs]</a><span class="k">class</span> <span class="nc">FiltersWindowModelTest</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="n">APPLY_BEFORE_AFTER_MAGIC_NUMBER</span> <span class="o">=</span> <span class="mi">42</span>
+    <span class="n">ROI_PARAMETER</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FiltersWindowModelTest</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FiltersWindowModelTest.setUpClass"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.operations.test.model_test.html#mantidimaging.gui.windows.operations.test.model_test.FiltersWindowModelTest.setUpClass">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">test_data</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">generate_images</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FiltersWindowModelTest.setUp"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.operations.test.model_test.html#mantidimaging.gui.windows.operations.test.model_test.FiltersWindowModelTest.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sv_view</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">create_autospec</span><span class="p">(</span><span class="n">StackVisualiserView</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sv_view</span><span class="o">.</span><span class="n">current_roi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ROI_PARAMETER</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sv_presenter</span> <span class="o">=</span> <span class="n">StackVisualiserPresenter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sv_view</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sv_view</span><span class="o">.</span><span class="n">presenter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sv_presenter</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">FiltersWindowModel</span><span class="p">(</span><span class="n">mock</span><span class="o">.</span><span class="n">MagicMock</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="FiltersWindowModelTest.execute_mock"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.operations.test.model_test.html#mantidimaging.gui.windows.operations.test.model_test.FiltersWindowModelTest.execute_mock">[docs]</a>    <span class="k">def</span> <span class="nf">execute_mock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">))</span>
+        <span class="n">data</span> <span class="o">*=</span> <span class="mi">4</span>
+        <span class="k">return</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="FiltersWindowModelTest.execute_mock_with_roi"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.operations.test.model_test.html#mantidimaging.gui.windows.operations.test.model_test.FiltersWindowModelTest.execute_mock_with_roi">[docs]</a>    <span class="k">def</span> <span class="nf">execute_mock_with_roi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">roi</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">))</span>
+        <span class="n">data</span> <span class="o">*=</span> <span class="mi">4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">roi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ROI_PARAMETER</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="FiltersWindowModelTest.setup_mocks"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.operations.test.model_test.html#mantidimaging.gui.windows.operations.test.model_test.FiltersWindowModelTest.setup_mocks">[docs]</a>    <span class="k">def</span> <span class="nf">setup_mocks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">execute_mock</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">selected_filter</span>
+        <span class="n">orig_exec</span><span class="p">,</span> <span class="n">orig_validate</span><span class="p">,</span> <span class="n">orig_before</span><span class="p">,</span> <span class="n">orig_after</span> <span class="o">=</span> \
+            <span class="n">f</span><span class="o">.</span><span class="n">execute_wrapper</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">validate_execute_kwargs</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">do_before_wrapper</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">do_after_wrapper</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">setup_filter</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">execute_wrapper</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">execute_mock</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">validate_execute_kwargs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="n">orig_exec</span><span class="p">,</span> <span class="n">orig_validate</span><span class="p">,</span> <span class="n">orig_before</span><span class="p">,</span> <span class="n">orig_after</span></div>
+
+<div class="viewcode-block" id="FiltersWindowModelTest.reset_filter_model"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.operations.test.model_test.html#mantidimaging.gui.windows.operations.test.model_test.FiltersWindowModelTest.reset_filter_model">[docs]</a>    <span class="k">def</span> <span class="nf">reset_filter_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exec</span><span class="p">,</span> <span class="n">validate</span><span class="p">,</span> <span class="n">before</span><span class="p">,</span> <span class="n">after</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">selected_filter</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">execute_wrapper</span> <span class="o">=</span> <span class="n">exec</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">validate_execute_kwargs</span> <span class="o">=</span> <span class="n">validate</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">do_before_wrapper</span> <span class="o">=</span> <span class="n">before</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">do_after_wrapper</span> <span class="o">=</span> <span class="n">after</span></div>
+
+<div class="viewcode-block" id="FiltersWindowModelTest.run_without_gui"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.operations.test.model_test.html#mantidimaging.gui.windows.operations.test.model_test.FiltersWindowModelTest.run_without_gui">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">run_without_gui</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">on_complete</span><span class="p">):</span>
+        <span class="n">task</span><span class="p">()</span>
+        <span class="n">on_complete</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FiltersWindowModelTest.test_filters_populated"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.operations.test.model_test.html#mantidimaging.gui.windows.operations.test.model_test.FiltersWindowModelTest.test_filters_populated">[docs]</a>    <span class="k">def</span> <span class="nf">test_filters_populated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">filter_names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FiltersWindowModelTest.test_do_apply_filter"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.operations.test.model_test.html#mantidimaging.gui.windows.operations.test.model_test.FiltersWindowModelTest.test_do_apply_filter">[docs]</a>    <span class="nd">@mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s2">&quot;mantidimaging.gui.windows.operations.model.start_async_task_view&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_do_apply_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mocked_start_view</span><span class="p">):</span>
+        <span class="n">mocked_start_view</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">on_complete</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_without_gui</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">on_complete</span><span class="p">)</span>
+
+        <span class="n">callback_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+            <span class="n">callback_mock</span><span class="p">()</span>
+
+        <span class="n">execute</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">MagicMock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">execute_mock</span><span class="p">))</span>
+        <span class="n">originals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_mocks</span><span class="p">(</span><span class="n">execute</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">do_apply_filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sv_view</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sv_presenter</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_filter_model</span><span class="p">(</span><span class="o">*</span><span class="n">originals</span><span class="p">)</span>
+
+        <span class="n">execute</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="n">callback_mock</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FiltersWindowModelTest.test_do_apply_filter_with_roi"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.operations.test.model_test.html#mantidimaging.gui.windows.operations.test.model_test.FiltersWindowModelTest.test_do_apply_filter_with_roi">[docs]</a>    <span class="nd">@mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s2">&quot;mantidimaging.gui.windows.operations.model.start_async_task_view&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_do_apply_filter_with_roi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mocked_start_view</span><span class="p">):</span>
+        <span class="n">mocked_start_view</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">on_complete</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_without_gui</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">on_complete</span><span class="p">)</span>
+
+        <span class="n">callback_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+            <span class="n">callback_mock</span><span class="p">()</span>
+
+        <span class="n">execute</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">MagicMock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">execute_mock_with_roi</span><span class="p">))</span>
+        <span class="n">originals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_mocks</span><span class="p">(</span><span class="n">execute</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">selected_filter</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;roi&#39;</span><span class="p">:</span> <span class="n">SVParameters</span><span class="o">.</span><span class="n">ROI</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">do_apply_filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sv_view</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sv_presenter</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_filter_model</span><span class="p">(</span><span class="o">*</span><span class="n">originals</span><span class="p">)</span>
+
+        <span class="n">execute</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="n">callback_mock</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FiltersWindowModelTest.test_operation_recorded_in_image_history"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.operations.test.model_test.html#mantidimaging.gui.windows.operations.test.model_test.FiltersWindowModelTest.test_operation_recorded_in_image_history">[docs]</a>    <span class="nd">@mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s2">&quot;mantidimaging.gui.windows.operations.model.start_async_task_view&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_operation_recorded_in_image_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mocked_start_view</span><span class="p">):</span>
+        <span class="n">mocked_start_view</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">on_complete</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_without_gui</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">on_complete</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sv_presenter</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">callback_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+            <span class="n">callback_mock</span><span class="p">()</span>
+
+        <span class="n">execute</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">MagicMock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">execute_mock</span><span class="p">))</span>
+        <span class="n">execute</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;arg&quot;</span><span class="p">]</span>
+        <span class="n">execute</span><span class="o">.</span><span class="n">keywords</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;kwarg&quot;</span><span class="p">:</span> <span class="s2">&quot;kwarg&quot;</span><span class="p">}</span>
+        <span class="n">originals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_mocks</span><span class="p">(</span><span class="n">execute</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">do_apply_filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sv_view</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sv_presenter</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_filter_model</span><span class="p">(</span><span class="o">*</span><span class="n">originals</span><span class="p">)</span>
+
+        <span class="n">op_history</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sv_presenter</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;operation_history&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">op_history</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;One operation should have been recorded&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">op_history</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">const</span><span class="o">.</span><span class="n">OPERATION_ARGS</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;arg&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">op_history</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">const</span><span class="o">.</span><span class="n">OPERATION_KEYWORD_ARGS</span><span class="p">],</span> <span class="p">{</span><span class="s2">&quot;kwarg&quot;</span><span class="p">:</span> <span class="s2">&quot;kwarg&quot;</span><span class="p">})</span>
+        <span class="c1"># Recorded operation should not be a qualified module name.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">op_history</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">const</span><span class="o">.</span><span class="n">OPERATION_NAME</span><span class="p">])</span>
+        <span class="n">callback_mock</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FiltersWindowModelTest.test_apply_filter_no_180deg_proj_loaded"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.operations.test.model_test.html#mantidimaging.gui.windows.operations.test.model_test.FiltersWindowModelTest.test_apply_filter_no_180deg_proj_loaded">[docs]</a>    <span class="k">def</span> <span class="nf">test_apply_filter_no_180deg_proj_loaded</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        When no 180deg projection is loaded the filter is only</span>
+<span class="sd">        applied to the main data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">generate_images</span><span class="p">()</span>
+        <span class="n">stack_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;test&#39;</span><span class="p">:</span> <span class="mi">123</span><span class="p">}</span>
+        <span class="n">selected_filter_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="n">selected_filter_mock</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="n">selected_filter_mock</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s2">&quot;Test filter&quot;</span>
+        <span class="n">selected_filter_mock</span><span class="o">.</span><span class="n">filter_name</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s2">&quot;Test filter&quot;</span>
+        <span class="n">progress_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+
+        <span class="n">callback_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+
+        <span class="n">selected_filter_mock</span><span class="o">.</span><span class="n">execute_wrapper</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">callback_mock</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">selected_filter</span> <span class="o">=</span> <span class="n">selected_filter_mock</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">apply_filter</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">stack_params</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="n">progress_mock</span><span class="p">)</span>
+
+        <span class="n">selected_filter_mock</span><span class="o">.</span><span class="n">validate_execute_kwargs</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="n">callback_mock</span><span class="o">.</span><span class="n">assert_called_once_with</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="n">progress_mock</span><span class="p">,</span> <span class="o">**</span><span class="n">stack_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FiltersWindowModelTest.test_apply_filter_with_180deg_proj_loaded"><a class="viewcode-back" href="../../../../../../api/mantidimaging.gui.windows.operations.test.model_test.html#mantidimaging.gui.windows.operations.test.model_test.FiltersWindowModelTest.test_apply_filter_with_180deg_proj_loaded">[docs]</a>    <span class="k">def</span> <span class="nf">test_apply_filter_with_180deg_proj_loaded</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        When 180deg projection is loaded the filter is applied</span>
+<span class="sd">        to both the data and the 180deg projection</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">generate_images</span><span class="p">()</span>
+        <span class="n">images</span><span class="o">.</span><span class="n">proj180deg</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">generate_images</span><span class="p">(</span><span class="n">automatic_free</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">stack_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;test&#39;</span><span class="p">:</span> <span class="mi">123</span><span class="p">}</span>
+        <span class="n">selected_filter_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="n">selected_filter_mock</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="n">selected_filter_mock</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s2">&quot;Test filter&quot;</span>
+        <span class="n">selected_filter_mock</span><span class="o">.</span><span class="n">filter_name</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s2">&quot;Test filter&quot;</span>
+        <span class="n">progress_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+
+        <span class="n">callback_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+
+        <span class="n">selected_filter_mock</span><span class="o">.</span><span class="n">execute_wrapper</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">callback_mock</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">selected_filter</span> <span class="o">=</span> <span class="n">selected_filter_mock</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">apply_filter</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">stack_params</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="n">progress_mock</span><span class="p">)</span>
+
+        <span class="n">selected_filter_mock</span><span class="o">.</span><span class="n">validate_execute_kwargs</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="n">callback_mock</span><span class="o">.</span><span class="n">assert_has_calls</span><span class="p">([</span>
+            <span class="n">mock</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="n">progress_mock</span><span class="p">,</span> <span class="o">**</span><span class="n">stack_params</span><span class="p">),</span>
+            <span class="n">mock</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">proj180deg</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="n">progress_mock</span><span class="p">,</span> <span class="o">**</span><span class="n">stack_params</span><span class="p">)</span>
+        <span class="p">])</span>
+
+        <span class="n">images</span><span class="o">.</span><span class="n">proj180deg</span><span class="o">.</span><span class="n">free_memory</span><span class="p">()</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.operations.test.model_test</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

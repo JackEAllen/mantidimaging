@@ -1,0 +1,15 @@
+mantidimaging.gui.dialogs.op\_history\_copy.test package
+========================================================
+
+.. automodule:: mantidimaging.gui.dialogs.op_history_copy.test
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.gui.dialogs.op_history_copy.test.model_test

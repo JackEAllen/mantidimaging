@@ -1,0 +1,7 @@
+mantidimaging.core.data.test.fake\_logfile module
+=================================================
+
+.. automodule:: mantidimaging.core.data.test.fake_logfile
+   :members:
+   :undoc-members:
+   :show-inheritance:

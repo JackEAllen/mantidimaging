@@ -1,0 +1,23 @@
+mantidimaging.core.operations.outliers\_isis package
+====================================================
+
+.. automodule:: mantidimaging.core.operations.outliers_isis
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.operations.outliers_isis.test
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.operations.outliers_isis.outliers_isis

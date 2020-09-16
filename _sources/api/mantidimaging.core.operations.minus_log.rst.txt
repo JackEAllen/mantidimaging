@@ -1,0 +1,23 @@
+mantidimaging.core.operations.minus\_log package
+================================================
+
+.. automodule:: mantidimaging.core.operations.minus_log
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.operations.minus_log.test
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 10
+
+   mantidimaging.core.operations.minus_log.minus_log

@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.gui.windows.recon.view module &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mantidimaging.gui.windows.savu_operations package" href="mantidimaging.gui.windows.savu_operations.html" />
+    <link rel="prev" title="mantidimaging.gui.windows.recon.presenter module" href="mantidimaging.gui.windows.recon.presenter.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.savu_operations.html" title="mantidimaging.gui.windows.savu_operations package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.recon.presenter.html" title="mantidimaging.gui.windows.recon.presenter module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="mantidimaging.gui.html" >mantidimaging.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="mantidimaging.gui.windows.html" >mantidimaging.gui.windows package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="mantidimaging.gui.windows.recon.html" accesskey="U">mantidimaging.gui.windows.recon package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.recon.view module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-mantidimaging.gui.windows.recon.view">
+<span id="mantidimaging-gui-windows-recon-view-module"></span><h1>mantidimaging.gui.windows.recon.view module<a class="headerlink" href="#module-mantidimaging.gui.windows.recon.view" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView">
+<em class="property">class </em><code class="sig-prename descclassname">mantidimaging.gui.windows.recon.view.</code><code class="sig-name descname">ReconstructWindowView</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">main_window</span><span class="p">:</span> <span class="n">MainWindowView</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="mantidimaging.gui.mvp_base.view.html#mantidimaging.gui.mvp_base.view.BaseMainWindowView" title="mantidimaging.gui.mvp_base.view.BaseMainWindowView"><code class="xref py py-class docutils literal notranslate"><span class="pre">mantidimaging.gui.mvp_base.view.BaseMainWindowView</span></code></a></p>
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.addBtn">
+<code class="sig-name descname">addBtn</code><em class="property">: PyQt5.QtWidgets.QPushButton</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.addBtn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.add_cor_table_row">
+<code class="sig-name descname">add_cor_table_row</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">row</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">slice_index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span></em>, <em class="sig-param"><span class="n">cor</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.add_cor_table_row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.add_cor_table_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a row to the manual COR table with a specified slice index.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.algorithmName">
+<code class="sig-name descname">algorithmName</code><em class="property">: PyQt5.QtWidgets.QComboBox</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.algorithmName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.algorithm_name">
+<em class="property">property </em><code class="sig-name descname">algorithm_name</code><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.algorithm_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.autoBtn">
+<code class="sig-name descname">autoBtn</code><em class="property">: PyQt5.QtWidgets.QPushButton</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.autoBtn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.autoFindMethod">
+<code class="sig-name descname">autoFindMethod</code><em class="property">: PyQt5.QtWidgets.QComboBox</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.autoFindMethod" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.calculateCors">
+<code class="sig-name descname">calculateCors</code><em class="property">: PyQt5.QtWidgets.QPushButton</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.calculateCors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.cleanup">
+<code class="sig-name descname">cleanup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.cleanup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.cleanup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs when the window is closed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.clearAllBtn">
+<code class="sig-name descname">clearAllBtn</code><em class="property">: PyQt5.QtWidgets.QPushButton</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.clearAllBtn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.clear_cor_table">
+<code class="sig-name descname">clear_cor_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.clear_cor_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.clear_cor_table" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.cor_table_model">
+<em class="property">property </em><code class="sig-name descname">cor_table_model</code><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.cor_table_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.filterName">
+<code class="sig-name descname">filterName</code><em class="property">: PyQt5.QtWidgets.QComboBox</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.filterName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.filter_name">
+<em class="property">property </em><code class="sig-name descname">filter_name</code><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.filter_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.fitBtn">
+<code class="sig-name descname">fitBtn</code><em class="property">: PyQt5.QtWidgets.QPushButton</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.fitBtn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.get_auto_cor_method">
+<code class="sig-name descname">get_auto_cor_method</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.AutoCorMethod" title="mantidimaging.gui.windows.recon.presenter.AutoCorMethod">mantidimaging.gui.windows.recon.presenter.AutoCorMethod</a><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.get_auto_cor_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.get_auto_cor_method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.get_number_of_cors">
+<code class="sig-name descname">get_number_of_cors</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><span class="p">]</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.get_number_of_cors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.get_number_of_cors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.get_stack_visualiser">
+<code class="sig-name descname">get_stack_visualiser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">uuid</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.get_stack_visualiser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.get_stack_visualiser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.hide_tilt">
+<code class="sig-name descname">hide_tilt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.hide_tilt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.hide_tilt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.imageLayout">
+<code class="sig-name descname">imageLayout</code><em class="property">: PyQt5.QtWidgets.QVBoxLayout</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.imageLayout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.inputTab">
+<code class="sig-name descname">inputTab</code><em class="property">: PyQt5.QtWidgets.QWidget</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.inputTab" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.maxProjAngle">
+<code class="sig-name descname">maxProjAngle</code><em class="property">: PyQt5.QtWidgets.QDoubleSpinBox</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.maxProjAngle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.max_proj_angle">
+<em class="property">property </em><code class="sig-name descname">max_proj_angle</code><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.max_proj_angle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.numIter">
+<code class="sig-name descname">numIter</code><em class="property">: PyQt5.QtWidgets.QSpinBox</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.numIter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.num_iter">
+<em class="property">property </em><code class="sig-name descname">num_iter</code><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.num_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.on_table_row_count_change">
+<code class="sig-name descname">on_table_row_count_change</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.on_table_row_count_change"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.on_table_row_count_change" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when rows have been added or removed from the point table.</p>
+<p>Used to conditionally enable UI controls that depend on a certain
+amount of entries in the table.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.preview_image_on_button_press">
+<code class="sig-name descname">preview_image_on_button_press</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.preview_image_on_button_press"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.preview_image_on_button_press" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles mouse button presses on the preview projection image.</p>
+<p>Used to set the preview slice when a user clicks on a given part of the
+image.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.reconTab">
+<code class="sig-name descname">reconTab</code><em class="property">: PyQt5.QtWidgets.QWidget</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.reconTab" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.recon_params">
+<code class="sig-name descname">recon_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.ReconstructionParameters" title="mantidimaging.core.utility.data_containers.ReconstructionParameters">mantidimaging.core.utility.data_containers.ReconstructionParameters</a><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.recon_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.recon_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.reconstructVolume">
+<code class="sig-name descname">reconstructVolume</code><em class="property">: PyQt5.QtWidgets.QPushButton</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.reconstructVolume" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.refineCorBtn">
+<code class="sig-name descname">refineCorBtn</code><em class="property">: PyQt5.QtWidgets.QPushButton</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.refineCorBtn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.removeBtn">
+<code class="sig-name descname">removeBtn</code><em class="property">: PyQt5.QtWidgets.QPushButton</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.removeBtn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.remove_selected_cor">
+<code class="sig-name descname">remove_selected_cor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.remove_selected_cor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.remove_selected_cor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.reset_image_recon_preview">
+<code class="sig-name descname">reset_image_recon_preview</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.reset_image_recon_preview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.reset_image_recon_preview" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the recon preview image, forcing a complete redraw next time it
+is updated.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.reset_slice_and_tilt">
+<code class="sig-name descname">reset_slice_and_tilt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">slice_index</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.reset_slice_and_tilt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.reset_slice_and_tilt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.resultCor">
+<code class="sig-name descname">resultCor</code><em class="property">: PyQt5.QtWidgets.QDoubleSpinBox</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.resultCor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.resultSlope">
+<code class="sig-name descname">resultSlope</code><em class="property">: PyQt5.QtWidgets.QDoubleSpinBox</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.resultSlope" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.resultTab">
+<code class="sig-name descname">resultTab</code><em class="property">: PyQt5.QtWidgets.QWidget</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.resultTab" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.resultTilt">
+<code class="sig-name descname">resultTilt</code><em class="property">: PyQt5.QtWidgets.QDoubleSpinBox</em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.resultTilt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.rotation_centre">
+<em class="property">property </em><code class="sig-name descname">rotation_centre</code><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.rotation_centre" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.set_filters_for_recon_tool">
+<code class="sig-name descname">set_filters_for_recon_tool</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filters</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.set_filters_for_recon_tool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.set_filters_for_recon_tool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.set_results">
+<code class="sig-name descname">set_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cor</span><span class="p">:</span> <span class="n"><a class="reference internal" href="mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.ScalarCoR" title="mantidimaging.core.utility.data_containers.ScalarCoR">mantidimaging.core.utility.data_containers.ScalarCoR</a></span></em>, <em class="sig-param"><span class="n">tilt</span><span class="p">:</span> <span class="n"><a class="reference internal" href="mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.Degrees" title="mantidimaging.core.utility.data_containers.Degrees">mantidimaging.core.utility.data_containers.Degrees</a></span></em>, <em class="sig-param"><span class="n">slope</span><span class="p">:</span> <span class="n"><a class="reference internal" href="mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.Slope" title="mantidimaging.core.utility.data_containers.Slope">mantidimaging.core.utility.data_containers.Slope</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.set_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.set_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the numerical COR and tilt angle results.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.set_table_point">
+<code class="sig-name descname">set_table_point</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">idx</span></em>, <em class="sig-param"><span class="n">slice_idx</span></em>, <em class="sig-param"><span class="n">cor</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.set_table_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.set_table_point" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.show_recon_volume">
+<code class="sig-name descname">show_recon_volume</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n"><a class="reference internal" href="mantidimaging.core.data.images.html#mantidimaging.core.data.images.Images" title="mantidimaging.core.data.images.Images">mantidimaging.core.data.images.Images</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.show_recon_volume"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.show_recon_volume" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.slope">
+<em class="property">property </em><code class="sig-name descname">slope</code><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.slope" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.stackSelector">
+<code class="sig-name descname">stackSelector</code><em class="property">: <a class="reference internal" href="mantidimaging.gui.widgets.stack_selector.view.html#mantidimaging.gui.widgets.stack_selector.view.StackSelectorWidgetView" title="mantidimaging.gui.widgets.stack_selector.view.StackSelectorWidgetView">mantidimaging.gui.widgets.stack_selector.view.StackSelectorWidgetView</a></em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.stackSelector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.tableView">
+<code class="sig-name descname">tableView</code><em class="property">: <a class="reference internal" href="mantidimaging.gui.widgets.removable_row_table_view.html#mantidimaging.gui.widgets.removable_row_table_view.RemovableRowTableView" title="mantidimaging.gui.widgets.removable_row_table_view.RemovableRowTableView">mantidimaging.gui.widgets.removable_row_table_view.RemovableRowTableView</a></em><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.tableView" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.tilt">
+<em class="property">property </em><code class="sig-name descname">tilt</code><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.tilt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.update_projection">
+<code class="sig-name descname">update_projection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_data</span></em>, <em class="sig-param"><span class="n">preview_slice_index</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span></em>, <em class="sig-param"><span class="n">tilt_angle</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference internal" href="mantidimaging.core.utility.data_containers.html#mantidimaging.core.utility.data_containers.Degrees" title="mantidimaging.core.utility.data_containers.Degrees">mantidimaging.core.utility.data_containers.Degrees</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.update_projection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.update_projection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the preview projection image and associated annotations.</p>
+<p>Region of interest sets the bounds of the image axes, it does not
+resize the data itself. The advantage of this is that the coordinates
+do not change.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_data</strong> – Projection image data (single/2D image)</p></li>
+<li><p><strong>preview_slice_index</strong> – Y coordinate at which to draw the preview
+slice indicator</p></li>
+<li><p><strong>tilt_angle</strong> – Angle of the tilt line</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.update_recon_preview">
+<code class="sig-name descname">update_recon_preview</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_data</span></em>, <em class="sig-param"><span class="n">refresh_recon_slice_histogram</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.update_recon_preview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.update_recon_preview" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the reconstruction preview image with new data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mantidimaging.gui.windows.recon.view.ReconstructWindowView.update_sinogram">
+<code class="sig-name descname">update_sinogram</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_data</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mantidimaging/gui/windows/recon/view.html#ReconstructWindowView.update_sinogram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mantidimaging.gui.windows.recon.view.ReconstructWindowView.update_sinogram" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mantidimaging.gui.windows.recon.presenter.html"
+                        title="previous chapter">mantidimaging.gui.windows.recon.presenter module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mantidimaging.gui.windows.savu_operations.html"
+                        title="next chapter">mantidimaging.gui.windows.savu_operations package</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.savu_operations.html" title="mantidimaging.gui.windows.savu_operations package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mantidimaging.gui.windows.recon.presenter.html" title="mantidimaging.gui.windows.recon.presenter module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api.html" >API Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="mantidimaging.html" >mantidimaging package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="mantidimaging.gui.html" >mantidimaging.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="mantidimaging.gui.windows.html" >mantidimaging.gui.windows package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="mantidimaging.gui.windows.recon.html" >mantidimaging.gui.windows.recon package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.recon.view module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

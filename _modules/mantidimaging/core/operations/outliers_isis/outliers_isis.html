@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.core.operations.outliers_isis.outliers_isis &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.operations.outliers_isis.outliers_isis</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.core.operations.outliers_isis.outliers_isis</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.ndimage</span> <span class="k">as</span> <span class="nn">scipy_ndimage</span>
+
+<span class="kn">from</span> <span class="nn">mantidimaging.core.data</span> <span class="kn">import</span> <span class="n">Images</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.operations.base_filter</span> <span class="kn">import</span> <span class="n">BaseFilter</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.parallel</span> <span class="kn">import</span> <span class="n">shared_mem</span> <span class="k">as</span> <span class="n">psm</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.core.parallel</span> <span class="kn">import</span> <span class="n">utility</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.utility</span> <span class="kn">import</span> <span class="n">add_property_to_form</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.utility.qt_helpers</span> <span class="kn">import</span> <span class="n">Type</span>
+
+<span class="n">_default_radius</span> <span class="o">=</span> <span class="mi">3</span>
+
+
+<div class="viewcode-block" id="OutliersISISFilter"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.operations.outliers_isis.outliers_isis.html#mantidimaging.core.operations.outliers_isis.outliers_isis.OutliersISISFilter">[docs]</a><span class="k">class</span> <span class="nc">OutliersISISFilter</span><span class="p">(</span><span class="n">BaseFilter</span><span class="p">):</span>
+    <span class="n">filter_name</span> <span class="o">=</span> <span class="s2">&quot;Remove Outliers ISIS&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_execute</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+        <span class="c1"># Adapted for 2D image from source: https://stackoverflow.com/a/16562028/2823526</span>
+        <span class="n">median</span> <span class="o">=</span> <span class="n">scipy_ndimage</span><span class="o">.</span><span class="n">median_filter</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+        <span class="n">abs_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data</span> <span class="o">-</span> <span class="n">median</span><span class="p">)</span>
+        <span class="n">mdev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">abs_diff</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">abs_diff</span> <span class="o">/</span> <span class="n">mdev</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">s</span> <span class="o">&lt;</span> <span class="n">diff</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">median</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OutliersISISFilter.filter_func"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.operations.outliers_isis.outliers_isis.html#mantidimaging.core.operations.outliers_isis.outliers_isis.OutliersISISFilter.filter_func">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">filter_func</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n">Images</span><span class="p">,</span> <span class="n">diff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">_default_radius</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cores</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param images: Input data</span>
+<span class="sd">        :param diff: Pixel value difference above which to crop bright pixels</span>
+<span class="sd">        :param radius: Size of the median filter to apply</span>
+<span class="sd">        :param cores: The number of cores that will be used to process the data.</span>
+
+<span class="sd">        :return: The processed 3D numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">utility</span><span class="o">.</span><span class="n">multiprocessing_necessary</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">cores</span><span class="p">):</span>
+            <span class="n">cores</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">diff</span> <span class="ow">and</span> <span class="n">radius</span> <span class="ow">and</span> <span class="n">diff</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">radius</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">projections</span> <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">images</span><span class="o">.</span><span class="n">sinograms</span>
+            <span class="n">func</span> <span class="o">=</span> <span class="n">psm</span><span class="o">.</span><span class="n">create_partial</span><span class="p">(</span><span class="n">OutliersISISFilter</span><span class="o">.</span><span class="n">_execute</span><span class="p">,</span> <span class="n">psm</span><span class="o">.</span><span class="n">return_fwd_func</span><span class="p">,</span> <span class="n">diff</span><span class="o">=</span><span class="n">diff</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">)</span>
+            <span class="n">psm</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">cores</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="n">progress</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Outliers with threshold </span><span class="si">{</span><span class="n">diff</span><span class="si">}</span><span class="s2"> and kernel </span><span class="si">{</span><span class="n">radius</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">images</span></div>
+
+<div class="viewcode-block" id="OutliersISISFilter.register_gui"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.operations.outliers_isis.outliers_isis.html#mantidimaging.core.operations.outliers_isis.outliers_isis.OutliersISISFilter.register_gui">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">register_gui</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">on_change</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">diff_field</span> <span class="o">=</span> <span class="n">add_property_to_form</span><span class="p">(</span><span class="s1">&#39;Difference&#39;</span><span class="p">,</span>
+                                             <span class="s1">&#39;float&#39;</span><span class="p">,</span>
+                                             <span class="mi">1</span><span class="p">,</span>
+                                             <span class="n">valid_values</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1000000</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">),</span>
+                                             <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span>
+                                             <span class="n">on_change</span><span class="o">=</span><span class="n">on_change</span><span class="p">)</span>
+        <span class="n">diff_field</span><span class="o">.</span><span class="n">setDecimals</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">size_field</span> <span class="o">=</span> <span class="n">add_property_to_form</span><span class="p">(</span><span class="s1">&#39;Size&#39;</span><span class="p">,</span> <span class="n">Type</span><span class="o">.</span><span class="n">INT</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span> <span class="n">on_change</span><span class="o">=</span><span class="n">on_change</span><span class="p">)</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">apply_to_field</span> <span class="o">=</span> <span class="n">add_property_to_form</span><span class="p">(</span><span class="s1">&#39;Apply to&#39;</span><span class="p">,</span>
+                                                 <span class="n">Type</span><span class="o">.</span><span class="n">CHOICE</span><span class="p">,</span>
+                                                 <span class="n">valid_values</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Projections&quot;</span><span class="p">,</span> <span class="s2">&quot;Sinograms&quot;</span><span class="p">),</span>
+                                                 <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span>
+                                                 <span class="n">on_change</span><span class="o">=</span><span class="n">on_change</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;diff_field&#39;</span><span class="p">:</span> <span class="n">diff_field</span><span class="p">,</span> <span class="s1">&#39;size_field&#39;</span><span class="p">:</span> <span class="n">size_field</span><span class="p">,</span> <span class="s1">&#39;apply_to_field&#39;</span><span class="p">:</span> <span class="n">apply_to_field</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="OutliersISISFilter.execute_wrapper"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.operations.outliers_isis.outliers_isis.html#mantidimaging.core.operations.outliers_isis.outliers_isis.OutliersISISFilter.execute_wrapper">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">execute_wrapper</span><span class="p">(</span><span class="n">diff_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">apply_to_field</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">apply_to_field</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Projections&quot;</span><span class="p">:</span>
+            <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">apply_to_field</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Sinograms&quot;</span><span class="p">:</span>
+            <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;apply_to_field not given a valid input.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">partial</span><span class="p">(</span><span class="n">OutliersISISFilter</span><span class="o">.</span><span class="n">filter_func</span><span class="p">,</span> <span class="n">diff</span><span class="o">=</span><span class="n">diff_field</span><span class="o">.</span><span class="n">value</span><span class="p">(),</span> <span class="n">radius</span><span class="o">=</span><span class="n">size_field</span><span class="o">.</span><span class="n">value</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.operations.outliers_isis.outliers_isis</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

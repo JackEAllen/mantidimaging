@@ -1,0 +1,331 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.gui.windows.recon.presenter &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.recon.presenter</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.gui.windows.recon.presenter</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">auto</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QWidget</span>
+
+<span class="kn">from</span> <span class="nn">mantidimaging.core.utility.data_containers</span> <span class="kn">import</span> <span class="n">ScalarCoR</span><span class="p">,</span> <span class="n">Degrees</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.dialogs.async_task</span> <span class="kn">import</span> <span class="n">start_async_task_view</span><span class="p">,</span> <span class="n">TaskWorkerThread</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.dialogs.cor_inspection.view</span> <span class="kn">import</span> <span class="n">CORInspectionDialogView</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.mvp_base</span> <span class="kn">import</span> <span class="n">BasePresenter</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.utility.qt_helpers</span> <span class="kn">import</span> <span class="n">BlockQtSignals</span>
+<span class="kn">from</span> <span class="nn">mantidimaging.gui.windows.recon.model</span> <span class="kn">import</span> <span class="n">ReconstructWindowModel</span>
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">mantidimaging.gui.windows.recon.view</span> <span class="kn">import</span> <span class="n">ReconstructWindowView</span>
+
+
+<div class="viewcode-block" id="AutoCorMethod"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.AutoCorMethod">[docs]</a><span class="k">class</span> <span class="nc">AutoCorMethod</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">CORRELATION</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">MINIMISATION_SQUARE_SUM</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Notifications"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.Notifications">[docs]</a><span class="k">class</span> <span class="nc">Notifications</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">RECONSTRUCT_VOLUME</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">RECONSTRUCT_SLICE</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">RECONSTRUCT_USER_CLICK</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">COR_FIT</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">CLEAR_ALL_CORS</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">REMOVE_SELECTED_COR</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">CALCULATE_CORS_FROM_MANUAL_TILT</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">ALGORITHM_CHANGED</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">UPDATE_PROJECTION</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">ADD_COR</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">REFINE_COR</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">AUTO_FIND_COR</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ReconstructWindowPresenter"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.ReconstructWindowPresenter">[docs]</a><span class="k">class</span> <span class="nc">ReconstructWindowPresenter</span><span class="p">(</span><span class="n">BasePresenter</span><span class="p">):</span>
+    <span class="n">ERROR_STRING</span> <span class="o">=</span> <span class="s2">&quot;COR/Tilt finding failed: </span><span class="si">{}</span><span class="s2">&quot;</span>
+    <span class="n">view</span><span class="p">:</span> <span class="s1">&#39;ReconstructWindowView&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view</span><span class="p">:</span> <span class="s1">&#39;ReconstructWindowView&#39;</span><span class="p">,</span> <span class="n">main_window</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ReconstructWindowPresenter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">view</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">=</span> <span class="n">view</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ReconstructWindowModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">cor_table_model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allowed_recon_kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_allowed_recon_kwargs</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">restricted_arg_widgets</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">QWidget</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;filter_name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">filterName</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">filterNameLabel</span><span class="p">],</span>
+            <span class="s1">&#39;num_iter&#39;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">numIter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">numIterLabel</span><span class="p">],</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span> <span class="o">=</span> <span class="n">main_window</span>
+
+<div class="viewcode-block" id="ReconstructWindowPresenter.notify"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.ReconstructWindowPresenter.notify">[docs]</a>    <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">notification</span><span class="p">,</span> <span class="n">slice_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">notification</span> <span class="o">==</span> <span class="n">Notifications</span><span class="o">.</span><span class="n">RECONSTRUCT_VOLUME</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">do_reconstruct_volume</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">notification</span> <span class="o">==</span> <span class="n">Notifications</span><span class="o">.</span><span class="n">RECONSTRUCT_SLICE</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">do_reconstruct_slice</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">notification</span> <span class="o">==</span> <span class="n">Notifications</span><span class="o">.</span><span class="n">RECONSTRUCT_USER_CLICK</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">do_reconstruct_slice</span><span class="p">(</span><span class="n">slice_idx</span><span class="o">=</span><span class="n">slice_idx</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">notification</span> <span class="o">==</span> <span class="n">Notifications</span><span class="o">.</span><span class="n">COR_FIT</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">do_cor_fit</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">notification</span> <span class="o">==</span> <span class="n">Notifications</span><span class="o">.</span><span class="n">CLEAR_ALL_CORS</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">do_clear_all_cors</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">notification</span> <span class="o">==</span> <span class="n">Notifications</span><span class="o">.</span><span class="n">REMOVE_SELECTED_COR</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">do_remove_selected_cor</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">notification</span> <span class="o">==</span> <span class="n">Notifications</span><span class="o">.</span><span class="n">CALCULATE_CORS_FROM_MANUAL_TILT</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">do_calculate_cors_from_manual_tilt</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">notification</span> <span class="o">==</span> <span class="n">Notifications</span><span class="o">.</span><span class="n">ALGORITHM_CHANGED</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">do_algorithm_changed</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">notification</span> <span class="o">==</span> <span class="n">Notifications</span><span class="o">.</span><span class="n">UPDATE_PROJECTION</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">do_update_projection</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">notification</span> <span class="o">==</span> <span class="n">Notifications</span><span class="o">.</span><span class="n">ADD_COR</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">do_add_cor</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">notification</span> <span class="o">==</span> <span class="n">Notifications</span><span class="o">.</span><span class="n">REFINE_COR</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_do_refine_selected_cor</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">notification</span> <span class="o">==</span> <span class="n">Notifications</span><span class="o">.</span><span class="n">AUTO_FIND_COR</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">do_auto_find_cor</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_error</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="ReconstructWindowPresenter.do_algorithm_changed"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.ReconstructWindowPresenter.do_algorithm_changed">[docs]</a>    <span class="k">def</span> <span class="nf">do_algorithm_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">alg_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">algorithm_name</span>
+        <span class="n">allowed_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_recon_kwargs</span><span class="p">[</span><span class="n">alg_name</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">widgets</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">restricted_arg_widgets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">allowed_args</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="n">widgets</span><span class="p">:</span>
+                    <span class="n">widget</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="n">widgets</span><span class="p">:</span>
+                    <span class="n">widget</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+        <span class="k">with</span> <span class="n">BlockQtSignals</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">filterName</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">numIter</span><span class="p">]):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">set_filters_for_recon_tool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_allowed_filters</span><span class="p">(</span><span class="n">alg_name</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_reconstruct_slice</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReconstructWindowPresenter.set_stack_uuid"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.ReconstructWindowPresenter.set_stack_uuid">[docs]</a>    <span class="k">def</span> <span class="nf">set_stack_uuid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">):</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">get_stack_visualiser</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">is_current_stack</span><span class="p">(</span><span class="n">stack</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">reset_image_recon_preview</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">clear_cor_table</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">initial_select_data</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">rotation_centre</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">last_cor</span><span class="o">.</span><span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_update_projection</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_reconstruct_slice</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReconstructWindowPresenter.set_preview_projection_idx"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.ReconstructWindowPresenter.set_preview_projection_idx">[docs]</a>    <span class="k">def</span> <span class="nf">set_preview_projection_idx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">preview_projection_idx</span> <span class="o">=</span> <span class="n">idx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_update_projection</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReconstructWindowPresenter.set_preview_slice_idx"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.ReconstructWindowPresenter.set_preview_slice_idx">[docs]</a>    <span class="k">def</span> <span class="nf">set_preview_slice_idx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">preview_slice_idx</span> <span class="o">=</span> <span class="n">idx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_update_projection</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_reconstruct_slice</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReconstructWindowPresenter.set_row"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.ReconstructWindowPresenter.set_row">[docs]</a>    <span class="k">def</span> <span class="nf">set_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">selected_row</span> <span class="o">=</span> <span class="n">row</span></div>
+
+<div class="viewcode-block" id="ReconstructWindowPresenter.do_update_projection"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.ReconstructWindowPresenter.do_update_projection">[docs]</a>    <span class="k">def</span> <span class="nf">do_update_projection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">images</span>
+        <span class="k">if</span> <span class="n">images</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">img_data</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">projection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">preview_projection_idx</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">update_projection</span><span class="p">(</span><span class="n">img_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">preview_slice_idx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">tilt_angle</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ReconstructWindowPresenter.do_add_cor"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.ReconstructWindowPresenter.do_add_cor">[docs]</a>    <span class="k">def</span> <span class="nf">do_add_cor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">selected_row</span>
+        <span class="n">cor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_me_a_cor</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">add_cor_table_row</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">preview_slice_idx</span><span class="p">,</span> <span class="n">cor</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ReconstructWindowPresenter.do_reconstruct_volume"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.ReconstructWindowPresenter.do_reconstruct_volume">[docs]</a>    <span class="k">def</span> <span class="nf">do_reconstruct_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_results</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Fit is not performed on the data, therefore the CoR cannot be found for each slice.&quot;</span><span class="p">)</span>
+
+        <span class="n">start_async_task_view</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">run_full_recon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_volume_recon_done</span><span class="p">,</span>
+                              <span class="p">{</span><span class="s1">&#39;recon_params&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">recon_params</span><span class="p">()})</span></div>
+
+<div class="viewcode-block" id="ReconstructWindowPresenter.do_reconstruct_slice"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.ReconstructWindowPresenter.do_reconstruct_slice">[docs]</a>    <span class="k">def</span> <span class="nf">do_reconstruct_slice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">slice_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">refresh_recon_slice_histogram</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">slice_idx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">slice_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">preview_slice_idx</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">preview_slice_idx</span> <span class="o">=</span> <span class="n">slice_idx</span>
+
+        <span class="c1"># If no COR is provided and there are regression results then calculate</span>
+        <span class="c1"># the COR for the selected preview slice</span>
+        <span class="n">cor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_me_a_cor</span><span class="p">(</span><span class="n">cor</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">update_sinogram</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">sino</span><span class="p">(</span><span class="n">slice_idx</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">run_preview_recon</span><span class="p">(</span><span class="n">slice_idx</span><span class="p">,</span> <span class="n">cor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">recon_params</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">update_recon_preview</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">refresh_recon_slice_histogram</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">show_error_dialog</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Encountered error while trying to reconstruct: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_do_refine_selected_cor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">slice_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">preview_slice_idx</span>
+
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">CORInspectionDialogView</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">slice_idx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">last_cor</span><span class="p">,</span>
+                                         <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">recon_params</span><span class="p">())</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;COR refine dialog result: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">res</span> <span class="o">==</span> <span class="n">CORInspectionDialogView</span><span class="o">.</span><span class="n">Accepted</span><span class="p">:</span>
+            <span class="n">new_cor</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">optimal_rotation_centre</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;New optimal rotation centre: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_cor</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">data_model</span><span class="o">.</span><span class="n">set_cor_at_slice</span><span class="p">(</span><span class="n">slice_idx</span><span class="p">,</span> <span class="n">new_cor</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">last_cor</span> <span class="o">=</span> <span class="n">new_cor</span>
+            <span class="c1"># Update reconstruction preview with new COR</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">do_reconstruct_slice</span><span class="p">(</span><span class="n">new_cor</span><span class="p">,</span> <span class="n">slice_idx</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ReconstructWindowPresenter.do_cor_fit"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.ReconstructWindowPresenter.do_cor_fit">[docs]</a>    <span class="k">def</span> <span class="nf">do_cor_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">do_fit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">set_results</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_results</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_update_projection</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_reconstruct_slice</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_on_volume_recon_done</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">show_recon_volume</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ReconstructWindowPresenter.do_clear_all_cors"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.ReconstructWindowPresenter.do_clear_all_cors">[docs]</a>    <span class="k">def</span> <span class="nf">do_clear_all_cors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">clear_cor_table</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">reset_selected_row</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReconstructWindowPresenter.do_remove_selected_cor"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.ReconstructWindowPresenter.do_remove_selected_cor">[docs]</a>    <span class="k">def</span> <span class="nf">do_remove_selected_cor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">remove_selected_cor</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReconstructWindowPresenter.set_last_cor"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.ReconstructWindowPresenter.set_last_cor">[docs]</a>    <span class="k">def</span> <span class="nf">set_last_cor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cor</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">last_cor</span> <span class="o">=</span> <span class="n">ScalarCoR</span><span class="p">(</span><span class="n">cor</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ReconstructWindowPresenter.do_calculate_cors_from_manual_tilt"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.ReconstructWindowPresenter.do_calculate_cors_from_manual_tilt">[docs]</a>    <span class="k">def</span> <span class="nf">do_calculate_cors_from_manual_tilt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">cor</span> <span class="o">=</span> <span class="n">ScalarCoR</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">rotation_centre</span><span class="p">)</span>
+        <span class="n">tilt</span> <span class="o">=</span> <span class="n">Degrees</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">tilt</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_precalculated_cor_tilt</span><span class="p">(</span><span class="n">cor</span><span class="p">,</span> <span class="n">tilt</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_set_precalculated_cor_tilt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cor</span><span class="p">:</span> <span class="n">ScalarCoR</span><span class="p">,</span> <span class="n">tilt</span><span class="p">:</span> <span class="n">Degrees</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">set_precalculated</span><span class="p">(</span><span class="n">cor</span><span class="p">,</span> <span class="n">tilt</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">set_results</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_results</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">data_model</span><span class="o">.</span><span class="n">iter_points</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">set_table_point</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">slice_index</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">cor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_update_projection</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_reconstruct_slice</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ReconstructWindowPresenter.do_auto_find_cor"><a class="viewcode-back" href="../../../../../api/mantidimaging.gui.windows.recon.presenter.html#mantidimaging.gui.windows.recon.presenter.ReconstructWindowPresenter.do_auto_find_cor">[docs]</a>    <span class="k">def</span> <span class="nf">do_auto_find_cor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">images</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">get_auto_cor_method</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="n">AutoCorMethod</span><span class="o">.</span><span class="n">CORRELATION</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_auto_find_correlation</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_auto_find_minimisation_square_sum</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_auto_find_correlation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">completed</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">TaskWorkerThread</span><span class="p">):</span>
+            <span class="n">cor</span><span class="p">,</span> <span class="n">tilt</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">result</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_precalculated_cor_tilt</span><span class="p">(</span><span class="n">cor</span><span class="p">,</span> <span class="n">tilt</span><span class="p">)</span>
+
+        <span class="n">start_async_task_view</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">auto_find_correlation</span><span class="p">,</span> <span class="n">completed</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_auto_find_minimisation_square_sum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">num_cors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">get_number_of_cors</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">num_cors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_clear_all_cors</span><span class="p">()</span>
+
+        <span class="n">selected_row</span><span class="p">,</span> <span class="n">slice_indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_slice_indices</span><span class="p">(</span><span class="n">num_cors</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">has_results</span><span class="p">:</span>
+            <span class="n">initial_cor</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">slc</span> <span class="ow">in</span> <span class="n">slice_indices</span><span class="p">:</span>
+                <span class="n">initial_cor</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">data_model</span><span class="o">.</span><span class="n">get_cor_from_regression</span><span class="p">(</span><span class="n">slc</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">initial_cor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">rotation_centre</span>
+
+        <span class="k">def</span> <span class="nf">_completed_finding_cors</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">TaskWorkerThread</span><span class="p">):</span>
+            <span class="n">cors</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">result</span>
+            <span class="k">for</span> <span class="n">slice_idx</span><span class="p">,</span> <span class="n">cor</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">slice_indices</span><span class="p">,</span> <span class="n">cors</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">add_cor_table_row</span><span class="p">(</span><span class="n">selected_row</span><span class="p">,</span> <span class="n">slice_idx</span><span class="p">,</span> <span class="n">cor</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">do_cor_fit</span><span class="p">()</span>
+
+        <span class="n">start_async_task_view</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">auto_find_minimisation_sqsum</span><span class="p">,</span> <span class="n">_completed_finding_cors</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s1">&#39;slices&#39;</span><span class="p">:</span> <span class="n">slice_indices</span><span class="p">,</span>
+            <span class="s1">&#39;recon_params&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">recon_params</span><span class="p">(),</span>
+            <span class="s1">&#39;initial_cor&#39;</span><span class="p">:</span> <span class="n">initial_cor</span>
+        <span class="p">})</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.gui.windows.recon.presenter</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

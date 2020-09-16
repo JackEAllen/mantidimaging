@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.core.utility.savu_interop.citations &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.utility.savu_interop.citations</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.core.utility.savu_interop.citations</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="Citation"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.utility.savu_interop.citations.html#mantidimaging.core.utility.savu_interop.citations.Citation">[docs]</a><span class="k">class</span> <span class="nc">Citation</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;bibtex&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="s2">&quot;endnote&quot;</span><span class="p">)</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span>
+    <span class="n">bibtex</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span>
+    <span class="n">description</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span>
+    <span class="n">doi</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span>
+    <span class="n">endnote</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span></div>
+
+
+<div class="viewcode-block" id="HDF5Citation"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.utility.savu_interop.citations.html#mantidimaging.core.utility.savu_interop.citations.HDF5Citation">[docs]</a><span class="k">class</span> <span class="nc">HDF5Citation</span><span class="p">(</span><span class="n">Citation</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s2">&quot;HDF5&quot;</span><span class="p">)</span>
+    <span class="n">bibtex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span>
+        <span class="s2">&quot;@ONLINE{hdf5, </span><span class="se">\n</span><span class="s2">author = {{The HDF Group}}, </span><span class="se">\n</span><span class="s2">title = &#39;{Hierarchical Data Format, version 5}&#39;, </span><span class="se">\n</span><span class="s2">year = {&quot;</span>
+        <span class="s2">&quot;1997-2016}, </span><span class="se">\n</span><span class="s2">note = {/HDF5/}, </span><span class="se">\n</span><span class="s2">}&quot;</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;Savu uses parallel HDF5 as a backend.&#39;</span><span class="p">)</span>
+    <span class="n">doi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;Default DOI&#39;</span><span class="p">)</span>
+    <span class="n">endnote</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;%0 Journal Article</span><span class="se">\n</span><span class="s1">%T {Hierarchical Data Format, version 5}</span><span class="se">\n</span><span class="s1">%A HDF Group</span><span class="se">\n</span><span class="s1">%D 2014</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MPICitation"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.utility.savu_interop.citations.html#mantidimaging.core.utility.savu_interop.citations.MPICitation">[docs]</a><span class="k">class</span> <span class="nc">MPICitation</span><span class="p">(</span><span class="n">Citation</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s2">&quot;MPI&quot;</span><span class="p">)</span>
+    <span class="n">bibtex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span>
+        <span class="s1">&#39;@article{walker1996mpi, </span><span class="se">\n</span><span class="s1">title={MPI: a standard message passing interface}, </span><span class="se">\n</span><span class="s1">author={Walker, David W and &#39;</span>
+        <span class="s1">&#39;Dongarra, Jack J}, </span><span class="se">\n</span><span class="s1">journal=</span><span class="si">{Supercomputer}</span><span class="s1">, </span><span class="se">\n</span><span class="s1">volume=</span><span class="si">{12}</span><span class="s1">, </span><span class="se">\n</span><span class="s1">pages={56--68}, </span><span class="se">\n</span><span class="s1">year=</span><span class="si">{1996}</span><span class="s1">, </span><span class="se">\n</span><span class="s1">publisher={&#39;</span>
+        <span class="s1">&#39;ASFRA BV} </span><span class="se">\n</span><span class="s1">}&#39;</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;HDF5 uses the Message Passing Interface</span><span class="se">\n</span><span class="s1">standard for interprocess communication&#39;</span><span class="p">)</span>
+    <span class="n">doi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;Default DOI&#39;</span><span class="p">)</span>
+    <span class="n">endnote</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span>
+        <span class="s1">&#39;%0 Journal Article</span><span class="se">\n</span><span class="s1">%T MPI: a standard message passing interface</span><span class="se">\n</span><span class="s1">%A Walker, David W</span><span class="se">\n</span><span class="s1">%A Dongarra, &#39;</span>
+        <span class="s1">&#39;Jack J</span><span class="se">\n</span><span class="s1">%J Supercomputer</span><span class="se">\n</span><span class="s1">%V 12</span><span class="se">\n</span><span class="s1">%P 56-68</span><span class="se">\n</span><span class="s1">%@ 0168-7875</span><span class="se">\n</span><span class="s1">%D 1996</span><span class="se">\n</span><span class="s1">%I ASFRA BV</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SavuCitation"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.utility.savu_interop.citations.html#mantidimaging.core.utility.savu_interop.citations.SavuCitation">[docs]</a><span class="k">class</span> <span class="nc">SavuCitation</span><span class="p">(</span><span class="n">Citation</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s2">&quot;Savu&quot;</span><span class="p">)</span>
+    <span class="n">bibtex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span>
+        <span class="s1">&#39;@article{wadeson2016savu,</span><span class="se">\n</span><span class="s1">title={Savu: A Python-based, MPI Framework for Simultaneous</span><span class="se">\n</span><span class="s1">Processing of &#39;</span>
+        <span class="s1">&#39;Multiple, N-dimensional, Large Tomography</span><span class="se">\n</span><span class="s1">Datasets},</span><span class="se">\n</span><span class="s1">author={Wadeson, Nicola and Basham, Mark},</span><span class="se">\n</span><span class="s1">journal={&#39;</span>
+        <span class="s1">&#39;arXiv preprint arXiv:1610.08015},</span><span class="se">\n</span><span class="s1">year=</span><span class="si">{2016}</span><span class="se">\n</span><span class="s1">}&#39;</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;The Savu framework design is described in this paper.&#39;</span><span class="p">)</span>
+    <span class="n">doi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;Default DOI&#39;</span><span class="p">)</span>
+    <span class="n">endnote</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span>
+        <span class="s1">&#39;%0 Journal Article</span><span class="se">\n</span><span class="s1">%T Savu: A Python-based, MPI Framework for Simultaneous Processing</span><span class="se">\n</span><span class="s1">of Multiple, &#39;</span>
+        <span class="s1">&#39;N-dimensional, Large Tomography Datasets</span><span class="se">\n</span><span class="s1">%A Wadeson, Nicola</span><span class="se">\n</span><span class="s1">%A Basham, Mark</span><span class="se">\n</span><span class="s1">%J arXiv preprint &#39;</span>
+        <span class="s1">&#39;arXiv:1610.08015</span><span class="se">\n</span><span class="s1">%D 2016&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MantidImagingCitation"><a class="viewcode-back" href="../../../../../api/mantidimaging.core.utility.savu_interop.citations.html#mantidimaging.core.utility.savu_interop.citations.MantidImagingCitation">[docs]</a><span class="k">class</span> <span class="nc">MantidImagingCitation</span><span class="p">(</span><span class="n">Citation</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s2">&quot;MantidImaging&quot;</span><span class="p">)</span>
+    <span class="n">bibtex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;The MantidImaging core package used to generate this process lsit.&#39;</span><span class="p">)</span>
+    <span class="n">doi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;TBD&#39;</span><span class="p">)</span>
+    <span class="n">endnote</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">string_</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.core.utility.savu_interop.citations</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

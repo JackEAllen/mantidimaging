@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mantidimaging.test_helpers.start_qapplication &#8212; MantidImaging 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.test_helpers.start_qapplication</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mantidimaging.test_helpers.start_qapplication</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Mantid Repository : https://github.com/mantidproject/mantid</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright &amp;copy; 2017 ISIS Rutherford Appleton Laboratory UKRI,</span>
+<span class="c1">#     NScD Oak Ridge National Laboratory, European Spallation Source</span>
+<span class="c1">#     &amp; Institut Laue - Langevin</span>
+<span class="c1"># SPDX - License - Identifier: GPL - 3.0 +</span>
+
+<span class="c1"># This file was taken from</span>
+<span class="c1"># https://github.com/mantidproject/mantid/tree/aa5ed98034119ed3af79ea91527aa718c87c816c/qt/python/mantidqt/utils/qt/testing</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span>
+
+<span class="n">_QAPP</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="get_application"><a class="viewcode-back" href="../../../api/mantidimaging.test_helpers.start_qapplication.html#mantidimaging.gui.windows.stack_visualiser.test.view_test.get_application">[docs]</a><span class="k">def</span> <span class="nf">get_application</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialise and return the global application object</span>
+<span class="sd">    :param name: Optional application name</span>
+<span class="sd">    :return: Global appliction object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_QAPP</span>
+
+    <span class="k">def</span> <span class="nf">exception_handler</span><span class="p">(</span><span class="n">exctype</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">tb</span><span class="p">):</span>
+        <span class="n">traceback</span><span class="o">.</span><span class="n">print_exception</span><span class="p">(</span><span class="n">exctype</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">tb</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">_QAPP</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_QAPP</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">([</span><span class="n">name</span><span class="p">])</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">excepthook</span> <span class="o">=</span> <span class="n">exception_handler</span>
+
+    <span class="k">return</span> <span class="n">_QAPP</span></div>
+
+
+<div class="viewcode-block" id="start_qapplication"><a class="viewcode-back" href="../../../api/mantidimaging.test_helpers.start_qapplication.html#mantidimaging.gui.windows.stack_visualiser.test.view_test.start_qapplication">[docs]</a><span class="k">def</span> <span class="nf">start_qapplication</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Unittest decorator. Adds or augments the setUpClass classmethod</span>
+<span class="sd">    to the given class. It starts the QApplication object</span>
+<span class="sd">    if it is not already started</span>
+<span class="sd">    @param cls: Class being decorated</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">do_nothing</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="n">get_application</span><span class="p">()</span>
+        <span class="n">setUpClass_orig</span><span class="p">()</span>
+
+    <span class="n">setUpClass_orig</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">setUpClass</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s1">&#39;setUpClass&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">do_nothing</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s1">&#39;setUpClass&#39;</span><span class="p">,</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">setUpClass</span><span class="p">))</span>
+    <span class="k">return</span> <span class="bp">cls</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">MantidImaging 1.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">mantidimaging.test_helpers.start_qapplication</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mantid Project.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>
